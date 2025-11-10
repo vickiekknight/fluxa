@@ -1,0 +1,132 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#root {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  background-color: #000000;
+  color: #00ff7f;
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Logo styling with green glow */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms, transform 300ms;
+  filter: drop-shadow(0 0 0.5em #00ff7faa);
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 2em #00ff7faa);
+}
+
+/* React-specific logo glow */
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+/* Spin animation */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Card styling */
+.card {
+  padding: 2em;
+  background-color: #0a0a0a; /* Dark black card background */
+  border: 1px solid #00ff7f; /* Neon green border */
+  border-radius: 0.75em;
+  box-shadow: 0 0 1em #00ff7faa, 0 0 2em #00ff7faa inset;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 2em #00ff7faa, 0 0 3em #00ff7faa inset;
+  transform: translateY(-0.25em);
+}
+
+/* Links / doc text */
+.read-the-docs {
+  color: #00ff7f;
+  text-shadow: 0 0 0.5em #00ff7f99;
+  transition: text-shadow 0.3s ease;
+}
+
+.read-the-docs:hover {
+  text-shadow: 0 0 1.5em #00ff7fff;
+}
+
+/* Buttons */
+button {
+  background-color: #000000;
+  color: #00ff7f;
+  border: 1px solid #00ff7f;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #00ff7f0a;
+  box-shadow: 0 0 1em #00ff7faa, 0 0 2em #00ff7faa inset;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Glow pulse */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(0,255,0,0.7); }
+  50% { box-shadow: 0 0 15px rgba(0,255,0,1); }
+}
+
+.status-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-light.connected { background-color: #00ff00; animation: pulse-glow 1.5s infinite; }
+.status-light.connecting { background-color: #ffff00; animation: pulse-glow 1s infinite; }
+.status-light.error { background-color: #ff0000; }
+.status-light.disconnected { background-color: #888888; }
+
+.spinner {
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  margin-right: 6px;
+}
