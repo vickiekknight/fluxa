@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import App from "./App";
 import SimulationPage from "./pages/SimulationPage";
 import "./index.css";
 
@@ -21,7 +20,7 @@ function AnimatedRoutes() {
               exit={{ opacity: 0 }}
               transition={{ type: "spring", stiffness: 100, damping: 25 }}
             >
-              <App />
+              <SimulationPage />
             </motion.div>
           }
         />
