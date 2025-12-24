@@ -1,0 +1,7142 @@
+[
+  {
+    "frame_index": 1,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 2,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 3,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 4,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 5,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 6,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 7,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 8,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 9,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 10,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 11,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 12,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 13,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 14,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 15,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 16,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 17,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 18,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 19,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 20,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 21,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 22,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 23,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 24,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 25,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 26,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 27,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 28,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 29,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 30,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 31,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 32,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 33,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 34,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 35,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 36,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 37,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 38,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 39,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 40,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 41,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 42,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 43,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 44,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 45,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 46,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 47,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 48,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 49,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 50,
+    "phase": "approach",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 51,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 52,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 53,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 54,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 55,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 56,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 57,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 58,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 59,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 60,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 61,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 62,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 63,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 64,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 65,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 66,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 67,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 68,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 69,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 70,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 71,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 72,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 73,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 74,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 75,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 76,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 77,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 78,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 79,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 80,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 81,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 82,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 83,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 84,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 85,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 86,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 87,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 88,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 89,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 90,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 91,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 92,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 93,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 94,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 95,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 96,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 97,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 98,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 99,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 100,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 101,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 102,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 103,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 104,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 105,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 106,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 107,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 108,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 109,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 110,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 111,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 112,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 113,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 114,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 115,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 116,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 117,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 118,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 119,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 120,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 121,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 122,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 123,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 124,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 125,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 126,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 127,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 128,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 129,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 130,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 131,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 132,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 133,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 134,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 135,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 136,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 137,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 138,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 139,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 140,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 141,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 142,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 143,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 144,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 145,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 146,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 147,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 148,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 149,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 150,
+    "phase": "close_gripper",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 151,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 152,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 153,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 154,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 155,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 156,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 157,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 158,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 159,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 160,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 161,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 162,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 163,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 164,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 165,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 166,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 167,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 168,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 169,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 170,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 171,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 172,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 173,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 174,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 175,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 176,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 177,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 178,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 179,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 180,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 181,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 182,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 183,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 184,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 185,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 186,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 187,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 188,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 189,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 190,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 191,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 192,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 193,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 194,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 195,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 196,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 197,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 198,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 199,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 200,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 201,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 202,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 203,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 204,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 205,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 206,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 207,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 208,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 209,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 210,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 211,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 212,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 213,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 214,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 215,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 216,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 217,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 218,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 219,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 220,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 221,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 222,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 223,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 224,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 225,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 226,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 227,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 228,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 229,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 230,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 231,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 232,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 233,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 234,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 235,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 236,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 237,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 238,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 239,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 240,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 241,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 242,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 243,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 244,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 245,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 246,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 247,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 248,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 249,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 250,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 251,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 252,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 253,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 254,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 255,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 256,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 257,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 258,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 259,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 260,
+    "phase": "grip_wait",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 261,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 262,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 263,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 264,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 265,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 266,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 267,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 268,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 269,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 270,
+    "phase": "lift",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 271,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 272,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 273,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 274,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 275,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 276,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 277,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 278,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 279,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 280,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 281,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 282,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 283,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 284,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 285,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 286,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 287,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 288,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 289,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 290,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 291,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 292,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 293,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 294,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 295,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 296,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 297,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 298,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 299,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 300,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 301,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 302,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 303,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 304,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 305,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 306,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 307,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 308,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 309,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 310,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 311,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 312,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 313,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 314,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 315,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 316,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 317,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 318,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 319,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 320,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 321,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 322,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 323,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 324,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 325,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 326,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 327,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 328,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 329,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 330,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 331,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 332,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 333,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 334,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 335,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 336,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 337,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 338,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 339,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 340,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 341,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 342,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 343,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 344,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 345,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 346,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 347,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 348,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 349,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 350,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 351,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 352,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 353,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 354,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 355,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 356,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 357,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 358,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 359,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 360,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 361,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 362,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 363,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 364,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 365,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 366,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 367,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 368,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 369,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 370,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 371,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 372,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 373,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 374,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 375,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 376,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 377,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 378,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 379,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 380,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 381,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 382,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 383,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 384,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 385,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 386,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 387,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 388,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 389,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 390,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 391,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 392,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 393,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 394,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 395,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 396,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 397,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 398,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 399,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 400,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 401,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 402,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 403,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 404,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 405,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 406,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 407,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 408,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 409,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 410,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 411,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 412,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 413,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 414,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 415,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 416,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 417,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 418,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 419,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 420,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 421,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 422,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 423,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 424,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 425,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 426,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 427,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 428,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 429,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 430,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 431,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 432,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 433,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 434,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 435,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 436,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 437,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 438,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 439,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 440,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 441,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 442,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 443,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 444,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 445,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 446,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 447,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 448,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 449,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 450,
+    "phase": "release",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 451,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 452,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 453,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 454,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 455,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 456,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 457,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 458,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 459,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 460,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 461,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 462,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 463,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 464,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 465,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 466,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 467,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 468,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 469,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 470,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 471,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 472,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 473,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 474,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 475,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 476,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 477,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 478,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 479,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 480,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 481,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 482,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 483,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 484,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 485,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 486,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 487,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 488,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 489,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 490,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 491,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 492,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 493,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 494,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 495,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 496,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 497,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 498,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 499,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 500,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 501,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 502,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 503,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 504,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 505,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 506,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 507,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 508,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 509,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  },
+  {
+    "frame_index": 510,
+    "phase": "home",
+    "left_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    },
+    "right_finger_contacts": {
+      "time": 0,
+      "physics_step": 0,
+      "contacts": []
+    }
+  }
+]
