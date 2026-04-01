@@ -1,0 +1,33 @@
+# --- Reward Function Signature for Isaac Lab Manipulation ---
+
+You must implement reward functions following the Isaac Lab MDP naming convention. 
+Each function must accept the 'env' (ManagerBasedRLEnv) and any required 'params'.
+
+Signature:
+def your_reward_function(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
+    """
+    Args:
+        env: The interactive environment instance.
+        asset_cfg: Configuration for the robot/object (use to get data).
+        command_name: The name of the target command (e.g., 'ee_pose').
+    Returns:
+        A tensor of shape (num_envs,) containing the reward values.
+    """
+    # 1. Access Robot Data
+    robot = env.scene[asset_cfg.name]
+    ee_pos = robot.data.body_pos_w[:, asset_cfg.body_ids[0]] # World-space end-effector position
+    
+    # 2. Access Command Data
+    target_pos = env.command_manager.get_command(command_name)[:, :3] # Target position (x, y, z)
+    
+    # 3. Compute Logic
+    distance = torch.norm(target_pos - ee_pos, dim=-1)
+    
+    # 4. Return Tensor
+    return -distance 
+
+# Available Data References:
+# - env.num_envs: Total number of parallel environments
+# - robot.data.joint_pos: Current joint positions
+# - robot.data.joint_vel: Current joint velocities
+# - robot.data.body_lin_vel_w: World-space linear velocity of bodies

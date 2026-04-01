@@ -1,0 +1,85 @@
+isaac_sim:
+  host: localhost
+  port: 8765
+  results_port: 8766
+  host_ip: "10.0.0.1"
+
+
+# --- Stage 1 Configuration ---
+eureka:
+  iterations: 3          # How many times Gemini should try to improve the code
+  candidates: 4          # How many different reward versions to try per iteration
+  model: "gemini-2.5-flash-lite"
+  rollout_duration: 30   # How long to test each reward (seconds)
+
+
+# --- Stage 1: Intent ---
+task_description: >
+  The robot must move its end-effector to the target 3D pose specified in the command. 
+  The motion should be smooth, avoiding sudden jerks (action rate penalty). 
+  Success is defined as the end-effector staying within 5cm of the target position 
+  with the correct orientation.
+
+# reward-designer config for reach tasks
+task_name: franka-reach 
+
+# --- Paths ---
+# Use relative paths where possible so the skill moves with the folder
+skills_root: ".." 
+designer_root: "."
+
+# The ACTUAL source of truth for the LLM to read
+env_source_file: "/isaac-sim/IsaacLab/source/isaaclab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/reach/reach_env_cfg.py"
+
+# Skill-specific artifacts
+reward_signature_file: "./prompts/reward_signature_reach.txt"
+reward_template_file: "./templates/reward_template.py"
+reward_output_file: "./outputs/reward_fn.py"
+rapp_bounds_file: "./outputs/rapp_bounds.json"
+
+# --- Stage 2: RAPP ---
+rapp:
+  num_envs: 8
+  rollout_duration: 20
+  # Success defined by the 'end_effector_position_tracking' term in your python code
+  success_threshold: 0.05 
+  # Important: RAPP needs to know which observation index to check for error
+  target_metric: "position_error" 
+
+  parameter_test_vals:
+    joint_damping_scale:  [0.5, 1.0, 1.5]
+    joint_friction_scale: [0.5, 1.0, 1.5]
+    mass_scale:           [0.8, 1.0, 1.2]
+    action_delay_steps:   [0, 1, 2]
+
+# --- Per-robot overrides ---
+# These must match the class definitions in your reach_task.py
+robots:
+  franka-reach:
+    ee_body_name: "panda_hand"
+    asset_name: "robot"
+    # Matches: joint_names=["panda_joint.*"]
+    joint_pattern: "panda_joint.*" 
+    num_joints: 7
+    
+  ur10-reach:
+    ee_body_name: "ee_link"
+    asset_name: "robot"
+    # Matches your script's: joint_names=[".*"]
+    joint_pattern: ".*" 
+    num_joints: 6
+
+# Use these for 'play' mode (usually means evaluating a trained policy)
+  franka-reach-play:
+    ee_body_name: "panda_hand"
+    joint_pattern: "panda_joint.*"
+    
+  ur10-reach-play:
+    ee_body_name: "ee_link"
+    joint_pattern: ".*"
+
+# --- Stage 3: DR Eureka ---
+dr_eureka:
+  # This tells the LLM which template to use for Domain Randomization
+  dr_template_file: "./templates/dr_template.py"
+  dr_output_file: "./outputs/dr_config.py"
