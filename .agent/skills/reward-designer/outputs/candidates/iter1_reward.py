@@ -11,41 +11,64 @@ import isaaclab_tasks.manager_based.manipulation.reach.mdp as mdp
 
 def ee_position_reward(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
     """
-    Reward for end-effector position.
+    Reward for reaching the target end-effector position.
     """
     robot = env.scene[asset_cfg.name]
-    ee_pos = robot.data.body_pos_w[:, asset_cfg.body_ids[0]]
-    target_pos = env.command_manager.get_command(command_name)[:, :3]
+    ee_pos = robot.data.body_pos_w[:, asset_cfg.body_ids[0]]  # World-space end-effector position
+
+    target_pos = env.command_manager.get_command(command_name)[:, :3]  # Target position (x, y, z)
+
     distance = torch.norm(target_pos - ee_pos, dim=-1)
-    # Reward is inversely proportional to distance, scaled for better gradient
-    return torch.exp(-distance * 10.0) * 20.0
+    # Penalize distance, with a larger reward for being closer.
+    # A Gaussian-like reward centered around 0 distance.
+    # Max reward of 1.0 when distance is 0, decaying to 0 at 0.05m.
+    position_reward = torch.exp(-10.0 * distance) * (distance < 0.05).float()
+    return position_reward
 
 def ee_orientation_reward(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
     """
-    Reward for end-effector orientation.
+    Reward for matching the target end-effector orientation.
     """
     robot = env.scene[asset_cfg.name]
-    ee_orn = robot.data.body_orient_w[:, asset_cfg.body_ids[0]]
+    ee_orn_w = robot.data.body_quat_w[:, asset_cfg.body_ids[0]]  # World-space end-effector orientation (quaternion)
+
+    # Assuming command provides orientation as quaternion [w, x, y, z]
     target_orn = env.command_manager.get_command(command_name)[:, 3:]
 
-    # Calculate orientation difference (quaternion distance)
-    delta_orn = quat_mul(quat_inv(ee_orn), target_orn)
-    # Angle between two orientations represented by a quaternion is 2 * acos(|w|)
-    # where w is the scalar part of the quaternion.
-    # We want to penalize larger angle differences.
-    orientation_error = 2.0 * torch.acos(torch.clamp(torch.abs(delta_orn[:, 0]), max=1.0))
+    # Calculate orientation difference (angle between quaternions)
+    # Convert quaternions to rotation matrices and then to rotation vectors, then get norm.
+    # Alternatively, use scipy.spatial.transform.Rotation.from_quat and compare.
+    # For simplicity and within torch, we can compute the angle directly.
+    # q1 * conj(q2) gives a quaternion representing the rotation from q2 to q1.
+    # The scalar part of this quaternion is cos(theta/2).
+    # The norm of the vector part is sin(theta/2).
+    # Angle = 2 * atan2(norm(vector part), scalar part)
+    delta_quat = isaaclab.utils.math.quat_mul(ee_orn_w, isaaclab.utils.math.quat_inverse(target_orn))
+    # Angle in radians. Clamp to avoid numerical issues with acos.
+    angle_diff = 2 * torch.acos(torch.clamp(delta_quat[:, 0], -1.0, 1.0))
 
-    # Reward is high when orientation error is small
-    return torch.exp(-orientation_error * 5.0) * 10.0
+    # Reward based on orientation similarity. Max reward of 1.0 for perfect alignment.
+    # A common approach is to use 1 - (angle_diff / pi) or a scaled Gaussian.
+    # Let's use a reward that is 1 for perfect match and decays to 0.
+    orientation_reward = torch.cos(angle_diff / 2.0) # This is effectively w component of delta_quat
+    orientation_reward = torch.max(torch.zeros_like(orientation_reward), orientation_reward) # Ensure non-negative
+    return orientation_reward
 
 def action_rate_penalty(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
     """
-    Penalty for high joint velocities, encouraging smooth motion.
+    Penalty for high action rates (jerky movements).
     """
+    # This reward is typically applied based on the difference between consecutive actions.
+    # However, if we don't have access to previous actions directly here, we can penalize high joint velocities.
+    # If we assume `env.command_manager.get_command` returns actions in this context, we'd need access to prev_actions.
+    # Assuming joint velocities are a good proxy for jerky movements.
     robot = env.scene[asset_cfg.name]
-    # Penalize based on the magnitude of joint velocities
-    joint_velocities = torch.norm(robot.data.joint_vel, dim=-1)
-    return -joint_velocities * 0.1
+    # Penalize the magnitude of joint velocities.
+    # A simple penalty is the L2 norm of joint velocities.
+    joint_vel_magnitude = torch.norm(robot.data.joint_vel, dim=-1)
+    # Penalize higher velocities more strongly.
+    return -0.1 * joint_vel_magnitude # Scale to be a penalty
+
 
 
 # --- LLM GENERATED FUNCTIONS END ---
@@ -60,20 +83,21 @@ def get_reward_cfg(env_cfg, robot_ee_body_name: str):
     # The LLM will be instructed to provide a dictionary called 'generated_terms'
     
     reward_dict = {
-    "RewTerm": RewTerm(
+    "RewTerm": RewTerm,
+    "ee_position_reward": RewTerm(
         func=ee_position_reward,
         params={"asset_cfg": SceneEntityCfg("robot", body_names=["panda_hand"]), "command_name": "ee_pose"},
         weight=1.0,
     ),
-    "OrientationRewTerm": RewTerm(
+    "ee_orientation_reward": RewTerm(
         func=ee_orientation_reward,
         params={"asset_cfg": SceneEntityCfg("robot", body_names=["panda_hand"]), "command_name": "ee_pose"},
-        weight=0.8,
+        weight=0.5,
     ),
-    "ActionRateRewTerm": RewTerm(
+    "action_rate_penalty": RewTerm(
         func=action_rate_penalty,
         params={"asset_cfg": SceneEntityCfg("robot", body_names=["panda_hand"]), "command_name": "ee_pose"},
-        weight=0.05,
+        weight=0.01, # Small penalty weight
     ),
 }
     

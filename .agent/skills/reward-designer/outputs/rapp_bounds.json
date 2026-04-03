@@ -1,0 +1,180 @@
+{
+  "baseline_position_error": 0.3098931722342968,
+  "success_threshold": 0.2,
+  "bounds": {
+    "joint_friction": {
+      "min": null,
+      "max": null,
+      "hint": "Friction coefficient applied uniformly to all robot joints.",
+      "status": "no_feasible_range"
+    },
+    "joint_armature": {
+      "min": null,
+      "max": null,
+      "hint": "Value added to the diagonal of the joint inertia matrix.",
+      "status": "no_feasible_range"
+    },
+    "joint_stiffness_scale": {
+      "min": null,
+      "max": null,
+      "hint": "Multiplicative scale on the default actuator stiffness (Kp). 1.0 = default.",
+      "status": "no_feasible_range"
+    },
+    "joint_damping_scale": {
+      "min": null,
+      "max": null,
+      "hint": "Multiplicative scale on the default actuator damping (Kd). 1.0 = default.",
+      "status": "no_feasible_range"
+    }
+  },
+  "detailed_results": {
+    "joint_friction": [
+      {
+        "value": 0.0,
+        "mean_position_error": 0.3248815410832564,
+        "success": false
+      },
+      {
+        "value": 0.01,
+        "mean_position_error": 0.31528647005558014,
+        "success": false
+      },
+      {
+        "value": 0.1,
+        "mean_position_error": 0.2774707089861234,
+        "success": false
+      },
+      {
+        "value": 0.5,
+        "mean_position_error": 0.30709065958857534,
+        "success": false
+      },
+      {
+        "value": 1.0,
+        "mean_position_error": 0.30584102362394333,
+        "success": false
+      },
+      {
+        "value": 5.0,
+        "mean_position_error": 0.29181682601571085,
+        "success": false
+      },
+      {
+        "value": 10.0,
+        "mean_position_error": 0.301019754310449,
+        "success": false
+      }
+    ],
+    "joint_armature": [
+      {
+        "value": 0.0,
+        "mean_position_error": 0.33150546232859296,
+        "success": false
+      },
+      {
+        "value": 0.01,
+        "mean_position_error": 0.3346421022713184,
+        "success": false
+      },
+      {
+        "value": 0.1,
+        "mean_position_error": 0.2829524418214957,
+        "success": false
+      },
+      {
+        "value": 0.5,
+        "mean_position_error": 0.3033961534500122,
+        "success": false
+      },
+      {
+        "value": 1.0,
+        "mean_position_error": 0.3075850449502468,
+        "success": false
+      },
+      {
+        "value": 5.0,
+        "mean_position_error": 0.3301373761892319,
+        "success": false
+      },
+      {
+        "value": 10.0,
+        "mean_position_error": 0.37426321099201837,
+        "success": false
+      }
+    ],
+    "joint_stiffness_scale": [
+      {
+        "value": 0.0,
+        "mean_position_error": 0.45029445270697277,
+        "success": false
+      },
+      {
+        "value": 0.5,
+        "mean_position_error": 0.3430713494618734,
+        "success": false
+      },
+      {
+        "value": 0.9,
+        "mean_position_error": 0.3088278954724471,
+        "success": false
+      },
+      {
+        "value": 1.0,
+        "mean_position_error": 0.33872551381587984,
+        "success": false
+      },
+      {
+        "value": 1.1,
+        "mean_position_error": 0.32102875515818596,
+        "success": false
+      },
+      {
+        "value": 1.5,
+        "mean_position_error": 0.27843188136816027,
+        "success": false
+      },
+      {
+        "value": 2.0,
+        "mean_position_error": 0.3183658283452193,
+        "success": false
+      }
+    ],
+    "joint_damping_scale": [
+      {
+        "value": 0.0,
+        "mean_position_error": 0.3137421684960524,
+        "success": false
+      },
+      {
+        "value": 0.5,
+        "mean_position_error": 0.29757785121599833,
+        "success": false
+      },
+      {
+        "value": 0.9,
+        "mean_position_error": 0.33019964372118316,
+        "success": false
+      },
+      {
+        "value": 1.0,
+        "mean_position_error": 0.31157311419645944,
+        "success": false
+      },
+      {
+        "value": 1.1,
+        "mean_position_error": 0.3199250111480554,
+        "success": false
+      },
+      {
+        "value": 1.5,
+        "mean_position_error": 0.3055567909280459,
+        "success": false
+      },
+      {
+        "value": 2.0,
+        "mean_position_error": 0.3291734293103218,
+        "success": false
+      }
+    ]
+  }
+}

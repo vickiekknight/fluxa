@@ -1,0 +1,46 @@
+```python
+# Domain randomization for robot end-effector to target pose task.
+# Goal: Move end-effector to target 3D pose with smooth motion, avoiding jerks.
+# Success: End-effector within 5cm of target position with correct orientation.
+# Training in simulation, deployment in real world.
+
+# Reasoning for each parameter:
+
+# joint_friction_range:
+# Friction is a significant factor in real-world robot dynamics that is often
+# difficult to perfectly model in simulation. Randomizing friction can help the
+# policy become more robust to variations in surface contact and joint wear.
+# A range from 0.0 (no friction) to 1.0 (moderate friction) seems reasonable.
+# Higher values might make the task too difficult to learn within compute budget.
+joint_friction_range = [0.0, 1.0]
+
+# joint_armature_range:
+# Armature represents inertia that is not accounted for by the link masses.
+# This can arise from the mass of the actuator itself or other unmodeled parts.
+# Real-world armature can vary due to component variations or external loads.
+# Randomizing armature can help the policy generalize to different physical
+# configurations. A range from 0.0 to 0.2 is chosen to avoid excessively
+# large inertial changes that could destabilize learning.
+joint_armature_range = [0.0, 0.2]
+
+# joint_stiffness_scale_range:
+# Actuator stiffness (Kp) dictates how strongly the joint tries to return to
+# its commanded position. In the real world, this can vary due to manufacturing
+# tolerances, temperature, or feedback sensor noise.
+# Randomizing stiffness can make the policy less sensitive to precise spring
+# constants and more adaptable to slightly "softer" or "stiffer" joints.
+# A range of [0.8, 1.2] is chosen to represent moderate variations around the
+# default stiffness, which should be enough to promote robustness without
+# making the joints too loose or too rigid.
+joint_stiffness_scale_range = [0.8, 1.2]
+
+# joint_damping_scale_range:
+# Actuator damping (Kd) resists joint velocity. This is crucial for smooth motion
+# and avoiding oscillations. Real-world damping can vary due to factors like
+# viscosity, air resistance, and control loop tuning.
+# Randomizing damping can help the policy learn to control the robot's motion
+# even when the damping properties are not perfectly known.
+# A range of [0.8, 1.2] is chosen for similar reasons as stiffness, to allow
+# for reasonable variations that promote robustness in smooth motion control.
+joint_damping_scale_range = [0.8, 1.2]
+```

@@ -142,6 +142,28 @@ async def send_run_task_command(task_name, num_envs, env_spacing, duration,
         env_spacing=env_spacing,
         duration=duration
     )
+
+    # Read generated reward code if provided
+    reward_injection = ""
+    if reward_file and os.path.exists(reward_file):
+        with open(reward_file, 'r') as f:
+            reward_injection = f.read()
+        print(f"   Reward: {reward_file}")
+
+    dr_injection = ""
+    if dr_config_file and os.path.exists(dr_config_file):
+        with open(dr_config_file, 'r') as f:
+            dr_injection = f.read()
+        print(f"   DR Config: {dr_config_file}")
+
+    code = RUN_TASK_CODE_TEMPLATE.format(
+        task_name=task_name,
+        num_envs=num_envs,
+        env_spacing=env_spacing,
+        duration=duration,
+        reward_code=reward_injection,
+        dr_config_code=dr_injection,
+    )
     
     command = {
         "type": "execute_python",
@@ -190,6 +212,10 @@ if __name__ == "__main__":
                        help="Duration to run task in seconds (default: 60)")
     parser.add_argument("--host", type=str, default="localhost")
     parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--reward-file", type=str, default=None,
+                    help="Path to generated reward_fn.py (on host)")
+    parser.add_argument("--dr-config-file", type=str, default=None,
+                    help="Path to generated dr_config.py (on host)")
     
     args = parser.parse_args()
     
