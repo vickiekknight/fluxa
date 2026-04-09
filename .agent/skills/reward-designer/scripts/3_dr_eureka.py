@@ -28,6 +28,24 @@ from google import genai
 import wandb
 
 
+# --- Inject DR into template ---
+def inject_dr_into_template(dr_config, template_path, output_path):
+    """Inject LLM-generated DR ranges into the template file."""
+    with open(template_path, 'r') as f:
+        template = f.read()
+
+    # Build the code block to inject
+    lines = []
+    for param_name, rng in dr_config.items():
+        lines.append(f"{param_name}_range = [{rng[0]}, {rng[1]}]")
+    code_block = "\n".join(lines)
+
+    final_code = template.replace("# INSERT EUREKA DR HERE", code_block)
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, 'w') as f:
+        f.write(final_code)
+
 # ── Default placeholder bounds (used when RAPP hasn't produced real ones) ───
 
 PLACEHOLDER_BOUNDS = {
@@ -234,6 +252,13 @@ def main():
             "sample_id": i,
             "config": dr_config,
         })
+
+        # Template injection: save as importable .py file
+        template_path = designer_root / cfg['dr_eureka'].get('dr_template_file',
+                                                              'templates/dr_template.py')
+        dr_py_path = output_dir / f"dr_config_{i}.py"
+        inject_dr_into_template(dr_config, template_path, dr_py_path)
+        print(f"  Saved to: {dr_py_path}")
 
         # Log to W&B
         wandb.log({

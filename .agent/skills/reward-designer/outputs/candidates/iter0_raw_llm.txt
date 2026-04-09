@@ -1,68 +1,70 @@
 ```python
-def reward_func_dist_to_target(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
+def ee_position_reward(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
     """
-    Reward for distance to target position.
+    Reward for reaching the target end-effector position.
     """
     robot = env.scene[asset_cfg.name]
     ee_pos = robot.data.body_pos_w[:, asset_cfg.body_ids[0]]
     target_pos = env.command_manager.get_command(command_name)[:, :3]
     distance = torch.norm(target_pos - ee_pos, dim=-1)
-    # Reward is inversely proportional to distance, with a maximum reward for being within 5cm
-    max_reward = 1.0
-    min_dist_threshold = 0.05  # 5cm
-    reward = torch.exp(-distance / min_dist_threshold) * max_reward
+    # Reward is higher when distance is smaller. Scale is arbitrary but should be reasonable.
+    # For 5cm tolerance, a distance of 0.05 should yield a reward of 0.
+    reward = torch.exp(-5 * distance) * 10.0
     return reward
 
-def reward_func_orientation_mismatch(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
+def ee_orientation_reward(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
     """
-    Reward for orientation alignment.
+    Reward for achieving the target end-effector orientation.
     """
     robot = env.scene[asset_cfg.name]
-    ee_orn_w = robot.data.body_orn_w[:, asset_cfg.body_ids[0]]
-    target_orn = env.command_manager.get_command(command_name)[:, 3:] # Assuming orientation is next 4 values
+    ee_orn = robot.data.body_quat_w[:, asset_cfg.body_ids[0]]
+    target_orn = env.command_manager.get_command(command_name)[:, 3:]
 
-    # Convert to axis-angle for easier comparison
-    orientation_error = quat_diff_rad(ee_orn_w, target_orn)
+    # Calculate orientation difference (axis-angle representation)
+    delta_orn = quat_mul(quat_inv(ee_orn), target_orn)
+    # Angle is half the magnitude of the axis-angle vector.
+    angle = torch.norm(delta_orn[:, 1:], dim=-1) * 2.0
+
+    # Reward is higher when angle is smaller.
+    reward = torch.exp(-5 * angle) * 10.0
+    return reward
+
+def action_rate_penalty(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
+    """
+    Penalty for high joint velocities, encouraging smooth motion.
+    """
+    # Access the current and previous joint velocities
+    joint_vel = env.scene[asset_cfg.name].data.joint_vel
+    prev_joint_vel = env.scene[asset_cfg.name].data.prev_joint_vel
     
-    # Reward is higher when orientation error is smaller. Max reward for near perfect alignment.
-    max_reward = 1.0
-    max_orientation_error_rad = 0.1 # A small tolerance for orientation
-    reward = torch.exp(-orientation_error / max_orientation_error_rad) * max_reward
-    return reward
-
-def reward_func_action_rate_penalty(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg) -> torch.Tensor:
-    """
-    Penalty for high joint velocities.
-    """
-    robot = env.scene[asset_cfg.name]
-    joint_vel = robot.data.joint_vel
-    # Penalize large joint velocities to encourage smooth motion
-    max_vel = 5.0 # Example maximum allowed joint velocity (rad/s)
-    penalty = torch.sum(torch.square(joint_vel / max_vel), dim=-1)
-    return -penalty
-
-def reward_func_ee_vel_penalty(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg) -> torch.Tensor:
-    """
-    Penalty for high end-effector linear velocity.
-    """
-    robot = env.scene[asset_cfg.name]
-    ee_lin_vel_w = robot.data.body_lin_vel_w[:, asset_cfg.body_ids[0]]
-    max_lin_vel = 1.0 # Example maximum allowed end-effector linear velocity (m/s)
-    penalty = torch.sum(torch.square(ee_lin_vel_w / max_lin_vel), dim=-1)
-    return -penalty
-
-# Helper function for quaternion difference (assuming it's available in the environment context or imported)
-# If not, a direct implementation or a call to a utility like isaaclab.utils.math.quat_diff_rad would be needed.
-# For this example, we'll assume it's accessible or defined elsewhere.
-# Example placeholder:
-# def quat_diff_rad(q1, q2):
-#     # Replace with actual quaternion difference calculation if not available
-#     return 2 * torch.acos(torch.abs(torch.sum(q1 * q2, dim=-1)))
+    # Calculate the difference in joint velocities
+    vel_diff = joint_vel - prev_joint_vel
+    
+    # Square the difference and sum, then take the mean for each environment
+    # A common approach is to penalize the L2 norm of the velocity changes.
+    penalty = torch.mean(vel_diff**2, dim=-1)
+    
+    # The penalty should be a negative reward. Scale can be tuned.
+    return -penalty * 0.1
 
 reward_dict = {
-    "dist_to_target": RewTerm(func=reward_func_dist_to_target, weight=1.0, params={"asset_cfg": SceneEntityCfg("franka", body_names=["panda_hand"]), "command_name": "ee_pose"}),
-    "orientation_mismatch": RewTerm(func=reward_func_orientation_mismatch, weight=1.0, params={"asset_cfg": SceneEntityCfg("franka", body_names=["panda_hand"]), "command_name": "ee_pose"}),
-    "action_rate_penalty": RewTerm(func=reward_func_action_rate_penalty, weight=0.1, params={"asset_cfg": SceneEntityCfg("franka", body_names=["panda_hand"])}),
-    "ee_vel_penalty": RewTerm(func=reward_func_ee_vel_penalty, weight=0.05, params={"asset_cfg": SceneEntityCfg("franka", body_names=["panda_hand"])}),
+    "RewTerm": RewTerm.from_function(
+        func=ee_position_reward,
+        env=env,
+        asset_cfg=SceneEntityCfg(name="franka", body_names=["panda_hand"]),
+        command_name="ee_pose"
+    ),
+    "RewTerm": RewTerm.from_function(
+        func=ee_orientation_reward,
+        env=env,
+        asset_cfg=SceneEntityCfg(name="franka", body_names=["panda_hand"]),
+        command_name="ee_pose"
+    ),
+    "RewTerm": RewTerm.from_function(
+        func=action_rate_penalty,
+        env=env,
+        asset_cfg=SceneEntityCfg(name="franka", body_names=["panda_hand"]), # Assuming this asset_cfg is valid for the robot
+        command_name="ee_pose" # Command name is not directly used but required by signature
+    )
 }
 ```

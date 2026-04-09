@@ -8,18 +8,27 @@ Manages the single-GPU constraint:
   3. Restarts the streaming Isaac Sim instance
   4. Optionally launches the manipulation task for the user to watch
 
+Pipeline stages:
+  1. Eureka         — LLM generates reward function, trains policy, saves checkpoint
+  2. RAPP           — Sweeps physics parameters to find feasible DR bounds
+  3. DR Eureka      — LLM generates DR configurations from RAPP bounds
+  4. Train with DR  — Trains a policy per DR config, ranks by performance
+
 Usage:
     # Full pipeline
-    python3 scripts/run_pipeline.py --task franka-reach
-
-    # Fast mode (fewer iterations)
-    python3 scripts/run_pipeline.py --task franka-reach --fast
-
-    # Skip streaming restart (if you just want the reward file)
-    python3 scripts/run_pipeline.py --task franka-reach --no-restart-stream
+    python3 scripts/run_pipeline.py
 
     # Only run specific stages
-    python3 scripts/run_pipeline.py --task franka-reach --stages eureka
+    python3 scripts/run_pipeline.py --stages eureka rapp
+
+    # Skip streaming restart (if you just want the artifacts)
+    python3 scripts/run_pipeline.py --no-restart-stream
+
+    # Use placeholder bounds for Stage 3 (skip real RAPP)
+    python3 scripts/run_pipeline.py --stages dr_eureka train_dr --use-placeholders
+
+    # Scale Stage 4 training
+    python3 scripts/run_pipeline.py --stage4-num-envs 256 --stage4-train-iterations 2000
 """
 
 import argparse
@@ -35,21 +44,17 @@ STREAM_STARTUP_WAIT = 20  # seconds to wait for Isaac Sim to boot
 
 
 def run_command(cmd, description, check=True, timeout=None):
-    """Run a shell command with logging."""
-    print(f"\n{'─'*50}")
+    """Run a shell command with live output streamed to the terminal."""
+    print(f"\n{'─'*60}")
     print(f"{description}")
     print(f"   $ {' '.join(cmd)}")
-    print(f"{'─'*50}")
+    print(f"{'─'*60}")
     try:
-        result = subprocess.run(cmd, check=check, timeout=timeout,
-                                capture_output=True, text=True)
-        if result.stdout.strip():
-            print(result.stdout.strip())
+        # Stream output directly so user sees progress in real time
+        result = subprocess.run(cmd, check=check, timeout=timeout)
         return result
     except subprocess.CalledProcessError as e:
         print(f"Command failed (exit {e.returncode})")
-        if e.stderr:
-            print(e.stderr[-500:])  # last 500 chars of stderr
         if check:
             raise
         return e
@@ -57,6 +62,8 @@ def run_command(cmd, description, check=True, timeout=None):
         print(f"Command timed out after {timeout}s")
         return None
 
+
+# --- Streaming Isaac Sim management -----------------------------------------
 
 def is_stream_running():
     """Check if the streaming Isaac Sim instance is running inside Docker."""
@@ -74,21 +81,17 @@ def stop_streaming():
         return
 
     print("Stopping streaming Isaac Sim to free GPU for optimization...")
-
-    # Kill the Python process running the stream script
     subprocess.run(
         ["docker", "exec", DOCKER_CONTAINER, "pkill", "-f", "start_isaacsim_stream"],
         capture_output=True
     )
 
-    # Wait for it to fully shut down
     for i in range(15):
         if not is_stream_running():
             print("Streaming instance stopped.")
             return
         time.sleep(1)
 
-    # Force kill if still running
     subprocess.run(
         ["docker", "exec", DOCKER_CONTAINER, "pkill", "-9", "-f", "start_isaacsim_stream"],
         capture_output=True
@@ -120,117 +123,121 @@ def start_streaming():
         print("Streaming instance may not have started correctly.")
 
 
-def run_eureka(task, fast=False):
-    """Run Stage 1: Eureka reward generation."""
-    cmd = [sys.executable, "scripts/1_eureka.py", "--task", task]
-    # In fast mode, you could override iterations via env var or config
-    # For now, fast mode is handled by reach.yaml having fewer iterations
-    run_command(cmd, f"Stage 1: Eureka reward generation ({task})",
-                timeout=1800)  # 30 min timeout
+# --- Stage runners ---------------------------------------------------------
+
+def run_eureka():
+    """Stage 1: Eureka reward generation + long training run to produce checkpoint."""
+    cmd = [sys.executable, "scripts/1_eureka.py"]
+    run_command(cmd, "Stage 1: Eureka reward generation", timeout=3600)
 
 
-def run_rapp(task):
-    """Run Stage 2: RAPP physics prior."""
-    cmd = [sys.executable, "scripts/2_rapp.py", "--task", task]
-    run_command(cmd, f"Stage 2: RAPP physics prior ({task})",
-                timeout=1200)  # 20 min timeout
+def run_rapp():
+    """Stage 2: RAPP physics prior sweep."""
+    checkpoint = "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/eureka_policy.pt"
+    output = "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/rapp_bounds.json"
+
+    cmd = [
+        "docker", "exec", DOCKER_CONTAINER,
+        "/isaac-sim/python.sh",
+        "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/scripts/2_rapp.py",
+        "--checkpoint", checkpoint,
+        "--output", output,
+    ]
+    run_command(cmd, "Stage 2: RAPP physics prior", timeout=1800)
 
 
-def run_dr_eureka(task):
-    """Run Stage 3: DR config generation."""
-    cmd = [sys.executable, "scripts/3_dr_eureka.py", "--task", task]
-    run_command(cmd, f"Stage 3: DR Eureka config generation ({task})",
-                timeout=1800)
+def run_dr_eureka(use_placeholders=False):
+    """Stage 3: LLM generates DR configurations from RAPP bounds."""
+    cmd = [sys.executable, "scripts/3_dr_eureka.py"]
+    if use_placeholders:
+        cmd.append("--use-placeholders")
+    run_command(cmd, "Stage 3: DR Eureka config generation", timeout=600)
 
+
+def run_train_with_dr(num_envs, train_iterations):
+    """Stage 4: Train a policy per DR config and rank them."""
+    cmd = [
+        sys.executable, "scripts/4_train_with_dr.py",
+        "--num-envs", str(num_envs),
+        "--train-iterations", str(train_iterations),
+    ]
+    run_command(cmd, "Stage 4: Train with DR configs", timeout=7200)
+
+
+# --- Main ------------------------------------------------------------------
 
 def main():
     parser = argparse.ArgumentParser(description="Run the full DrEureka pipeline")
-    parser.add_argument("--task", default="franka-reach",
-                        help="Task name (default: franka-reach)")
     parser.add_argument("--stages", nargs="+",
-                        choices=["eureka", "rapp", "dr_eureka"],
-                        default=["eureka", "rapp", "dr_eureka"],
-                        help="Which stages to run (default: all)")
-    parser.add_argument("--fast", action="store_true",
-                        help="Use reduced iterations/envs for quick testing")
+                        choices=["eureka", "rapp", "dr_eureka", "train_dr"],
+                        default=["eureka", "rapp", "dr_eureka", "train_dr"],
+                        help="Which stages to run (default: all four)")
+    parser.add_argument("--use-placeholders", action="store_true",
+                        help="Use placeholder DR bounds in Stage 3 (skips real RAPP)")
     parser.add_argument("--no-restart-stream", action="store_true",
                         help="Don't restart streaming after optimization")
-    parser.add_argument("--run-task-after", action="store_true",
-                        help="Launch the manipulation task after pipeline completes")
-    parser.add_argument("--task-duration", type=int, default=120,
-                        help="Duration for post-pipeline task demo (default: 120s)")
-    parser.add_argument("--task-num-envs", type=int, default=16,
-                        help="Num envs for post-pipeline task demo (default: 16)")
+    parser.add_argument("--stage4-num-envs", type=int, default=16,
+                        help="Num parallel envs for Stage 4 (default: 16)")
+    parser.add_argument("--stage4-train-iterations", type=int, default=500,
+                        help="PPO iterations per DR config in Stage 4 (default: 500)")
     args = parser.parse_args()
 
     print(f"""
 {'='*60}
   Fluxa Reward Designer Pipeline
 {'='*60}
-  Task:    {args.task}
-  Stages:  {', '.join(args.stages)}
-  Fast:    {args.fast}
+  Stages:          {', '.join(args.stages)}
+  Stage 4 envs:    {args.stage4_num_envs}
+  Stage 4 iters:   {args.stage4_train_iterations}
+  Placeholders:    {args.use_placeholders}
 {'='*60}
 """)
 
-    #  Phase 1: Stop streaming to free GPU 
+    # Phase 1: Stop streaming to free GPU 
     stop_streaming()
     time.sleep(3)  # let GPU memory fully release
 
-    #  Phase 2: Run optimization stages (headless) 
+    # Phase 2: Run pipeline stages 
     try:
         if "eureka" in args.stages:
-            run_eureka(args.task, fast=args.fast)
+            run_eureka()
 
         if "rapp" in args.stages:
-            run_rapp(args.task)
+            run_rapp()
 
         if "dr_eureka" in args.stages:
-            run_dr_eureka(args.task)
+            run_dr_eureka(use_placeholders=args.use_placeholders)
+
+        if "train_dr" in args.stages:
+            run_train_with_dr(args.stage4_num_envs, args.stage4_train_iterations)
 
     except Exception as e:
-        print(f"\n❌ Pipeline failed: {e}")
-        # Still restart streaming even if pipeline fails
+        print(f"\n Pipeline failed: {e}")
         if not args.no_restart_stream:
             start_streaming()
         sys.exit(1)
 
-    #  Phase 3: Restart streaming 
+    # Phase 3: Restart streaming 
     if not args.no_restart_stream:
         start_streaming()
 
-    #  Phase 4 (optional): Launch the manipulation task for viewing 
-    if args.run_task_after and not args.no_restart_stream:
-        print(f"\n🤖 Launching {args.task} with generated reward...")
-        time.sleep(5)  # extra buffer for stream to be fully ready
+    # Summary 
+    outputs = Path("outputs")
+    files = {
+        "Reward function":   outputs / "reward_fn.py",
+        "Policy checkpoint": outputs / "eureka_policy.pt",
+        "RAPP bounds":       outputs / "rapp_bounds.json",
+        "DR configs":        outputs / "dr_configs.json",
+        "DR training":       outputs / "dr_training_results.json",
+    }
 
-        manipulation_script = Path(__file__).parent.parent.parent / \
-            "manipulation-tasks" / "scripts" / "reach_task.py"
-
-        if manipulation_script.exists():
-            cmd = [
-                sys.executable, str(manipulation_script),
-                "--task", args.task,
-                "--num-envs", str(args.task_num_envs),
-                "--duration", str(args.task_duration),
-            ]
-            run_command(cmd, f"Running {args.task} with optimized reward",
-                        check=False)
-        else:
-            print(f"manipulation-tasks script not found at {manipulation_script}")
-
-    #  Summary 
-    outputs_dir = Path("outputs")
-    print(f"""
-{'='*60}
-  Pipeline Complete
-{'='*60}
-  Outputs:
-    Reward:  {outputs_dir / 'reward_fn.py'} {'success' if (outputs_dir / 'reward_fn.py').exists() else 'failed'}
-    RAPP:    {outputs_dir / 'rapp_bounds.json'} {'success' if (outputs_dir / 'rapp_bounds.json').exists() else 'skipped'}
-    DR:      {outputs_dir / 'dr_config.py'} {'success' if (outputs_dir / 'dr_config.py').exists() else 'skipped'}
-{'='*60}
-""")
+    print(f"\n{'='*60}")
+    print("  Pipeline Complete")
+    print(f"{'='*60}")
+    for name, path in files.items():
+        marker = "✓" if path.exists() else "✗"
+        print(f"  {marker} {name}: {path}")
+    print(f"{'='*60}\n")
 
 
 if __name__ == "__main__":

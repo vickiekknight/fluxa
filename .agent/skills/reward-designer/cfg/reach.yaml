@@ -15,12 +15,11 @@ isaac_sim:
 
 # --- Stage 1 Configuration ---
 eureka:
-  iterations: 3
-  candidates: 4
+  iterations: 16
   model: "gemini-2.5-flash-lite"
-  eval_num_envs: 8
+  eval_num_envs: 256
   train_iterations: 300
-  final_train_iterations: 2000
+  final_train_iterations: 1000
 
 # --- Task Description ---
 task_description: >
@@ -40,7 +39,7 @@ rapp_bounds_file: "./outputs/rapp_bounds.json"
 
 # --- Stage 2: RAPP ---
 rapp:
-  num_envs: 8
+  num_envs: 256
   eval_steps: 300
   success_threshold: 0.10
   target_metric: "position_error"
@@ -50,10 +49,12 @@ rapp:
     mass_scale:           [0.8, 1.0, 1.2]
     action_delay_steps:   [0, 1, 2]
 
-# --- Stage 3: DR Eureka ---
+# ── Stage 3: DR Eureka ──
 dr_eureka:
-  num_samples: 3
+  num_samples: 16
   model: "gemini-2.5-flash-lite"
+  dr_template_file: "./templates/dr_template.py"
+  dr_output_file: "./outputs/dr_config.py"
 
 # --- Per-Robot Configs ---
 robots:
@@ -76,8 +77,3 @@ robots:
   ur10-reach-play:
     ee_body_name: "ee_link"
     joint_pattern: ".*"
-
-# ── Stage 3: DR Eureka ──
-dr_eureka:
-  dr_template_file: "./templates/dr_template.py"
-  dr_output_file: "./outputs/dr_config.py"

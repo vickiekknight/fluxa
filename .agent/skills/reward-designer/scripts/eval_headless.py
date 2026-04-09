@@ -45,6 +45,9 @@ import isaaclab_tasks.manager_based.manipulation.reach.mdp as mdp
 from isaaclab_tasks.manager_based.manipulation.reach.reach_env_cfg import ReachEnvCfg
 from isaaclab.envs import ManagerBasedRLEnv
 
+from isaaclab.managers import EventTermCfg as EventTerm
+from isaaclab.managers import SceneEntityCfg
+
 # Force-overwrite asset paths
 asset_utils.NUCLEUS_ASSET_ROOT_DIR = S3_ROOT_50
 asset_utils.NVIDIA_NUCLEUS_DIR     = S3_ROOT_50 + "/NVIDIA"
@@ -57,6 +60,64 @@ torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
 torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = False
+
+# --- Domain randomization reset functions ----------------------------------------
+def randomize_joint_friction_reset(env, env_ids, low: float, high: float, asset_cfg):
+    """Sample a fresh joint friction value per env on reset."""
+    asset = env.scene[asset_cfg.name]
+    num_joints = asset.num_joints
+    values = torch.empty(len(env_ids), num_joints, device=asset.device).uniform_(low, high)
+    asset.write_joint_friction_coefficient_to_sim(values, env_ids=env_ids)
+
+
+def randomize_joint_armature_reset(env, env_ids, low: float, high: float, asset_cfg):
+    """Sample a fresh joint armature value per env on reset."""
+    asset = env.scene[asset_cfg.name]
+    num_joints = asset.num_joints
+    values = torch.empty(len(env_ids), num_joints, device=asset.device).uniform_(low, high)
+    asset.write_joint_armature_to_sim(values, env_ids=env_ids)
+
+
+def randomize_joint_stiffness_scale_reset(env, env_ids, low: float, high: float, asset_cfg):
+    """Scale default joint stiffness by a random factor on reset."""
+    asset = env.scene[asset_cfg.name]
+    default = asset.data.default_joint_stiffness[env_ids].clone()
+    scale = torch.empty(len(env_ids), 1, device=asset.device).uniform_(low, high)
+    asset.write_joint_stiffness_to_sim(default * scale, env_ids=env_ids)
+
+
+def randomize_joint_damping_scale_reset(env, env_ids, low: float, high: float, asset_cfg):
+    """Scale default joint damping by a random factor on reset."""
+    asset = env.scene[asset_cfg.name]
+    default = asset.data.default_joint_damping[env_ids].clone()
+    scale = torch.empty(len(env_ids), 1, device=asset.device).uniform_(low, high)
+    asset.write_joint_damping_to_sim(default * scale, env_ids=env_ids)
+
+
+# Map parameter names to their reset functions
+DR_FUNC_MAP = {
+    "joint_friction": randomize_joint_friction_reset,
+    "joint_armature": randomize_joint_armature_reset,
+    "joint_stiffness_scale": randomize_joint_stiffness_scale_reset,
+    "joint_damping_scale": randomize_joint_damping_scale_reset,
+}
+
+
+def load_dr_config(dr_file_path):
+    """Load a DR config .py file and extract parameter ranges."""
+    dr_globals = {}
+    with open(dr_file_path, 'r') as f:
+        exec(f.read(), dr_globals)
+
+    ranges = {}
+    for name, val in dr_globals.items():
+        if name.endswith('_range') and isinstance(val, list) and len(val) == 2:
+            param_name = name[:-len('_range')]
+            ranges[param_name] = [float(val[0]), float(val[1])]
+    return ranges
+
+# ---------------------------------------------------------------------------
+
 
 def load_reward_code(reward_file_path):
     """Load and exec the generated reward file, returning reward_dict if it defines one."""
@@ -92,7 +153,7 @@ def run_evaluation(args):
         seed: int = 42
         device: str = "cuda:0"
         num_steps_per_env: int = 24       # steps collected per env per PPO update
-        max_iterations: int = 300         # overridden by --train-iterations CLI arg
+        max_iterations: int = 1000         # overridden by --train-iterations CLI arg
         empirical_normalization: bool = False
         save_interval: int = 9999         # effectively never save
         experiment_name: str = "eureka_eval"
@@ -101,8 +162,8 @@ def run_evaluation(args):
     
         policy: RslRlPpoActorCriticCfg = RslRlPpoActorCriticCfg(
             init_noise_std=1.0,
-            actor_hidden_dims=[256, 128, 64],
-            critic_hidden_dims=[256, 128, 64],
+            actor_hidden_dims=[64, 64],
+            critic_hidden_dims=[64, 64],
             activation="elu",
         )
     
@@ -110,10 +171,10 @@ def run_evaluation(args):
             value_loss_coef=1.0,
             use_clipped_value_loss=True,
             clip_param=0.2,
-            entropy_coef=0.005,
-            num_learning_epochs=5,
+            entropy_coef=0.001,
+            num_learning_epochs=8,
             num_mini_batches=4,
-            learning_rate=3e-4,
+            learning_rate=1.0e-3,
             schedule="adaptive",
             gamma=0.99,
             lam=0.95,
@@ -175,6 +236,28 @@ def run_evaluation(args):
     # Patch rewards if we loaded a reward_dict
     if reward_dict is not None:
         env_cfg.rewards = reward_dict
+
+    # --- Apply domain randomization if provided ---
+    if args.dr_config and os.path.exists(args.dr_config):
+        dr_ranges = load_dr_config(args.dr_config)
+        print(f"Loaded {len(dr_ranges)} DR ranges from {args.dr_config}")
+
+        for param_name, (low, high) in dr_ranges.items():
+            if param_name not in DR_FUNC_MAP:
+                print(f"  Warning: No DR function for '{param_name}', skipping")
+                continue
+
+            event_name = f"randomize_{param_name}"
+            setattr(env_cfg.events, event_name, EventTerm(
+                func=DR_FUNC_MAP[param_name],
+                mode="reset",
+                params={
+                    "low": low,
+                    "high": high,
+                    "asset_cfg": SceneEntityCfg("robot"),
+                },
+            ))
+            print(f"  Added DR event: {param_name} ∈ [{low}, {high}]")
 
     # --- Create environment ---
     env = ManagerBasedRLEnv(cfg=env_cfg)
@@ -244,30 +327,6 @@ def run_evaluation(args):
         runner.save(args.save_policy)
         print(f"Policy saved to {args.save_policy}")
  
-    # --- Evaluate trained policy ---
-    print("Evaluating trained policy...")
-    policy = runner.get_inference_policy(device="cuda:0")
-
-    eval_steps = 500
-    total_reward = 0.0
-    success_count = 0
-    total_envs_steps = 0
-
-    policy_obs = env_wrapped.get_observations()
-
-    with torch.no_grad():
-        for step in range(eval_steps):
-            actions = policy(policy_obs)
-            obs, rewards, dones, truncated, info = env.step(actions)
-            policy_obs = env_wrapped.get_observations()
-
-            total_reward += rewards.mean().item()
-            success_count += dones.sum().item()
-            total_envs_steps += env.num_envs
-    
-    mean_reward = total_reward / max(eval_steps, 1)
-    success_rate = success_count / max(total_envs_steps, 1)
- 
     # --- Clean up ---
     env.close()
  
@@ -277,19 +336,13 @@ def run_evaluation(args):
  
     # ── Write metrics ────────────────────────────────────────────────────────
     metrics = {
-        "mean_reward": mean_reward,
-        "success_rate": success_rate,
         "policy_checkpoint": args.save_policy,
-        "eval_steps": eval_steps,
         "train_iterations": args.train_iterations,
         "train_duration_seconds": train_duration,
         "status": "success",
     }
     write_metrics(args.output, metrics)
- 
-    print(f"mean_reward={mean_reward:.4f}  success_rate={success_rate:.4f}")
     print(f"Metrics written to {args.output}")
- 
  
 def write_metrics(output_path, metrics):
     """Write metrics dict to JSON file."""
@@ -310,6 +363,8 @@ if __name__ == "__main__":
                         help="Path to write metrics JSON")
     parser.add_argument("--save-policy", type=str, default=None,
                         help="Path to save trained policy checkpoint")
+    parser.add_argument("--dr-config", type=str, default=None,
+                        help="Path to DR config .py file (applies randomization at reset time)")
     args = parser.parse_args()
  
     run_evaluation(args)

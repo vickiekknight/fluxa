@@ -1,36 +1,39 @@
 ```python
-# Domain randomization for robot end-effector to target pose task.
-# Goal: Move end-effector to target 3D pose smoothly, avoiding jerks.
-# Success: End-effector within 5cm of target position with correct orientation.
-# Training in simulation, deployment in real world.
+# Domain randomization aims to bridge the sim-to-real gap by exposing the policy to a wider variety of conditions than it would encounter in a single simulation.
+# For this task, the robot needs to move its end-effector to a target 3D pose smoothly.
+# We need to identify parameters that are likely to differ between simulation and the real world,
+# and whose variation in simulation will help the policy generalize.
 
-# Reasoning for each parameter:
+# joint_friction_range = [0.0, 5.0]
+# Reasoning: Friction is a physical property that is notoriously difficult to perfectly model in simulation.
+# Real-world robots will have varying amounts of friction due to wear and tear, lubrication, and environmental factors.
+# Randomizing friction can help the policy become robust to different levels of resistance,
+# ensuring smoother movements even when friction is higher or lower than the default simulation value.
+# A range that covers a significant portion of the valid range, but not necessarily the extremes,
+# will likely be beneficial. Let's choose a range that includes moderate and slightly higher friction.
+joint_friction_range = [0.1, 2.0]
 
-# joint_friction_range:
-# Friction is a physical property that can vary significantly between simulations and the real world,
-# and even between different real-world environments. Higher friction can make the robot
-# sluggish and require more force to move. Randomizing friction can help the policy learn
-# to be robust to varying levels of resistance.
-joint_friction_range = [0.0, 3.0] # Choosing a range that covers a good portion of the spectrum, but not the extreme to avoid making learning too difficult.
+# joint_armature_range = [0.0, 1.0]
+# Reasoning: Armature is related to the inertia of the robot links. While inertia is a fundamental property,
+# its effective value can be influenced by things like attached payloads or even the way the robot is mounted.
+# Slight variations in armature can simulate these effects and make the policy more robust to changes in the robot's
+# overall inertia. However, extreme values might make the task unnecessarily difficult.
+# A moderate range should be sufficient.
+joint_armature_range = [0.05, 0.5]
 
-# joint_armature_range:
-# Armature represents the inertia of the robot's links and is often simplified in simulation.
-# Real-world robots have complex inertia properties due to their physical construction and
-# how they are mounted. Randomizing armature can help the policy generalize to different
-# dynamic characteristics of the robot.
-joint_armature_range = [0.0, 0.5] # A moderate range to introduce variations in inertia without drastically changing robot dynamics.
+# joint_stiffness_scale_range = [0.5, 1.5]
+# Reasoning: Actuator stiffness (Kp) determines how strongly the controller tries to maintain a joint's position.
+# Real-world actuators might have slightly different stiffness characteristics than simulated ones due to manufacturing tolerances,
+# temperature variations, or control loop tuning. Randomizing stiffness can help the policy adapt to these variations,
+# ensuring it can still achieve accurate positioning and smooth motion.
+# A range around the default value, representing moderate variations, is appropriate.
+joint_stiffness_scale_range = [0.7, 1.3]
 
-# joint_stiffness_scale_range:
-# Joint stiffness (Kp) determines how strongly the actuator resists displacement from its
-# desired position. In the real world, this can be affected by factors like motor wear,
-# temperature, and calibration. Randomizing stiffness can help the policy learn to
-# control the robot even when its joint stiffness is not perfectly tuned.
-joint_stiffness_scale_range = [0.7, 1.3] # A tight range around the default value, as extreme stiffness can lead to instability or slow response.
-
-# joint_damping_scale_range:
-# Joint damping (Kd) is crucial for absorbing energy and preventing oscillations. It's
-# another parameter that can vary in the real world due to factors like motor internal
-# damping and control loop implementation. Randomizing damping can improve the policy's
-# ability to achieve smooth motions and avoid jerky movements.
-joint_damping_scale_range = [0.7, 1.3] # Similar to stiffness, a moderate range around the default value is appropriate to encourage smooth control without causing extreme over/under-damping.
+# joint_damping_scale_range = [0.5, 1.5]
+# Reasoning: Similar to stiffness, actuator damping (Kd) affects the robot's response to disturbances and its ability
+# to dissipate energy, contributing to smooth motion. Real-world damping can also vary.
+# Randomizing damping helps the policy learn to control the robot's movement effectively across a spectrum of damping levels,
+# which is crucial for avoiding jerky movements and achieving the desired smoothness.
+# A range symmetric around 1.0, similar to stiffness, is suitable.
+joint_damping_scale_range = [0.7, 1.3]
 ```

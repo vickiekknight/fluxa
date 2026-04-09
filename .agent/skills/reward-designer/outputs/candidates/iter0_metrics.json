@@ -1,9 +1,9 @@
 {
-  "mean_reward": -0.007794225007295609,
+  "mean_reward": -0.007568994498811662,
   "success_rate": 0.0,
   "policy_checkpoint": null,
   "eval_steps": 500,
   "train_iterations": 300,
-  "train_duration_seconds": 75.61188340187073,
+  "train_duration_seconds": 76.0328278541565,
   "status": "success"
 }

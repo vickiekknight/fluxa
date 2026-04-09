@@ -1,9 +1,9 @@
 {
-  "mean_reward": -0.0056205614618957045,
+  "mean_reward": -0.00652468173392117,
   "success_rate": 0.0,
   "policy_checkpoint": "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/eureka_policy.pt",
   "eval_steps": 500,
   "train_iterations": 2000,
-  "train_duration_seconds": 512.626137971878,
+  "train_duration_seconds": 512.1013190746307,
   "status": "success"
 }

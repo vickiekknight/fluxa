@@ -1,6 +1,6 @@
 {
-  "baseline_position_error": 0.3098931722342968,
-  "success_threshold": 0.2,
+  "baseline_position_error": 0.28440417418877284,
+  "success_threshold": 0.1,
   "bounds": {
     "joint_friction": {
       "min": null,
@@ -31,148 +31,148 @@
     "joint_friction": [
       {
         "value": 0.0,
-        "mean_position_error": 0.3248815410832564,
+        "mean_position_error": 0.28291414563854533,
         "success": false
       },
       {
         "value": 0.01,
-        "mean_position_error": 0.31528647005558014,
+        "mean_position_error": 0.23332419534524282,
         "success": false
       },
       {
         "value": 0.1,
-        "mean_position_error": 0.2774707089861234,
+        "mean_position_error": 0.2591518810391426,
         "success": false
       },
       {
         "value": 0.5,
-        "mean_position_error": 0.30709065958857534,
+        "mean_position_error": 0.27450346286098165,
         "success": false
       },
       {
         "value": 1.0,
-        "mean_position_error": 0.30584102362394333,
+        "mean_position_error": 0.25516728366414704,
         "success": false
       },
       {
         "value": 5.0,
-        "mean_position_error": 0.29181682601571085,
+        "mean_position_error": 0.2954769838352998,
         "success": false
       },
       {
         "value": 10.0,
-        "mean_position_error": 0.301019754310449,
+        "mean_position_error": 0.309562024474144,
         "success": false
       }
     ],
     "joint_armature": [
       {
         "value": 0.0,
-        "mean_position_error": 0.33150546232859296,
+        "mean_position_error": 0.26909040302038195,
         "success": false
       },
       {
         "value": 0.01,
-        "mean_position_error": 0.3346421022713184,
+        "mean_position_error": 0.2764584644635518,
         "success": false
       },
       {
         "value": 0.1,
-        "mean_position_error": 0.2829524418214957,
+        "mean_position_error": 0.2733744791150093,
         "success": false
       },
       {
         "value": 0.5,
-        "mean_position_error": 0.3033961534500122,
+        "mean_position_error": 0.27889593472083407,
         "success": false
       },
       {
         "value": 1.0,
-        "mean_position_error": 0.3075850449502468,
+        "mean_position_error": 0.25866782481471695,
         "success": false
       },
       {
         "value": 5.0,
-        "mean_position_error": 0.3301373761892319,
+        "mean_position_error": 0.28979983215530714,
         "success": false
       },
       {
         "value": 10.0,
-        "mean_position_error": 0.37426321099201837,
+        "mean_position_error": 0.4160781866312027,
         "success": false
       }
     ],
     "joint_stiffness_scale": [
       {
         "value": 0.0,
-        "mean_position_error": 0.45029445270697277,
+        "mean_position_error": 0.4136761908729871,
         "success": false
       },
       {
         "value": 0.5,
-        "mean_position_error": 0.3430713494618734,
+        "mean_position_error": 0.31393419474363327,
         "success": false
       },
       {
         "value": 0.9,
-        "mean_position_error": 0.3088278954724471,
+        "mean_position_error": 0.26490727682908377,
         "success": false
       },
       {
         "value": 1.0,
-        "mean_position_error": 0.33872551381587984,
+        "mean_position_error": 0.2772022531926632,
         "success": false
       },
       {
         "value": 1.1,
-        "mean_position_error": 0.32102875515818596,
+        "mean_position_error": 0.3007443543275197,
         "success": false
       },
       {
         "value": 1.5,
-        "mean_position_error": 0.27843188136816027,
+        "mean_position_error": 0.2533231305082639,
         "success": false
       },
       {
         "value": 2.0,
-        "mean_position_error": 0.3183658283452193,
+        "mean_position_error": 0.2662523712217808,
         "success": false
       }
     ],
     "joint_damping_scale": [
       {
         "value": 0.0,
-        "mean_position_error": 0.3137421684960524,
+        "mean_position_error": 0.2988854322830836,
         "success": false
       },
       {
         "value": 0.5,
-        "mean_position_error": 0.29757785121599833,
+        "mean_position_error": 0.25158942957719166,
         "success": false
       },
       {
         "value": 0.9,
-        "mean_position_error": 0.33019964372118316,
+        "mean_position_error": 0.27991550783316294,
         "success": false
       },
       {
         "value": 1.0,
-        "mean_position_error": 0.31157311419645944,
+        "mean_position_error": 0.2444544447461764,
         "success": false
       },
       {
         "value": 1.1,
-        "mean_position_error": 0.3199250111480554,
+        "mean_position_error": 0.2729384604593118,
         "success": false
       },
       {
         "value": 1.5,
-        "mean_position_error": 0.3055567909280459,
+        "mean_position_error": 0.2487165527542432,
         "success": false
       },
       {
         "value": 2.0,
-        "mean_position_error": 0.3291734293103218,
+        "mean_position_error": 0.28971705719828605,
         "success": false
       }
     ]

@@ -1,0 +1,9 @@
+{
+  "mean_reward": -0.006449989943765104,
+  "success_rate": 0.0,
+  "policy_checkpoint": "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/dr_candidates/policy_1.pt",
+  "eval_steps": 500,
+  "train_iterations": 100,
+  "train_duration_seconds": 27.993646383285522,
+  "status": "success"
+}

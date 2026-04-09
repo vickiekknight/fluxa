@@ -1,0 +1,6 @@
+{
+  "policy_checkpoint": "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/dr_candidates/policy_1_seed_2.pt",
+  "train_iterations": 1000,
+  "train_duration_seconds": 498.08489656448364,
+  "status": "success"
+}

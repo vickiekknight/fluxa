@@ -1,0 +1,2614 @@
+Warp CUDA error: Failed to get driver entry point 'cuDeviceGetUuid' (CUDA error 1)
+Warp CUDA error: Function cuDeviceGetUuid_f: a suitable driver entry point was not found
+Warp CUDA error 36: API call is not supported in the installed CUDA driver (in function cuda_init, /builds/omniverse/warp/warp/native/warp.cu:277)
+[INFO][AppLauncher]: Using device: cuda:0
+[INFO][AppLauncher]: Loading experience file: /isaac-sim/IsaacLab/apps/isaaclab.python.headless.kit
+No reward_dict found in /isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/./outputs/reward_fn.py, using defaults
+Loaded 4 DR ranges from /isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/dr_candidates/dr_config_1.py
+  Added DR event: joint_friction ∈ [0.1, 3.0]
+  Added DR event: joint_armature ∈ [0.0, 0.5]
+  Added DR event: joint_stiffness_scale ∈ [0.7, 1.3]
+  Added DR event: joint_damping_scale ∈ [0.7, 1.3]
+
+[36m======================================================================================[0m
+[36m[1m[INFO][IsaacLab]: Logging to file: /tmp/isaaclab/logs/isaaclab_2026-04-08_19-33-19.log[0m
+[36m======================================================================================[0m
+
+[33m19:33:19 [simulation_context.py] WARNING: The `enable_external_forces_every_iteration` parameter in the PhysxCfg is set to False. If you are experiencing noisy velocities, consider enabling this flag. You may need to slightly increase the number of velocity iterations (setting it to 1 or 2 rather than 0), together with this flag, to improve the accuracy of velocity updates.[0m
+/isaac-sim/kit/python/lib/python3.11/site-packages/rsl_rl/utils/utils.py:245: UserWarning: The observation configuration dictionary 'obs_groups' must contain the 'policy' key. As an observation group with the name 'policy' was found, this is assumed to be the observation set. Consider adding the 'policy' key to the 'obs_groups' dictionary for clarity. This behavior will be removed in a future version.
+  warnings.warn(
+/isaac-sim/kit/python/lib/python3.11/site-packages/rsl_rl/utils/utils.py:291: UserWarning: The observation configuration dictionary 'obs_groups' must contain the 'critic' key. As the configuration for 'critic' is missing, the observations from the 'policy' set are used. Consider adding the 'critic' key to the 'obs_groups' dictionary for clarity. This behavior will be removed in a future version.
+  warnings.warn(
+[INFO]: Base environment:
+	Environment device    : cuda:0
+	Environment seed      : None
+	Physics step-size     : 0.016666666666666666
+	Rendering step-size   : 0.03333333333333333
+	Environment step-size : 0.03333333333333333
+[INFO]: Time taken for scene creation : 0.444394 seconds
+[INFO]: Scene manager:  <class InteractiveScene>
+	Number of environments: 16
+	Environment spacing   : 2.0
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : []
+	Replicate physics     : True
+[INFO]: Starting the simulation. This may take a few seconds. Please wait...
+[INFO]: Time taken for simulation start : 0.714130 seconds
+[INFO] Command Manager:  <CommandManager> contains 1 active terms.
++--------------------------------------+
+|         Active Command Terms         |
++-------+---------+--------------------+
+| Index | Name    |        Type        |
++-------+---------+--------------------+
+|   0   | ee_pose | UniformPoseCommand |
++-------+---------+--------------------+
+
+[INFO] Event Manager:  <EventManager> contains 1 active terms.
++-----------------------------------------+
+|   Active Event Terms in Mode: 'reset'   |
++-------+---------------------------------+
+| Index | Name                            |
++-------+---------------------------------+
+|   0   | reset_robot_joints              |
+|   1   | randomize_joint_friction        |
+|   2   | randomize_joint_armature        |
+|   3   | randomize_joint_stiffness_scale |
+|   4   | randomize_joint_damping_scale   |
++-------+---------------------------------+
+
+[INFO] Recorder Manager:  <RecorderManager> contains 0 active terms.
++---------------------+
+| Active Recorder Terms |
++-----------+---------+
+|   Index   | Name    |
++-----------+---------+
++-----------+---------+
+
+[INFO] Action Manager:  <ActionManager> contains 1 active terms.
++-----------------------------------+
+|   Active Action Terms (shape: 7)  |
++--------+-------------+------------+
+| Index  | Name        |  Dimension |
++--------+-------------+------------+
+|   0    | arm_action  |          7 |
++--------+-------------+------------+
+
+[INFO] Observation Manager: <ObservationManager> contains 1 groups.
++-------------------------------------------------------+
+| Active Observation Terms in Group: 'policy' (shape: (32,)) |
++-------------+---------------------------+-------------+
+|    Index    | Name                      |    Shape    |
++-------------+---------------------------+-------------+
+|      0      | joint_pos                 |     (9,)    |
+|      1      | joint_vel                 |     (9,)    |
+|      2      | pose_command              |     (7,)    |
+|      3      | actions                   |     (7,)    |
++-------------+---------------------------+-------------+
+
+[INFO] Termination Manager:  <TerminationManager> contains 1 active terms.
++-----------------------------+
+|   Active Termination Terms  |
++-------+----------+----------+
+| Index | Name     | Time Out |
++-------+----------+----------+
+|   0   | time_out |   True   |
++-------+----------+----------+
+
+[INFO] Reward Manager:  <RewardManager> contains 5 active terms.
++---------------------------------------------------------------+
+|                      Active Reward Terms                      |
++-------+---------------------------------------------+---------+
+| Index | Name                                        |  Weight |
++-------+---------------------------------------------+---------+
+|   0   | end_effector_position_tracking              |    -0.2 |
+|   1   | end_effector_position_tracking_fine_grained |     0.1 |
+|   2   | end_effector_orientation_tracking           |    -0.1 |
+|   3   | action_rate                                 | -0.0001 |
+|   4   | joint_vel                                   | -0.0001 |
++-------+---------------------------------------------+---------+
+
+[INFO] Curriculum Manager:  <CurriculumManager> contains 2 active terms.
++--------------------------+
+| Active Curriculum Terms  |
++---------+----------------+
+|  Index  | Name           |
++---------+----------------+
+|    0    | action_rate    |
+|    1    | joint_vel      |
++---------+----------------+
+
+[INFO]: Completed setting up the environment...
+Starting PPO training: 100 iterations, 16 envs, 24 steps/env/update
+--------------------------------------------------------------------------------
+Resolved observation sets: 
+	 policy :  ['policy']
+	 critic :  ['policy']
+--------------------------------------------------------------------------------
+Actor MLP: MLP(
+  (0): Linear(in_features=32, out_features=256, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=256, out_features=128, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=128, out_features=64, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=64, out_features=7, bias=True)
+)
+Critic MLP: MLP(
+  (0): Linear(in_features=32, out_features=256, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=256, out_features=128, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=128, out_features=64, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=64, out_features=1, bias=True)
+)
+################################################################################
+                       [1m Learning iteration 0/100 [0m                       
+
+                       Computation: 280 steps/s (collection: 1.126s, learning 0.245s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0054
+               Mean surrogate loss: -0.0416
+                 Mean entropy loss: 9.9283
+                       Mean reward: -0.19
+               Mean episode length: 20.00
+Episode_Reward/end_effector_position_tracking: -0.0003
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0003
+Episode_Reward/end_effector_orientation_tracking: -0.0033
+        Episode_Reward/action_rate: -0.0000
+          Episode_Reward/joint_vel: -0.0000
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.0361
+ Metrics/ee_pose/orientation_error: 0.5512
+      Episode_Termination/time_out: 0.0130
+--------------------------------------------------------------------------------
+                   Total timesteps: 384
+                    Iteration time: 1.37s
+                      Time elapsed: 00:00:01
+                               ETA: 00:02:17
+
+Could not find git repository in /isaac-sim/kit/python/lib/python3.11/site-packages/rsl_rl/__init__.py. Skipping.
+################################################################################
+                       [1m Learning iteration 1/100 [0m                       
+
+                       Computation: 851 steps/s (collection: 0.381s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0034
+               Mean surrogate loss: -0.0225
+                 Mean entropy loss: 9.9320
+                       Mean reward: -0.25
+               Mean episode length: 26.00
+Episode_Reward/end_effector_position_tracking: -0.0037
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0005
+Episode_Reward/end_effector_orientation_tracking: -0.0195
+        Episode_Reward/action_rate: -0.0001
+          Episode_Reward/joint_vel: -0.0002
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2429
+ Metrics/ee_pose/orientation_error: 2.3697
+      Episode_Termination/time_out: 0.1068
+--------------------------------------------------------------------------------
+                   Total timesteps: 768
+                    Iteration time: 0.45s
+                      Time elapsed: 00:00:01
+                               ETA: 00:01:30
+
+################################################################################
+                       [1m Learning iteration 2/100 [0m                       
+
+                       Computation: 1523 steps/s (collection: 0.181s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0025
+               Mean surrogate loss: -0.0396
+                 Mean entropy loss: 9.9405
+                       Mean reward: -0.25
+               Mean episode length: 26.00
+Episode_Reward/end_effector_position_tracking: -0.0046
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0001
+Episode_Reward/end_effector_orientation_tracking: -0.0210
+        Episode_Reward/action_rate: -0.0001
+          Episode_Reward/joint_vel: -0.0002
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2715
+ Metrics/ee_pose/orientation_error: 2.2560
+      Episode_Termination/time_out: 0.1250
+--------------------------------------------------------------------------------
+                   Total timesteps: 1152
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:02
+                               ETA: 00:01:07
+
+################################################################################
+                       [1m Learning iteration 3/100 [0m                       
+
+                       Computation: 1477 steps/s (collection: 0.190s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0021
+               Mean surrogate loss: -0.0277
+                 Mean entropy loss: 9.9408
+                       Mean reward: -0.47
+               Mean episode length: 65.00
+Episode_Reward/end_effector_position_tracking: -0.0101
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0004
+Episode_Reward/end_effector_orientation_tracking: -0.0260
+        Episode_Reward/action_rate: -0.0002
+          Episode_Reward/joint_vel: -0.0003
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2781
+ Metrics/ee_pose/orientation_error: 1.7837
+      Episode_Termination/time_out: 0.1719
+--------------------------------------------------------------------------------
+                   Total timesteps: 1536
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:02
+                               ETA: 00:00:56
+
+################################################################################
+                       [1m Learning iteration 4/100 [0m                       
+
+                       Computation: 1460 steps/s (collection: 0.193s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0015
+               Mean surrogate loss: -0.0294
+                 Mean entropy loss: 9.9451
+                       Mean reward: -0.60
+               Mean episode length: 82.75
+Episode_Reward/end_effector_position_tracking: -0.0123
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0025
+Episode_Reward/end_effector_orientation_tracking: -0.0594
+        Episode_Reward/action_rate: -0.0004
+          Episode_Reward/joint_vel: -0.0005
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1755
+ Metrics/ee_pose/orientation_error: 2.3540
+      Episode_Termination/time_out: 0.3802
+--------------------------------------------------------------------------------
+                   Total timesteps: 1920
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:02
+                               ETA: 00:00:49
+
+################################################################################
+                       [1m Learning iteration 5/100 [0m                       
+
+                       Computation: 1523 steps/s (collection: 0.182s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0027
+               Mean surrogate loss: -0.0221
+                 Mean entropy loss: 9.9504
+                       Mean reward: -0.60
+               Mean episode length: 82.75
+Episode_Reward/end_effector_position_tracking: -0.0183
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0003
+Episode_Reward/end_effector_orientation_tracking: -0.0227
+        Episode_Reward/action_rate: -0.0004
+          Episode_Reward/joint_vel: -0.0006
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2660
+ Metrics/ee_pose/orientation_error: 1.0009
+      Episode_Termination/time_out: 0.5000
+--------------------------------------------------------------------------------
+                   Total timesteps: 2304
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:02
+                               ETA: 00:00:45
+
+################################################################################
+                       [1m Learning iteration 6/100 [0m                       
+
+                       Computation: 1465 steps/s (collection: 0.185s, learning 0.077s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0025
+               Mean surrogate loss: -0.0344
+                 Mean entropy loss: 9.9475
+                       Mean reward: -0.66
+               Mean episode length: 90.22
+Episode_Reward/end_effector_position_tracking: -0.0194
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0018
+Episode_Reward/end_effector_orientation_tracking: -0.0649
+        Episode_Reward/action_rate: -0.0006
+          Episode_Reward/joint_vel: -0.0006
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2398
+ Metrics/ee_pose/orientation_error: 2.3878
+      Episode_Termination/time_out: 0.5495
+--------------------------------------------------------------------------------
+                   Total timesteps: 2688
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:03
+                               ETA: 00:00:41
+
+################################################################################
+                       [1m Learning iteration 7/100 [0m                       
+
+                       Computation: 1551 steps/s (collection: 0.177s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0016
+               Mean surrogate loss: -0.0228
+                 Mean entropy loss: 9.9470
+                       Mean reward: -0.66
+               Mean episode length: 90.22
+Episode_Reward/end_effector_position_tracking: -0.0196
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0022
+Episode_Reward/end_effector_orientation_tracking: -0.0761
+        Episode_Reward/action_rate: -0.0006
+          Episode_Reward/joint_vel: -0.0006
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2329
+ Metrics/ee_pose/orientation_error: 2.7527
+      Episode_Termination/time_out: 0.5625
+--------------------------------------------------------------------------------
+                   Total timesteps: 3072
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:03
+                               ETA: 00:00:39
+
+################################################################################
+                       [1m Learning iteration 8/100 [0m                       
+
+                       Computation: 1510 steps/s (collection: 0.184s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0024
+               Mean surrogate loss: -0.0292
+                 Mean entropy loss: 9.9438
+                       Mean reward: -0.78
+               Mean episode length: 110.82
+Episode_Reward/end_effector_position_tracking: -0.0245
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0028
+Episode_Reward/end_effector_orientation_tracking: -0.0875
+        Episode_Reward/action_rate: -0.0008
+          Episode_Reward/joint_vel: -0.0009
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2260
+ Metrics/ee_pose/orientation_error: 2.3100
+      Episode_Termination/time_out: 0.6328
+--------------------------------------------------------------------------------
+                   Total timesteps: 3456
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:03
+                               ETA: 00:00:36
+
+################################################################################
+                       [1m Learning iteration 9/100 [0m                       
+
+                       Computation: 1547 steps/s (collection: 0.178s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0021
+               Mean surrogate loss: -0.0334
+                 Mean entropy loss: 9.9400
+                       Mean reward: -0.78
+               Mean episode length: 110.82
+Episode_Reward/end_effector_position_tracking: -0.0340
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0010
+Episode_Reward/end_effector_orientation_tracking: -0.0629
+        Episode_Reward/action_rate: -0.0009
+          Episode_Reward/joint_vel: -0.0012
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4833
+ Metrics/ee_pose/orientation_error: 1.5154
+      Episode_Termination/time_out: 0.6875
+--------------------------------------------------------------------------------
+                   Total timesteps: 3840
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:03
+                               ETA: 00:00:35
+
+################################################################################
+                      [1m Learning iteration 10/100 [0m                       
+
+                       Computation: 806 steps/s (collection: 0.402s, learning 0.074s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0019
+               Mean surrogate loss: -0.0291
+                 Mean entropy loss: 9.9390
+                       Mean reward: -0.86
+               Mean episode length: 122.08
+Episode_Reward/end_effector_position_tracking: -0.0344
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0031
+Episode_Reward/end_effector_orientation_tracking: -0.1001
+        Episode_Reward/action_rate: -0.0010
+          Episode_Reward/joint_vel: -0.0011
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4152
+ Metrics/ee_pose/orientation_error: 1.0836
+      Episode_Termination/time_out: 0.7370
+--------------------------------------------------------------------------------
+                   Total timesteps: 4224
+                    Iteration time: 0.48s
+                      Time elapsed: 00:00:04
+                               ETA: 00:00:35
+
+################################################################################
+                      [1m Learning iteration 11/100 [0m                       
+
+                       Computation: 1534 steps/s (collection: 0.184s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0015
+               Mean surrogate loss: -0.0278
+                 Mean entropy loss: 9.9360
+                       Mean reward: -0.86
+               Mean episode length: 122.08
+Episode_Reward/end_effector_position_tracking: -0.0345
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0036
+Episode_Reward/end_effector_orientation_tracking: -0.1099
+        Episode_Reward/action_rate: -0.0010
+          Episode_Reward/joint_vel: -0.0011
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3973
+ Metrics/ee_pose/orientation_error: 0.9699
+      Episode_Termination/time_out: 0.7500
+--------------------------------------------------------------------------------
+                   Total timesteps: 4608
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:04
+                               ETA: 00:00:34
+
+################################################################################
+                      [1m Learning iteration 12/100 [0m                       
+
+                       Computation: 1523 steps/s (collection: 0.184s, learning 0.068s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0012
+               Mean surrogate loss: -0.0243
+                 Mean entropy loss: 9.9320
+                       Mean reward: -1.00
+               Mean episode length: 147.71
+Episode_Reward/end_effector_position_tracking: -0.0445
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0020
+Episode_Reward/end_effector_orientation_tracking: -0.0948
+        Episode_Reward/action_rate: -0.0012
+          Episode_Reward/joint_vel: -0.0015
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2193
+ Metrics/ee_pose/orientation_error: 1.1938
+      Episode_Termination/time_out: 0.8099
+--------------------------------------------------------------------------------
+                   Total timesteps: 4992
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:04
+                               ETA: 00:00:32
+
+################################################################################
+                      [1m Learning iteration 13/100 [0m                       
+
+                       Computation: 1542 steps/s (collection: 0.183s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0020
+               Mean surrogate loss: -0.0253
+                 Mean entropy loss: 9.9291
+                       Mean reward: -1.09
+               Mean episode length: 159.33
+Episode_Reward/end_effector_position_tracking: -0.0512
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0024
+Episode_Reward/end_effector_orientation_tracking: -0.1387
+        Episode_Reward/action_rate: -0.0012
+          Episode_Reward/joint_vel: -0.0014
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2223
+ Metrics/ee_pose/orientation_error: 1.1892
+      Episode_Termination/time_out: 0.9141
+--------------------------------------------------------------------------------
+                   Total timesteps: 5376
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:05
+                               ETA: 00:00:31
+
+################################################################################
+                      [1m Learning iteration 14/100 [0m                       
+
+                       Computation: 1543 steps/s (collection: 0.181s, learning 0.067s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0018
+               Mean surrogate loss: -0.0259
+                 Mean entropy loss: 9.9302
+                       Mean reward: -1.19
+               Mean episode length: 170.62
+Episode_Reward/end_effector_position_tracking: -0.0410
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0073
+Episode_Reward/end_effector_orientation_tracking: -0.1894
+        Episode_Reward/action_rate: -0.0014
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2917
+ Metrics/ee_pose/orientation_error: 2.5934
+      Episode_Termination/time_out: 0.9922
+--------------------------------------------------------------------------------
+                   Total timesteps: 5760
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:05
+                               ETA: 00:00:30
+
+################################################################################
+                      [1m Learning iteration 15/100 [0m                       
+
+                       Computation: 1490 steps/s (collection: 0.185s, learning 0.073s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0014
+               Mean surrogate loss: -0.0268
+                 Mean entropy loss: 9.9299
+                       Mean reward: -1.30
+               Mean episode length: 181.76
+Episode_Reward/end_effector_position_tracking: -0.0428
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0068
+Episode_Reward/end_effector_orientation_tracking: -0.1956
+        Episode_Reward/action_rate: -0.0014
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2993
+ Metrics/ee_pose/orientation_error: 2.7525
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 6144
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:05
+                               ETA: 00:00:29
+
+################################################################################
+                      [1m Learning iteration 16/100 [0m                       
+
+                       Computation: 1539 steps/s (collection: 0.183s, learning 0.067s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0009
+               Mean surrogate loss: -0.0320
+                 Mean entropy loss: 9.9266
+                       Mean reward: -1.35
+               Mean episode length: 191.67
+Episode_Reward/end_effector_position_tracking: -0.0504
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0055
+Episode_Reward/end_effector_orientation_tracking: -0.1538
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0023
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2949
+ Metrics/ee_pose/orientation_error: 1.2225
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 6528
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:05
+                               ETA: 00:00:28
+
+################################################################################
+                      [1m Learning iteration 17/100 [0m                       
+
+                       Computation: 1532 steps/s (collection: 0.179s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0021
+               Mean surrogate loss: -0.0231
+                 Mean entropy loss: 9.9263
+                       Mean reward: -1.35
+               Mean episode length: 191.67
+Episode_Reward/end_effector_position_tracking: -0.0502
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0065
+Episode_Reward/end_effector_orientation_tracking: -0.1368
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0026
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2938
+ Metrics/ee_pose/orientation_error: 0.5655
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 6912
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:06
+                               ETA: 00:00:28
+
+################################################################################
+                      [1m Learning iteration 18/100 [0m                       
+
+                       Computation: 1486 steps/s (collection: 0.188s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0025
+               Mean surrogate loss: -0.0305
+                 Mean entropy loss: 9.9239
+                       Mean reward: -1.60
+               Mean episode length: 215.71
+Episode_Reward/end_effector_position_tracking: -0.0572
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0039
+Episode_Reward/end_effector_orientation_tracking: -0.1607
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0022
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3273
+ Metrics/ee_pose/orientation_error: 1.3143
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 7296
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:06
+                               ETA: 00:00:27
+
+################################################################################
+                      [1m Learning iteration 19/100 [0m                       
+
+                       Computation: 1497 steps/s (collection: 0.190s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0014
+               Mean surrogate loss: -0.0241
+                 Mean entropy loss: 9.9199
+                       Mean reward: -1.74
+               Mean episode length: 233.75
+Episode_Reward/end_effector_position_tracking: -0.0569
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0023
+Episode_Reward/end_effector_orientation_tracking: -0.1823
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3250
+ Metrics/ee_pose/orientation_error: 1.7686
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 7680
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:06
+                               ETA: 00:00:26
+
+################################################################################
+                      [1m Learning iteration 20/100 [0m                       
+
+                       Computation: 1571 steps/s (collection: 0.178s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0031
+               Mean surrogate loss: -0.0267
+                 Mean entropy loss: 9.9249
+                       Mean reward: -1.74
+               Mean episode length: 233.75
+Episode_Reward/end_effector_position_tracking: -0.0532
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0029
+Episode_Reward/end_effector_orientation_tracking: -0.2095
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3415
+ Metrics/ee_pose/orientation_error: 1.4310
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 8064
+                    Iteration time: 0.24s
+                      Time elapsed: 00:00:06
+                               ETA: 00:00:26
+
+################################################################################
+                      [1m Learning iteration 21/100 [0m                       
+
+                       Computation: 1501 steps/s (collection: 0.183s, learning 0.073s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0014
+               Mean surrogate loss: -0.0279
+                 Mean entropy loss: 9.9301
+                       Mean reward: -1.77
+               Mean episode length: 238.80
+Episode_Reward/end_effector_position_tracking: -0.0493
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0060
+Episode_Reward/end_effector_orientation_tracking: -0.1634
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0015
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2609
+ Metrics/ee_pose/orientation_error: 2.0871
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 8448
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:07
+                               ETA: 00:00:25
+
+################################################################################
+                      [1m Learning iteration 22/100 [0m                       
+
+                       Computation: 1527 steps/s (collection: 0.180s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0285
+                 Mean entropy loss: 9.9330
+                       Mean reward: -1.77
+               Mean episode length: 238.80
+Episode_Reward/end_effector_position_tracking: -0.0482
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0068
+Episode_Reward/end_effector_orientation_tracking: -0.1513
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0015
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2397
+ Metrics/ee_pose/orientation_error: 2.2598
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 8832
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:07
+                               ETA: 00:00:24
+
+################################################################################
+                      [1m Learning iteration 23/100 [0m                       
+
+                       Computation: 1459 steps/s (collection: 0.185s, learning 0.078s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0045
+               Mean surrogate loss: -0.0195
+                 Mean entropy loss: 9.9372
+                       Mean reward: -1.81
+               Mean episode length: 247.78
+Episode_Reward/end_effector_position_tracking: -0.0541
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0063
+Episode_Reward/end_effector_orientation_tracking: -0.1428
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1919
+ Metrics/ee_pose/orientation_error: 2.0900
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 9216
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:07
+                               ETA: 00:00:24
+
+################################################################################
+                      [1m Learning iteration 24/100 [0m                       
+
+                       Computation: 1523 steps/s (collection: 0.181s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0062
+               Mean surrogate loss: -0.0258
+                 Mean entropy loss: 9.9407
+                       Mean reward: -1.81
+               Mean episode length: 247.78
+Episode_Reward/end_effector_position_tracking: -0.0468
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0042
+Episode_Reward/end_effector_orientation_tracking: -0.1610
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3024
+ Metrics/ee_pose/orientation_error: 1.7005
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 9600
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:07
+                               ETA: 00:00:23
+
+################################################################################
+                      [1m Learning iteration 25/100 [0m                       
+
+                       Computation: 1508 steps/s (collection: 0.187s, learning 0.068s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0015
+               Mean surrogate loss: -0.0284
+                 Mean entropy loss: 9.9410
+                       Mean reward: -1.85
+               Mean episode length: 251.79
+Episode_Reward/end_effector_position_tracking: -0.0559
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0018
+Episode_Reward/end_effector_orientation_tracking: -0.1744
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3823
+ Metrics/ee_pose/orientation_error: 2.0094
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 9984
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:08
+                               ETA: 00:00:23
+
+################################################################################
+                      [1m Learning iteration 26/100 [0m                       
+
+                       Computation: 1531 steps/s (collection: 0.181s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0009
+               Mean surrogate loss: -0.0242
+                 Mean entropy loss: 9.9417
+                       Mean reward: -1.85
+               Mean episode length: 251.79
+Episode_Reward/end_effector_position_tracking: -0.0583
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0012
+Episode_Reward/end_effector_orientation_tracking: -0.1779
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4033
+ Metrics/ee_pose/orientation_error: 2.0906
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 10368
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:08
+                               ETA: 00:00:22
+
+################################################################################
+                      [1m Learning iteration 27/100 [0m                       
+
+                       Computation: 1481 steps/s (collection: 0.188s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0228
+                 Mean entropy loss: 9.9414
+                       Mean reward: -1.89
+               Mean episode length: 259.00
+Episode_Reward/end_effector_position_tracking: -0.0547
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0039
+Episode_Reward/end_effector_orientation_tracking: -0.1525
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3457
+ Metrics/ee_pose/orientation_error: 1.7653
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 10752
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:08
+                               ETA: 00:00:22
+
+################################################################################
+                      [1m Learning iteration 28/100 [0m                       
+
+                       Computation: 1482 steps/s (collection: 0.188s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0031
+               Mean surrogate loss: -0.0267
+                 Mean entropy loss: 9.9431
+                       Mean reward: -1.96
+               Mean episode length: 262.26
+Episode_Reward/end_effector_position_tracking: -0.0587
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0025
+Episode_Reward/end_effector_orientation_tracking: -0.2360
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3126
+ Metrics/ee_pose/orientation_error: 2.5738
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 11136
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:08
+                               ETA: 00:00:22
+
+################################################################################
+                      [1m Learning iteration 29/100 [0m                       
+
+                       Computation: 1489 steps/s (collection: 0.186s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0021
+               Mean surrogate loss: -0.0244
+                 Mean entropy loss: 9.9448
+                       Mean reward: -1.97
+               Mean episode length: 265.31
+Episode_Reward/end_effector_position_tracking: -0.0492
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0031
+Episode_Reward/end_effector_orientation_tracking: -0.1488
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2152
+ Metrics/ee_pose/orientation_error: 2.9992
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 11520
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:09
+                               ETA: 00:00:21
+
+################################################################################
+                      [1m Learning iteration 30/100 [0m                       
+
+                       Computation: 1466 steps/s (collection: 0.184s, learning 0.078s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0006
+               Mean surrogate loss: -0.0266
+                 Mean entropy loss: 9.9458
+                       Mean reward: -1.98
+               Mean episode length: 268.18
+Episode_Reward/end_effector_position_tracking: -0.0502
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0028
+Episode_Reward/end_effector_orientation_tracking: -0.1324
+        Episode_Reward/action_rate: -0.0015
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2017
+ Metrics/ee_pose/orientation_error: 2.7341
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 11904
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:09
+                               ETA: 00:00:21
+
+################################################################################
+                      [1m Learning iteration 31/100 [0m                       
+
+                       Computation: 1482 steps/s (collection: 0.184s, learning 0.075s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0349
+                 Mean entropy loss: 9.9474
+                       Mean reward: -2.00
+               Mean episode length: 270.88
+Episode_Reward/end_effector_position_tracking: -0.0481
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0034
+Episode_Reward/end_effector_orientation_tracking: -0.1786
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2791
+ Metrics/ee_pose/orientation_error: 2.0292
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 12288
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:09
+                               ETA: 00:00:20
+
+################################################################################
+                      [1m Learning iteration 32/100 [0m                       
+
+                       Computation: 1523 steps/s (collection: 0.180s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0012
+               Mean surrogate loss: -0.0270
+                 Mean entropy loss: 9.9481
+                       Mean reward: -2.00
+               Mean episode length: 270.88
+Episode_Reward/end_effector_position_tracking: -0.0415
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0046
+Episode_Reward/end_effector_orientation_tracking: -0.1979
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2907
+ Metrics/ee_pose/orientation_error: 2.3085
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 12672
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:09
+                               ETA: 00:00:20
+
+################################################################################
+                      [1m Learning iteration 33/100 [0m                       
+
+                       Computation: 1432 steps/s (collection: 0.197s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0036
+               Mean surrogate loss: -0.0223
+                 Mean entropy loss: 9.9494
+                       Mean reward: -2.06
+               Mean episode length: 278.11
+Episode_Reward/end_effector_position_tracking: -0.0475
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0036
+Episode_Reward/end_effector_orientation_tracking: -0.1782
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2385
+ Metrics/ee_pose/orientation_error: 2.0689
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 13056
+                    Iteration time: 0.27s
+                      Time elapsed: 00:00:10
+                               ETA: 00:00:20
+
+################################################################################
+                      [1m Learning iteration 34/100 [0m                       
+
+                       Computation: 1462 steps/s (collection: 0.190s, learning 0.073s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0008
+               Mean surrogate loss: -0.0299
+                 Mean entropy loss: 9.9477
+                       Mean reward: -2.06
+               Mean episode length: 284.25
+Episode_Reward/end_effector_position_tracking: -0.0516
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0043
+Episode_Reward/end_effector_orientation_tracking: -0.1469
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1928
+ Metrics/ee_pose/orientation_error: 1.3997
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 13440
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:10
+                               ETA: 00:00:19
+
+################################################################################
+                      [1m Learning iteration 35/100 [0m                       
+
+                       Computation: 1491 steps/s (collection: 0.185s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0285
+                 Mean entropy loss: 9.9439
+                       Mean reward: -2.06
+               Mean episode length: 284.25
+Episode_Reward/end_effector_position_tracking: -0.0603
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0013
+Episode_Reward/end_effector_orientation_tracking: -0.1046
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2039
+ Metrics/ee_pose/orientation_error: 1.1652
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 13824
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:10
+                               ETA: 00:00:19
+
+################################################################################
+                      [1m Learning iteration 36/100 [0m                       
+
+                       Computation: 1481 steps/s (collection: 0.185s, learning 0.075s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0007
+               Mean surrogate loss: -0.0256
+                 Mean entropy loss: 9.9440
+                       Mean reward: -2.04
+               Mean episode length: 286.10
+Episode_Reward/end_effector_position_tracking: -0.0534
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0043
+Episode_Reward/end_effector_orientation_tracking: -0.0716
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1702
+ Metrics/ee_pose/orientation_error: 0.7128
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 14208
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:10
+                               ETA: 00:00:18
+
+################################################################################
+                      [1m Learning iteration 37/100 [0m                       
+
+                       Computation: 1542 steps/s (collection: 0.178s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0009
+               Mean surrogate loss: -0.0255
+                 Mean entropy loss: 9.9490
+                       Mean reward: -2.04
+               Mean episode length: 286.10
+Episode_Reward/end_effector_position_tracking: -0.0516
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0051
+Episode_Reward/end_effector_orientation_tracking: -0.0629
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1613
+ Metrics/ee_pose/orientation_error: 0.5938
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 14592
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:11
+                               ETA: 00:00:18
+
+################################################################################
+                      [1m Learning iteration 38/100 [0m                       
+
+                       Computation: 1487 steps/s (collection: 0.188s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0077
+               Mean surrogate loss: -0.0185
+                 Mean entropy loss: 9.9526
+                       Mean reward: -2.06
+               Mean episode length: 289.53
+Episode_Reward/end_effector_position_tracking: -0.0520
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0050
+Episode_Reward/end_effector_orientation_tracking: -0.1375
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2407
+ Metrics/ee_pose/orientation_error: 0.6798
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 14976
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:11
+                               ETA: 00:00:18
+
+################################################################################
+                      [1m Learning iteration 39/100 [0m                       
+
+                       Computation: 1526 steps/s (collection: 0.181s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0017
+               Mean surrogate loss: -0.0203
+                 Mean entropy loss: 9.9533
+                       Mean reward: -2.06
+               Mean episode length: 289.53
+Episode_Reward/end_effector_position_tracking: -0.0656
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0012
+Episode_Reward/end_effector_orientation_tracking: -0.1559
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3553
+ Metrics/ee_pose/orientation_error: 0.7219
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 15360
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:11
+                               ETA: 00:00:17
+
+################################################################################
+                      [1m Learning iteration 40/100 [0m                       
+
+                       Computation: 1516 steps/s (collection: 0.182s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0025
+               Mean surrogate loss: -0.0174
+                 Mean entropy loss: 9.9523
+                       Mean reward: -2.10
+               Mean episode length: 291.14
+Episode_Reward/end_effector_position_tracking: -0.0689
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0006
+Episode_Reward/end_effector_orientation_tracking: -0.2175
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3921
+ Metrics/ee_pose/orientation_error: 2.5277
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 15744
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:11
+                               ETA: 00:00:17
+
+################################################################################
+                      [1m Learning iteration 41/100 [0m                       
+
+                       Computation: 1540 steps/s (collection: 0.179s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0009
+               Mean surrogate loss: -0.0233
+                 Mean entropy loss: 9.9513
+                       Mean reward: -2.10
+               Mean episode length: 291.14
+Episode_Reward/end_effector_position_tracking: -0.0697
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0004
+Episode_Reward/end_effector_orientation_tracking: -0.2338
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4017
+ Metrics/ee_pose/orientation_error: 3.0029
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 16128
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:12
+                               ETA: 00:00:17
+
+################################################################################
+                      [1m Learning iteration 42/100 [0m                       
+
+                       Computation: 1494 steps/s (collection: 0.186s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0224
+                 Mean entropy loss: 9.9521
+                       Mean reward: -2.13
+               Mean episode length: 294.13
+Episode_Reward/end_effector_position_tracking: -0.0615
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0020
+Episode_Reward/end_effector_orientation_tracking: -0.1833
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2795
+ Metrics/ee_pose/orientation_error: 1.8850
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 16512
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:12
+                               ETA: 00:00:16
+
+################################################################################
+                      [1m Learning iteration 43/100 [0m                       
+
+                       Computation: 1424 steps/s (collection: 0.198s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0061
+               Mean surrogate loss: -0.0220
+                 Mean entropy loss: 9.9526
+                       Mean reward: -2.14
+               Mean episode length: 295.53
+Episode_Reward/end_effector_position_tracking: -0.0458
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0058
+Episode_Reward/end_effector_orientation_tracking: -0.1846
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2261
+ Metrics/ee_pose/orientation_error: 2.4703
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 16896
+                    Iteration time: 0.27s
+                      Time elapsed: 00:00:12
+                               ETA: 00:00:16
+
+################################################################################
+                      [1m Learning iteration 44/100 [0m                       
+
+                       Computation: 1486 steps/s (collection: 0.185s, learning 0.074s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0025
+               Mean surrogate loss: -0.0280
+                 Mean entropy loss: 9.9513
+                       Mean reward: -2.16
+               Mean episode length: 296.88
+Episode_Reward/end_effector_position_tracking: -0.0480
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0045
+Episode_Reward/end_effector_orientation_tracking: -0.2147
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2059
+ Metrics/ee_pose/orientation_error: 2.3916
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 17280
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:13
+                               ETA: 00:00:16
+
+################################################################################
+                      [1m Learning iteration 45/100 [0m                       
+
+                       Computation: 1522 steps/s (collection: 0.182s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0248
+                 Mean entropy loss: 9.9528
+                       Mean reward: -2.17
+               Mean episode length: 298.16
+Episode_Reward/end_effector_position_tracking: -0.0502
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0038
+Episode_Reward/end_effector_orientation_tracking: -0.2068
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0016
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2189
+ Metrics/ee_pose/orientation_error: 2.5399
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 17664
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:13
+                               ETA: 00:00:15
+
+################################################################################
+                      [1m Learning iteration 46/100 [0m                       
+
+                       Computation: 1549 steps/s (collection: 0.182s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0016
+               Mean surrogate loss: -0.0235
+                 Mean entropy loss: 9.9557
+                       Mean reward: -2.19
+               Mean episode length: 299.40
+Episode_Reward/end_effector_position_tracking: -0.0519
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0057
+Episode_Reward/end_effector_orientation_tracking: -0.1966
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2053
+ Metrics/ee_pose/orientation_error: 2.0066
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 18048
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:13
+                               ETA: 00:00:15
+
+################################################################################
+                      [1m Learning iteration 47/100 [0m                       
+
+                       Computation: 1477 steps/s (collection: 0.181s, learning 0.079s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0008
+               Mean surrogate loss: -0.0259
+                 Mean entropy loss: 9.9543
+                       Mean reward: -2.19
+               Mean episode length: 299.40
+Episode_Reward/end_effector_position_tracking: -0.0496
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0074
+Episode_Reward/end_effector_orientation_tracking: -0.2165
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1650
+ Metrics/ee_pose/orientation_error: 1.5804
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 18432
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:13
+                               ETA: 00:00:15
+
+################################################################################
+                      [1m Learning iteration 48/100 [0m                       
+
+                       Computation: 1447 steps/s (collection: 0.193s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0007
+               Mean surrogate loss: -0.0244
+                 Mean entropy loss: 9.9534
+                       Mean reward: -2.18
+               Mean episode length: 302.83
+Episode_Reward/end_effector_position_tracking: -0.0505
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0062
+Episode_Reward/end_effector_orientation_tracking: -0.1777
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2285
+ Metrics/ee_pose/orientation_error: 1.1698
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 18816
+                    Iteration time: 0.27s
+                      Time elapsed: 00:00:14
+                               ETA: 00:00:14
+
+################################################################################
+                      [1m Learning iteration 49/100 [0m                       
+
+                       Computation: 1486 steps/s (collection: 0.188s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0010
+               Mean surrogate loss: -0.0227
+                 Mean entropy loss: 9.9538
+                       Mean reward: -2.19
+               Mean episode length: 305.89
+Episode_Reward/end_effector_position_tracking: -0.0590
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0030
+Episode_Reward/end_effector_orientation_tracking: -0.0970
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3130
+ Metrics/ee_pose/orientation_error: 0.9009
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 19200
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:14
+                               ETA: 00:00:14
+
+################################################################################
+                      [1m Learning iteration 50/100 [0m                       
+
+                       Computation: 1532 steps/s (collection: 0.180s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0029
+               Mean surrogate loss: -0.0199
+                 Mean entropy loss: 9.9560
+                       Mean reward: -2.19
+               Mean episode length: 305.89
+Episode_Reward/end_effector_position_tracking: -0.0651
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0009
+Episode_Reward/end_effector_orientation_tracking: -0.1477
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2433
+ Metrics/ee_pose/orientation_error: 2.2824
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 19584
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:14
+                               ETA: 00:00:14
+
+################################################################################
+                      [1m Learning iteration 51/100 [0m                       
+
+                       Computation: 1505 steps/s (collection: 0.185s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0009
+               Mean surrogate loss: -0.0192
+                 Mean entropy loss: 9.9563
+                       Mean reward: -2.19
+               Mean episode length: 306.84
+Episode_Reward/end_effector_position_tracking: -0.0610
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0012
+Episode_Reward/end_effector_orientation_tracking: -0.1308
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0021
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3177
+ Metrics/ee_pose/orientation_error: 2.6086
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 19968
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:14
+                               ETA: 00:00:13
+
+################################################################################
+                      [1m Learning iteration 52/100 [0m                       
+
+                       Computation: 1528 steps/s (collection: 0.181s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0024
+               Mean surrogate loss: -0.0234
+                 Mean entropy loss: 9.9535
+                       Mean reward: -2.19
+               Mean episode length: 306.84
+Episode_Reward/end_effector_position_tracking: -0.0599
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0013
+Episode_Reward/end_effector_orientation_tracking: -0.1264
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0022
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3372
+ Metrics/ee_pose/orientation_error: 2.6945
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 20352
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:15
+                               ETA: 00:00:13
+
+################################################################################
+                      [1m Learning iteration 53/100 [0m                       
+
+                       Computation: 1503 steps/s (collection: 0.185s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0037
+               Mean surrogate loss: -0.0214
+                 Mean entropy loss: 9.9525
+                       Mean reward: -2.20
+               Mean episode length: 308.64
+Episode_Reward/end_effector_position_tracking: -0.0560
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0022
+Episode_Reward/end_effector_orientation_tracking: -0.1415
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2059
+ Metrics/ee_pose/orientation_error: 1.2935
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 20736
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:15
+                               ETA: 00:00:13
+
+################################################################################
+                      [1m Learning iteration 54/100 [0m                       
+
+                       Computation: 1523 steps/s (collection: 0.182s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0021
+               Mean surrogate loss: -0.0246
+                 Mean entropy loss: 9.9516
+                       Mean reward: -2.20
+               Mean episode length: 308.64
+Episode_Reward/end_effector_position_tracking: -0.0444
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0033
+Episode_Reward/end_effector_orientation_tracking: -0.1232
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2875
+ Metrics/ee_pose/orientation_error: 1.7276
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 21120
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:15
+                               ETA: 00:00:13
+
+################################################################################
+                      [1m Learning iteration 55/100 [0m                       
+
+                       Computation: 1519 steps/s (collection: 0.186s, learning 0.067s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0221
+                 Mean entropy loss: 9.9506
+                       Mean reward: -2.21
+               Mean episode length: 309.50
+Episode_Reward/end_effector_position_tracking: -0.0552
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0021
+Episode_Reward/end_effector_orientation_tracking: -0.1635
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3428
+ Metrics/ee_pose/orientation_error: 0.7619
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 21504
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:15
+                               ETA: 00:00:12
+
+################################################################################
+                      [1m Learning iteration 56/100 [0m                       
+
+                       Computation: 1535 steps/s (collection: 0.179s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0018
+               Mean surrogate loss: -0.0221
+                 Mean entropy loss: 9.9508
+                       Mean reward: -2.21
+               Mean episode length: 309.50
+Episode_Reward/end_effector_position_tracking: -0.0581
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0018
+Episode_Reward/end_effector_orientation_tracking: -0.1741
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3573
+ Metrics/ee_pose/orientation_error: 0.5077
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 21888
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:16
+                               ETA: 00:00:12
+
+################################################################################
+                      [1m Learning iteration 57/100 [0m                       
+
+                       Computation: 1487 steps/s (collection: 0.187s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0008
+               Mean surrogate loss: -0.0286
+                 Mean entropy loss: 9.9509
+                       Mean reward: -2.20
+               Mean episode length: 311.13
+Episode_Reward/end_effector_position_tracking: -0.0571
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0029
+Episode_Reward/end_effector_orientation_tracking: -0.1479
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2629
+ Metrics/ee_pose/orientation_error: 0.5062
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 22272
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:16
+                               ETA: 00:00:12
+
+################################################################################
+                      [1m Learning iteration 58/100 [0m                       
+
+                       Computation: 1478 steps/s (collection: 0.187s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0032
+               Mean surrogate loss: -0.0261
+                 Mean entropy loss: 9.9531
+                       Mean reward: -2.20
+               Mean episode length: 311.90
+Episode_Reward/end_effector_position_tracking: -0.0529
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0030
+Episode_Reward/end_effector_orientation_tracking: -0.1038
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1483
+ Metrics/ee_pose/orientation_error: 1.8051
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 22656
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:16
+                               ETA: 00:00:11
+
+################################################################################
+                      [1m Learning iteration 59/100 [0m                       
+
+                       Computation: 1488 steps/s (collection: 0.188s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0014
+               Mean surrogate loss: -0.0235
+                 Mean entropy loss: 9.9562
+                       Mean reward: -2.20
+               Mean episode length: 312.66
+Episode_Reward/end_effector_position_tracking: -0.0606
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0018
+Episode_Reward/end_effector_orientation_tracking: -0.1229
+        Episode_Reward/action_rate: -0.0016
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3302
+ Metrics/ee_pose/orientation_error: 1.6155
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 23040
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:16
+                               ETA: 00:00:11
+
+################################################################################
+                      [1m Learning iteration 60/100 [0m                       
+
+                       Computation: 1538 steps/s (collection: 0.184s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0008
+               Mean surrogate loss: -0.0262
+                 Mean entropy loss: 9.9566
+                       Mean reward: -2.21
+               Mean episode length: 313.38
+Episode_Reward/end_effector_position_tracking: -0.0595
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0020
+Episode_Reward/end_effector_orientation_tracking: -0.1304
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3626
+ Metrics/ee_pose/orientation_error: 1.4808
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 23424
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:17
+                               ETA: 00:00:11
+
+################################################################################
+                      [1m Learning iteration 61/100 [0m                       
+
+                       Computation: 1547 steps/s (collection: 0.182s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0024
+               Mean surrogate loss: -0.0235
+                 Mean entropy loss: 9.9573
+                       Mean reward: -2.21
+               Mean episode length: 314.09
+Episode_Reward/end_effector_position_tracking: -0.0637
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0016
+Episode_Reward/end_effector_orientation_tracking: -0.1360
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4097
+ Metrics/ee_pose/orientation_error: 1.7571
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 23808
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:17
+                               ETA: 00:00:10
+
+################################################################################
+                      [1m Learning iteration 62/100 [0m                       
+
+                       Computation: 1554 steps/s (collection: 0.180s, learning 0.067s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0032
+               Mean surrogate loss: -0.0242
+                 Mean entropy loss: 9.9558
+                       Mean reward: -2.21
+               Mean episode length: 314.09
+Episode_Reward/end_effector_position_tracking: -0.0685
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0010
+Episode_Reward/end_effector_orientation_tracking: -0.1265
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4214
+ Metrics/ee_pose/orientation_error: 1.8359
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 24192
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:17
+                               ETA: 00:00:10
+
+################################################################################
+                      [1m Learning iteration 63/100 [0m                       
+
+                       Computation: 1489 steps/s (collection: 0.190s, learning 0.068s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0013
+               Mean surrogate loss: -0.0266
+                 Mean entropy loss: 9.9528
+                       Mean reward: -2.22
+               Mean episode length: 316.09
+Episode_Reward/end_effector_position_tracking: -0.0631
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0013
+Episode_Reward/end_effector_orientation_tracking: -0.1330
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3367
+ Metrics/ee_pose/orientation_error: 1.7632
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 24576
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:17
+                               ETA: 00:00:10
+
+################################################################################
+                      [1m Learning iteration 64/100 [0m                       
+
+                       Computation: 1512 steps/s (collection: 0.187s, learning 0.067s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0007
+               Mean surrogate loss: -0.0308
+                 Mean entropy loss: 9.9497
+                       Mean reward: -2.21
+               Mean episode length: 317.92
+Episode_Reward/end_effector_position_tracking: -0.0586
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0016
+Episode_Reward/end_effector_orientation_tracking: -0.1342
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2649
+ Metrics/ee_pose/orientation_error: 0.9671
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 24960
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:18
+                               ETA: 00:00:10
+
+################################################################################
+                      [1m Learning iteration 65/100 [0m                       
+
+                       Computation: 1538 steps/s (collection: 0.181s, learning 0.068s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0024
+               Mean surrogate loss: -0.0216
+                 Mean entropy loss: 9.9477
+                       Mean reward: -2.21
+               Mean episode length: 317.92
+Episode_Reward/end_effector_position_tracking: -0.0711
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0004
+Episode_Reward/end_effector_orientation_tracking: -0.1131
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0021
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4129
+ Metrics/ee_pose/orientation_error: 0.5930
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 25344
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:18
+                               ETA: 00:00:09
+
+################################################################################
+                      [1m Learning iteration 66/100 [0m                       
+
+                       Computation: 1479 steps/s (collection: 0.184s, learning 0.075s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0015
+               Mean surrogate loss: -0.0192
+                 Mean entropy loss: 9.9457
+                       Mean reward: -2.21
+               Mean episode length: 318.49
+Episode_Reward/end_effector_position_tracking: -0.0604
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0014
+Episode_Reward/end_effector_orientation_tracking: -0.1331
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0022
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2380
+ Metrics/ee_pose/orientation_error: 0.5452
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 25728
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:18
+                               ETA: 00:00:09
+
+################################################################################
+                      [1m Learning iteration 67/100 [0m                       
+
+                       Computation: 1500 steps/s (collection: 0.186s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0029
+               Mean surrogate loss: -0.0191
+                 Mean entropy loss: 9.9424
+                       Mean reward: -2.21
+               Mean episode length: 318.49
+Episode_Reward/end_effector_position_tracking: -0.0576
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0017
+Episode_Reward/end_effector_orientation_tracking: -0.1384
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0022
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1920
+ Metrics/ee_pose/orientation_error: 0.5326
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 26112
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:18
+                               ETA: 00:00:09
+
+################################################################################
+                      [1m Learning iteration 68/100 [0m                       
+
+                       Computation: 1511 steps/s (collection: 0.184s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0275
+                 Mean entropy loss: 9.9417
+                       Mean reward: -2.21
+               Mean episode length: 319.60
+Episode_Reward/end_effector_position_tracking: -0.0597
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0014
+Episode_Reward/end_effector_orientation_tracking: -0.1347
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2327
+ Metrics/ee_pose/orientation_error: 1.6519
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 26496
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:19
+                               ETA: 00:00:08
+
+################################################################################
+                      [1m Learning iteration 69/100 [0m                       
+
+                       Computation: 1548 steps/s (collection: 0.178s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0008
+               Mean surrogate loss: -0.0227
+                 Mean entropy loss: 9.9438
+                       Mean reward: -2.21
+               Mean episode length: 319.60
+Episode_Reward/end_effector_position_tracking: -0.0667
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0008
+Episode_Reward/end_effector_orientation_tracking: -0.0937
+        Episode_Reward/action_rate: -0.0017
+          Episode_Reward/joint_vel: -0.0015
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2279
+ Metrics/ee_pose/orientation_error: 2.0097
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 26880
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:19
+                               ETA: 00:00:08
+
+################################################################################
+                      [1m Learning iteration 70/100 [0m                       
+
+                       Computation: 1530 steps/s (collection: 0.180s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0224
+                 Mean entropy loss: 9.9449
+                       Mean reward: -2.22
+               Mean episode length: 320.13
+Episode_Reward/end_effector_position_tracking: -0.0676
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0007
+Episode_Reward/end_effector_orientation_tracking: -0.1466
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0021
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2387
+ Metrics/ee_pose/orientation_error: 0.7978
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 27264
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:19
+                               ETA: 00:00:08
+
+################################################################################
+                      [1m Learning iteration 71/100 [0m                       
+
+                       Computation: 1562 steps/s (collection: 0.180s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0239
+                 Mean entropy loss: 9.9453
+                       Mean reward: -2.22
+               Mean episode length: 320.13
+Episode_Reward/end_effector_position_tracking: -0.0679
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0007
+Episode_Reward/end_effector_orientation_tracking: -0.1605
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0022
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2415
+ Metrics/ee_pose/orientation_error: 0.4789
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 27648
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:19
+                               ETA: 00:00:08
+
+################################################################################
+                      [1m Learning iteration 72/100 [0m                       
+
+                       Computation: 1493 steps/s (collection: 0.186s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0003
+               Mean surrogate loss: -0.0274
+                 Mean entropy loss: 9.9473
+                       Mean reward: -2.24
+               Mean episode length: 321.15
+Episode_Reward/end_effector_position_tracking: -0.0593
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0026
+Episode_Reward/end_effector_orientation_tracking: -0.1875
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2242
+ Metrics/ee_pose/orientation_error: 1.7659
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 28032
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:20
+                               ETA: 00:00:07
+
+################################################################################
+                      [1m Learning iteration 73/100 [0m                       
+
+                       Computation: 1496 steps/s (collection: 0.186s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0055
+               Mean surrogate loss: -0.0269
+                 Mean entropy loss: 9.9482
+                       Mean reward: -2.24
+               Mean episode length: 321.65
+Episode_Reward/end_effector_position_tracking: -0.0592
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0034
+Episode_Reward/end_effector_orientation_tracking: -0.1244
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3515
+ Metrics/ee_pose/orientation_error: 1.5411
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 28416
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:20
+                               ETA: 00:00:07
+
+################################################################################
+                      [1m Learning iteration 74/100 [0m                       
+
+                       Computation: 1519 steps/s (collection: 0.182s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0238
+                 Mean entropy loss: 9.9491
+                       Mean reward: -2.25
+               Mean episode length: 322.12
+Episode_Reward/end_effector_position_tracking: -0.0646
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0031
+Episode_Reward/end_effector_orientation_tracking: -0.1711
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4649
+ Metrics/ee_pose/orientation_error: 2.6299
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 28800
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:20
+                               ETA: 00:00:07
+
+################################################################################
+                      [1m Learning iteration 75/100 [0m                       
+
+                       Computation: 1517 steps/s (collection: 0.182s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0281
+                 Mean entropy loss: 9.9513
+                       Mean reward: -2.26
+               Mean episode length: 322.59
+Episode_Reward/end_effector_position_tracking: -0.0642
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0032
+Episode_Reward/end_effector_orientation_tracking: -0.1885
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4031
+ Metrics/ee_pose/orientation_error: 2.7080
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 29184
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:20
+                               ETA: 00:00:06
+
+################################################################################
+                      [1m Learning iteration 76/100 [0m                       
+
+                       Computation: 1513 steps/s (collection: 0.184s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0237
+                 Mean entropy loss: 9.9526
+                       Mean reward: -2.26
+               Mean episode length: 323.05
+Episode_Reward/end_effector_position_tracking: -0.0495
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0039
+Episode_Reward/end_effector_orientation_tracking: -0.1585
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2111
+ Metrics/ee_pose/orientation_error: 1.0572
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 29568
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:21
+                               ETA: 00:00:06
+
+################################################################################
+                      [1m Learning iteration 77/100 [0m                       
+
+                       Computation: 1544 steps/s (collection: 0.179s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0011
+               Mean surrogate loss: -0.0206
+                 Mean entropy loss: 9.9540
+                       Mean reward: -2.26
+               Mean episode length: 323.05
+Episode_Reward/end_effector_position_tracking: -0.0444
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0042
+Episode_Reward/end_effector_orientation_tracking: -0.1383
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2271
+ Metrics/ee_pose/orientation_error: 0.6256
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 29952
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:21
+                               ETA: 00:00:06
+
+################################################################################
+                      [1m Learning iteration 78/100 [0m                       
+
+                       Computation: 1450 steps/s (collection: 0.187s, learning 0.078s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0009
+               Mean surrogate loss: -0.0277
+                 Mean entropy loss: 9.9542
+                       Mean reward: -2.29
+               Mean episode length: 324.35
+Episode_Reward/end_effector_position_tracking: -0.0467
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0044
+Episode_Reward/end_effector_orientation_tracking: -0.1685
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2026
+ Metrics/ee_pose/orientation_error: 1.0056
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 30336
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:21
+                               ETA: 00:00:06
+
+################################################################################
+                      [1m Learning iteration 79/100 [0m                       
+
+                       Computation: 1487 steps/s (collection: 0.188s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0005
+               Mean surrogate loss: -0.0275
+                 Mean entropy loss: 9.9544
+                       Mean reward: -2.29
+               Mean episode length: 325.57
+Episode_Reward/end_effector_position_tracking: -0.0542
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0032
+Episode_Reward/end_effector_orientation_tracking: -0.1563
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2985
+ Metrics/ee_pose/orientation_error: 1.1055
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 30720
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:21
+                               ETA: 00:00:05
+
+################################################################################
+                      [1m Learning iteration 80/100 [0m                       
+
+                       Computation: 1531 steps/s (collection: 0.180s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0030
+               Mean surrogate loss: -0.0221
+                 Mean entropy loss: 9.9544
+                       Mean reward: -2.29
+               Mean episode length: 325.57
+Episode_Reward/end_effector_position_tracking: -0.0432
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0041
+Episode_Reward/end_effector_orientation_tracking: -0.1915
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1949
+ Metrics/ee_pose/orientation_error: 2.2918
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 31104
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:22
+                               ETA: 00:00:05
+
+################################################################################
+                      [1m Learning iteration 81/100 [0m                       
+
+                       Computation: 1525 steps/s (collection: 0.181s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0012
+               Mean surrogate loss: -0.0232
+                 Mean entropy loss: 9.9531
+                       Mean reward: -2.29
+               Mean episode length: 325.96
+Episode_Reward/end_effector_position_tracking: -0.0600
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0014
+Episode_Reward/end_effector_orientation_tracking: -0.1544
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0021
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3242
+ Metrics/ee_pose/orientation_error: 2.6923
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 31488
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:22
+                               ETA: 00:00:05
+
+################################################################################
+                      [1m Learning iteration 82/100 [0m                       
+
+                       Computation: 1514 steps/s (collection: 0.183s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0010
+               Mean surrogate loss: -0.0221
+                 Mean entropy loss: 9.9525
+                       Mean reward: -2.29
+               Mean episode length: 325.96
+Episode_Reward/end_effector_position_tracking: -0.0644
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0007
+Episode_Reward/end_effector_orientation_tracking: -0.1446
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0021
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3582
+ Metrics/ee_pose/orientation_error: 2.7977
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 31872
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:22
+                               ETA: 00:00:04
+
+################################################################################
+                      [1m Learning iteration 83/100 [0m                       
+
+                       Computation: 1525 steps/s (collection: 0.185s, learning 0.066s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0022
+               Mean surrogate loss: -0.0248
+                 Mean entropy loss: 9.9523
+                       Mean reward: -2.31
+               Mean episode length: 326.70
+Episode_Reward/end_effector_position_tracking: -0.0652
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0015
+Episode_Reward/end_effector_orientation_tracking: -0.1816
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0020
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2902
+ Metrics/ee_pose/orientation_error: 2.4772
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 32256
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:22
+                               ETA: 00:00:04
+
+################################################################################
+                      [1m Learning iteration 84/100 [0m                       
+
+                       Computation: 1546 steps/s (collection: 0.180s, learning 0.068s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0015
+               Mean surrogate loss: -0.0165
+                 Mean entropy loss: 9.9496
+                       Mean reward: -2.31
+               Mean episode length: 326.70
+Episode_Reward/end_effector_position_tracking: -0.0688
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0008
+Episode_Reward/end_effector_orientation_tracking: -0.1129
+        Episode_Reward/action_rate: -0.0018
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2158
+ Metrics/ee_pose/orientation_error: 0.7884
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 32640
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:23
+                               ETA: 00:00:04
+
+################################################################################
+                      [1m Learning iteration 85/100 [0m                       
+
+                       Computation: 1507 steps/s (collection: 0.181s, learning 0.074s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0014
+               Mean surrogate loss: -0.0246
+                 Mean entropy loss: 9.9469
+                       Mean reward: -2.30
+               Mean episode length: 327.07
+Episode_Reward/end_effector_position_tracking: -0.0551
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0030
+Episode_Reward/end_effector_orientation_tracking: -0.1153
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1509
+ Metrics/ee_pose/orientation_error: 1.5159
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 33024
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:23
+                               ETA: 00:00:04
+
+################################################################################
+                      [1m Learning iteration 86/100 [0m                       
+
+                       Computation: 1528 steps/s (collection: 0.181s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0006
+               Mean surrogate loss: -0.0247
+                 Mean entropy loss: 9.9471
+                       Mean reward: -2.30
+               Mean episode length: 327.07
+Episode_Reward/end_effector_position_tracking: -0.0515
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0036
+Episode_Reward/end_effector_orientation_tracking: -0.1159
+        Episode_Reward/action_rate: -0.0021
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.1339
+ Metrics/ee_pose/orientation_error: 1.7073
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 33408
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:23
+                               ETA: 00:00:03
+
+################################################################################
+                      [1m Learning iteration 87/100 [0m                       
+
+                       Computation: 1477 steps/s (collection: 0.189s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0003
+               Mean surrogate loss: -0.0316
+                 Mean entropy loss: 9.9449
+                       Mean reward: -2.31
+               Mean episode length: 327.77
+Episode_Reward/end_effector_position_tracking: -0.0572
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0019
+Episode_Reward/end_effector_orientation_tracking: -0.1572
+        Episode_Reward/action_rate: -0.0021
+          Episode_Reward/joint_vel: -0.0022
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2228
+ Metrics/ee_pose/orientation_error: 1.7007
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 33792
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:23
+                               ETA: 00:00:03
+
+################################################################################
+                      [1m Learning iteration 88/100 [0m                       
+
+                       Computation: 1507 steps/s (collection: 0.184s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0012
+               Mean surrogate loss: -0.0239
+                 Mean entropy loss: 9.9412
+                       Mean reward: -2.31
+               Mean episode length: 328.11
+Episode_Reward/end_effector_position_tracking: -0.0544
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0025
+Episode_Reward/end_effector_orientation_tracking: -0.1152
+        Episode_Reward/action_rate: -0.0022
+          Episode_Reward/joint_vel: -0.0021
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.2730
+ Metrics/ee_pose/orientation_error: 0.8106
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 34176
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:24
+                               ETA: 00:00:03
+
+################################################################################
+                      [1m Learning iteration 89/100 [0m                       
+
+                       Computation: 1514 steps/s (collection: 0.183s, learning 0.071s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0006
+               Mean surrogate loss: -0.0286
+                 Mean entropy loss: 9.9412
+                       Mean reward: -2.30
+               Mean episode length: 328.44
+Episode_Reward/end_effector_position_tracking: -0.0542
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0058
+Episode_Reward/end_effector_orientation_tracking: -0.1171
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4835
+ Metrics/ee_pose/orientation_error: 0.8667
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 34560
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:24
+                               ETA: 00:00:02
+
+################################################################################
+                      [1m Learning iteration 90/100 [0m                       
+
+                       Computation: 1510 steps/s (collection: 0.181s, learning 0.073s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0006
+               Mean surrogate loss: -0.0261
+                 Mean entropy loss: 9.9445
+                       Mean reward: -2.30
+               Mean episode length: 328.76
+Episode_Reward/end_effector_position_tracking: -0.0559
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0055
+Episode_Reward/end_effector_orientation_tracking: -0.1188
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0019
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4510
+ Metrics/ee_pose/orientation_error: 1.0728
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 34944
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:24
+                               ETA: 00:00:02
+
+################################################################################
+                      [1m Learning iteration 91/100 [0m                       
+
+                       Computation: 1499 steps/s (collection: 0.184s, learning 0.072s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0007
+               Mean surrogate loss: -0.0224
+                 Mean entropy loss: 9.9474
+                       Mean reward: -2.29
+               Mean episode length: 329.08
+Episode_Reward/end_effector_position_tracking: -0.0618
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0021
+Episode_Reward/end_effector_orientation_tracking: -0.0835
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3706
+ Metrics/ee_pose/orientation_error: 0.7997
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 35328
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:24
+                               ETA: 00:00:02
+
+################################################################################
+                      [1m Learning iteration 92/100 [0m                       
+
+                       Computation: 1549 steps/s (collection: 0.177s, learning 0.070s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0014
+               Mean surrogate loss: -0.0247
+                 Mean entropy loss: 9.9502
+                       Mean reward: -2.29
+               Mean episode length: 329.08
+Episode_Reward/end_effector_position_tracking: -0.0630
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0016
+Episode_Reward/end_effector_orientation_tracking: -0.0642
+        Episode_Reward/action_rate: -0.0019
+          Episode_Reward/joint_vel: -0.0017
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.4335
+ Metrics/ee_pose/orientation_error: 0.4571
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 35712
+                    Iteration time: 0.25s
+                      Time elapsed: 00:00:25
+                               ETA: 00:00:02
+
+################################################################################
+                      [1m Learning iteration 93/100 [0m                       
+
+                       Computation: 1458 steps/s (collection: 0.187s, learning 0.076s)
+             Mean action noise std: 1.00
+          Mean value_function loss: 0.0023
+               Mean surrogate loss: -0.0289
+                 Mean entropy loss: 9.9524
+                       Mean reward: -2.30
+               Mean episode length: 333.10
+Episode_Reward/end_effector_position_tracking: -0.0569
+Episode_Reward/end_effector_position_tracking_fine_grained: 0.0036
+Episode_Reward/end_effector_orientation_tracking: -0.0794
+        Episode_Reward/action_rate: -0.0020
+          Episode_Reward/joint_vel: -0.0018
+            Curriculum/action_rate: -0.0001
+              Curriculum/joint_vel: -0.0001
+    Metrics/ee_pose/position_error: 0.3584
+ Metrics/ee_pose/orientation_error: 0.8923
+      Episode_Termination/time_out: 1.0000
+--------------------------------------------------------------------------------
+                   Total timesteps: 36096
+                    Iteration time: 0.26s
+                      Time elapsed: 00:00:25
+                               ETA: 00:00:01
+Loading user config located at: '/isaac-sim/kit/data/Kit/Isaac-Sim/5.1/user.config.json'
+[Info] [carb] Logging to file: /isaac-sim/kit/logs/Kit/Isaac-Sim/5.1/kit_20260408_193313.log
+2026-04-08T19:33:14Z [761ms] [Warning] [omni.platforminfo.plugin] failed to open the default display.  Can't verify X Server version.
+2026-04-08T19:33:14Z [763ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-04-08T19:33:14Z [1,402ms] [Warning] [omni.isaac.dynamic_control] omni.isaac.dynamic_control is deprecated as of Isaac Sim 4.5. No action is needed from end-users.
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.126.09    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 3090          | Yes: 0 |     | 24822   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2204      | 798524eb.. |
+|     |                                  |        |     |            | 4         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.17.0-19-generic
+| Processor: AMD Ryzen 7 5700X 8-Core Processor
+| Cores: 8 | Logical Cores: 16
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 64219 | Free Memory: 60405
+| Total Page/Swap (MB): 8191 | Free Page/Swap: 0
+|---------------------------------------------------------------------------------------------|
+2026-04-08T19:33:17Z [4,318ms] [Warning] [gpu.foundation.plugin] CPU performance profile is set to powersave. This profile sets the CPU to the lowest frequency reducing performance.
+2026-04-08T19:33:19Z [5,749ms] [Warning] [isaaclab.envs.manager_based_env] Seed not set for the environment. The environment creation may not be deterministic.
