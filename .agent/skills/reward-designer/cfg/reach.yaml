@@ -15,7 +15,8 @@ isaac_sim:
 
 # --- Stage 1 Configuration ---
 eureka:
-  iterations: 16
+  iterations: 5 # "searches for 5 iterations"
+  num_samples: 4 # "K = 16 samples per iteration"
   model: "gemini-2.5-flash-lite"
   eval_num_envs: 256
   train_iterations: 300

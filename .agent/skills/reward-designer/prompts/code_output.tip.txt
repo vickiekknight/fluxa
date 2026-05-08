@@ -1,0 +1,12 @@
+Provide your response as a single Python code block: "```python ... ```".
+
+Some helpful tips for writing the reward function code:
+    (1) Write each reward term as a separate function following the Isaac Lab RewTerm pattern.
+    (2) Define a dictionary called 'reward_dict' containing RewTerm objects pointing to those functions.
+    (3) Do not include imports. Use the standard Isaac Lab MDP naming conventions.
+    (4) SceneEntityCfg's constructor is SceneEntityCfg(name: str, body_names: list). The first argument is `name`, NOT `asset_name`. Example: SceneEntityCfg("robot", body_names=["panda_hand"])
+    (5) You may find it helpful to normalize rewards using torch.exp with a temperature parameter. Each transformed component should have its own temperature variable.
+    (6) Reward terms for desired behavior should be positive. Do not negatively penalize lack of desired behavior.
+    (7) Penalty terms for undesirable behavior should be negative.
+    (8) When using the exponential function, make sure your input is bounded. Clamp if necessary.
+    (9) Make sure any new tensor or variable is on the same device as the environment tensors.
