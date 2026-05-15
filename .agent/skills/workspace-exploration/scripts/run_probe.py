@@ -13,7 +13,7 @@ from isaaclab.app import AppLauncher
 # CLI args
 parser = argparse.ArgumentParser()
 parser.add_argument("--num_envs", type=int, default=1000)
-parser.add_argument("--n_samples", type=int, default=10000)
+parser.add_argument("--n_samples", type=int, default=2000)
 parser.add_argument("--seed", type=int, default=42)
 AppLauncher.add_app_launcher_args(parser)
 args_cli = parser.parse_args()
@@ -34,7 +34,7 @@ from isaaclab.utils import configclass  # noqa: E402
 from isaaclab_assets import FRANKA_PANDA_CFG  # noqa: E402
 
 from probes.workspace_probe import workspace_probe  # noqa: E402
-from utils.io import save_scatter_plot  # noqa: E402
+from helpers.io import save_scatter_plot  # noqa: E402
 
 
 @configclass
@@ -84,3 +84,4 @@ if __name__ == "__main__":
         main()
     finally:
         simulation_app.close()
+    os._exit(0)

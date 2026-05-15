@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("description", type=str,
                     help="Natural-language task description.")
 parser.add_argument("--num_envs", type=int, default=1000)
-parser.add_argument("--n_samples", type=int, default=10000)
+parser.add_argument("--n_samples", type=int, default=2000)
 parser.add_argument("--seed", type=int, default=42)
 AppLauncher.add_app_launcher_args(parser)
 args_cli = parser.parse_args()
@@ -31,7 +31,7 @@ from isaaclab_assets import FRANKA_PANDA_CFG  # noqa: E402
 
 from parser.task_parser import parse_task_description  # noqa: E402
 from probes.workspace_probe import workspace_probe  # noqa: E402
-from utils.io import save_json, save_scatter_plot  # noqa: E402
+from helpers.io import save_json, save_scatter_plot  # noqa: E402
 
 
 # Robot-frame z = 0 corresponds to the table surface in v1.
@@ -89,7 +89,7 @@ def main(user_description: str, num_envs: int, n_samples: int, seed: int):
             "outputs/diagnostics/workspace_scatter.png",
             title_suffix=task_spec.robot_name,
         )
-        print(f"Probe ran in {result.runtime_seconds:.2f}s")
+        print(f"Probe ran in {result.runtime_seconds:.6f}s")
     else:
         raise NotImplementedError(
             f"Task type {task_spec.task_type!r} not supported in v1"
@@ -124,3 +124,4 @@ if __name__ == "__main__":
         )
     finally:
         simulation_app.close()
+    os._exit(0)

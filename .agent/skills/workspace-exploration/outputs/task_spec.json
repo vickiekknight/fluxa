@@ -1,0 +1,11 @@
+{
+  "task_type": "reach",
+  "robot_name": "franka",
+  "robot_urdf_path": null,
+  "ee_body_name": "panda_hand",
+  "objects": [],
+  "constraints": {
+    "surface": "table"
+  },
+  "raw_description": "franka reach on table"
+}
