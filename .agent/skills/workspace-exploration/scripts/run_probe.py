@@ -15,6 +15,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--num_envs", type=int, default=1000)
 parser.add_argument("--n_samples", type=int, default=2000)
 parser.add_argument("--seed", type=int, default=42)
+parser.add_argument("--validate-fk", action="store_true",
+                    help="Run FK validation against CuRobo before probing.")
+parser.add_argument("--n_validate", type=int, default=50,
+                    help="Number of random configs for FK validation.")
 AppLauncher.add_app_launcher_args(parser)
 args_cli = parser.parse_args()
 args_cli.headless = True
@@ -55,6 +59,15 @@ def main():
     robot = scene["robot"]
     print(f"Spawned scene with {scene.num_envs} envs.")
     print(f"Robot has {robot.num_joints} joints, body names: {robot.body_names}")
+
+    # FK validation (optional; bails before probe runs if it fails)
+    if args_cli.validate_fk:
+        from tests.test_workspace_integration import run_integration_test
+        run_integration_test(
+            scene, robot,
+            n_configs=args_cli.n_validate,
+            seed=args_cli.seed,
+        )
 
     # Run the probe.
     result = workspace_probe(
