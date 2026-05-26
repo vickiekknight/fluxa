@@ -4,11 +4,18 @@ import os
 from dataclasses import is_dataclass, asdict
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # noqa: F401  registers 3D projection
+from mpl_toolkits.mplot3d import Axes3D  # registers 3D projection
 
+SKILL_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def _resolve(path: str) -> str:
+    """Resolve relative paths against the skill root, not the shell cwd.
+    Absolute paths pass through unchanged."""
+    return path if os.path.isabs(path) else os.path.join(SKILL_ROOT, path)
 
 def save_json(obj, path: str):
     """Save a dict or dataclass instance to a JSON file. Creates parent dirs."""
+    path = _resolve(path)
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     if is_dataclass(obj):
         obj = asdict(obj)
@@ -21,6 +28,7 @@ def save_scatter_plot(result, path: str, title_suffix: str = ""):
     
     `result` must be a WorkspaceProbeResult (has .point_cloud, .bounds, .n_sampled).
     """
+    path = _resolve(path)
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     pc = result.point_cloud
 

@@ -15,6 +15,10 @@ parser.add_argument("description", type=str,
 parser.add_argument("--num_envs", type=int, default=1000)
 parser.add_argument("--n_samples", type=int, default=2000)
 parser.add_argument("--seed", type=int, default=42)
+parser.add_argument("--skip-validation", action="store_true",
+                    help="Skip FK validation (CuRobo check). Default: validation runs.")
+parser.add_argument("--n_validate", type=int, default=50)
+
 AppLauncher.add_app_launcher_args(parser)
 args_cli = parser.parse_args()
 args_cli.headless = True
@@ -71,6 +75,16 @@ def main(user_description: str, num_envs: int, n_samples: int, seed: int):
     # === Stage 2: Spawn sim ===
     scene, robot = setup_scene(task_spec.robot_name, num_envs)
     print(f"Spawned {scene.num_envs} parallel envs.")
+
+    # Validate FK before any probe runs. Catches silent kinematics regressions
+    # (URDF/Isaac Lab version drift) before they poison downstream stages.
+    if not args_cli.skip_validation:
+        from tests.test_workspace_integration import run_integration_test
+        run_integration_test(
+            scene, robot,
+            n_configs=args_cli.n_validate,
+            seed=args_cli.seed,
+        )
 
     # === Stage 3: Run probes ===
     discovered_config = {"robot": {"name": task_spec.robot_name}}

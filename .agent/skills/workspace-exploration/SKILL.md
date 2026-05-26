@@ -1,3 +1,8 @@
+---
+name: workspace-exploration
+description: Discover the reachable end-effector workspace and other kinematic parameters of a robot. Use this skill FIRST, before any manipulation or training skills, whenever a user wants to set up a new training scenario from a natural-language description. Produces discovered_config.json that downstream skills consume. Triggers on phrases like "train the franka to reach", "set up a reach task", "discover where the robot can reach", "explore the franka's workspace", or any new task setup that requires knowing the robot's reachable region.
+---
+
 # workspace-exploration
 
 Discovers the reachable end-effector workspace for a given robot, given a

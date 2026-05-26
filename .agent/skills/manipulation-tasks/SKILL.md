@@ -1,6 +1,6 @@
 ---
 name: manipulation-tasks
-description: Execute manipulation tasks and RL training scenarios in Isaac Sim using Isaac Lab. Use when the user wants to run reach tasks, pick-and-place, manipulation training, or robot learning scenarios with the Franka Panda robot.
+description: Execute or evaluate a manipulation task in Isaac Sim using Isaac Lab, GIVEN an existing discovered_config.json produced by workspace-exploration. Use AFTER workspace-exploration has run. Do NOT use this skill to set up new tasks from scratch — its job is to run training or play-mode given an existing config. Triggers on phrases like "run the franka reach task", "execute training with this config", "play back the trained policy", "start the manipulation training run".
 ---
 
 # Manipulation Tasks Skill
@@ -9,12 +9,14 @@ This skill enables manipulation tasks and reinforcement learning scenarios using
 
 ## When to use this skill
 
-- User asks to "train a robot to reach"
-- User wants to run "Franka reach task"
-- User mentions "manipulation training" or "RL training"
-- User asks about "end-effector control" or "reaching targets"
-- User wants to "run a manipulation scenario"
-- User asks to "test robot reaching" or "pick and place"
+Use AFTER workspace-exploration has produced `discovered_config.json`. This skill assumes the workspace bounds and other parameters are already known.
+
+- User asks to "run the franka reach training"
+- User says "execute the manipulation task" or "start training"
+- User asks to "play back" or "demo" a trained policy
+- User mentions running an Isaac Lab task with specific parameters already in hand
+
+Do NOT use this skill if the user is describing a NEW task ("train the franka to do X") — that goes to workspace-exploration first.
 
 ## Available Tasks
 

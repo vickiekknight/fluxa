@@ -31,14 +31,14 @@ simulation_app = app_launcher.app
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Now safe to import sim-touching modules.
-import torch  # noqa: E402
-from isaaclab.scene import InteractiveScene, InteractiveSceneCfg  # noqa: E402
-from isaaclab.sim import SimulationContext, SimulationCfg  # noqa: E402
-from isaaclab.utils import configclass  # noqa: E402
-from isaaclab_assets import FRANKA_PANDA_CFG  # noqa: E402
+import torch
+from isaaclab.scene import InteractiveScene, InteractiveSceneCfg
+from isaaclab.sim import SimulationContext, SimulationCfg
+from isaaclab.utils import configclass
+from isaaclab_assets import FRANKA_PANDA_CFG
 
-from probes.workspace_probe import workspace_probe  # noqa: E402
-from helpers.io import save_scatter_plot  # noqa: E402
+from probes.workspace_probe import workspace_probe
+from helpers.io import save_scatter_plot
 
 
 @configclass
