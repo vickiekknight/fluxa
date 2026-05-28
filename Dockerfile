@@ -64,7 +64,7 @@ RUN /isaac-sim/python.sh -m pip install --no-cache-dir \
     -r /tmp/fluxa_requirements.txt
 
 # ── Fluxa source ─────────────────────────────────────────────
-COPY fluxa-agent-pack /isaac-sim/fluxa-agent-pack
+COPY . /isaac-sim/fluxa-agent-pack
 
 # ── Shell aliases ─────────────────────────────────────────────
 RUN echo 'alias runapp=/isaac-sim/runapp.sh' >> ~/.bashrc \

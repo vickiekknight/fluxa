@@ -31,7 +31,7 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
     volumes:
       # Live-mount agent pack so edits don't require rebuild
-      - ./fluxa-agent-pack:/isaac-sim/fluxa-agent-pack
+      - .:/isaac-sim/fluxa-agent-pack
     network_mode: host
     ports:
       - "8765:8765"       # Fluxa WebSocket agent server
