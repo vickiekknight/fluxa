@@ -1,1 +1,8 @@
 .agent/skills/reward-designer/wandb/
+.env
+*.tar
+*.log
+wandb/
+outputs/
+__pycache__/
+*.pyc

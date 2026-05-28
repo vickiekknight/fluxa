@@ -1,0 +1,24 @@
+# ============================================================
+# Fluxa requirements — installed into Isaac Sim's Python env
+# Install via: /isaac-sim/python.sh -m pip install -r requirements.txt
+#
+# Note: Many packages (torch, numpy, fastapi, websockets, ray,
+# stable-baselines3, skrl, etc.) are already bundled in the
+# Isaac Sim base image. Only Fluxa-specific additions are here.
+# ============================================================
+
+# ── LLM backbone (Gemini) ─────────────────────────────────────
+google-genai>=1.68.0
+
+# ── Fluxa agent server ────────────────────────────────────────
+Flask>=3.1.2
+flask-cors>=6.0.0
+gunicorn>=23.0.0
+python-dotenv>=1.2.1
+
+# ── Robotics / data ───────────────────────────────────────────
+robomimic>=0.4.0
+
+# ── Utilities ─────────────────────────────────────────────────
+GitPython>=3.1.46
+moviepy>=2.2.1
