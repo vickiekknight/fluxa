@@ -75,4 +75,4 @@ RUN echo 'alias runapp=/isaac-sim/runapp.sh' >> ~/.bashrc \
 
 WORKDIR /isaac-sim
 EXPOSE 8765/tcp
-CMD ["bash"]
+CMD ["tail", "-f", "/dev/null"]
