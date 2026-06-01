@@ -26,7 +26,8 @@ ENV ACCEPT_EULA=Y \
     NVIDIA_VISIBLE_DEVICES=all \
     NVIDIA_DRIVER_CAPABILITIES=all \
     OMNI_SERVER=https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.0 \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    TERM=xterm
 
 # ── System dependencies ───────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -47,6 +48,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN git clone https://github.com/isaac-sim/IsaacLab.git /isaac-sim/IsaacLab \
     && cd /isaac-sim/IsaacLab \
     && git checkout e10c302cd24 \
+    && ln -sf /isaac-sim /isaac-sim/IsaacLab/_isaac_sim \
     && /isaac-sim/IsaacLab/isaaclab.sh --install
 
 # ── CuRobo ───────────────────────────────────────────────────
