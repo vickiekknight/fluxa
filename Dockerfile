@@ -18,7 +18,7 @@
 #   https://catalog.ngc.nvidia.com/orgs/nvidia/containers/isaac-sim
 # ============================================================
 
-FROM nvcr.io/nvidia/isaac-sim:4.5.0
+FROM nvcr.io/nvidia/isaac-sim:5.0.0
 
 # ── Environment ───────────────────────────────────────────────
 ENV ACCEPT_EULA=Y \
@@ -28,6 +28,8 @@ ENV ACCEPT_EULA=Y \
     OMNI_SERVER=https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.0 \
     DEBIAN_FRONTEND=noninteractive \
     TERM=xterm
+
+USER root
 
 # ── System dependencies ───────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -57,12 +59,11 @@ RUN git clone https://github.com/NVlabs/curobo.git /isaac-sim/curobo \
     && cd /isaac-sim/curobo \
     && git checkout 8726021 \
     && /isaac-sim/python.sh -m pip install --no-cache-dir tomli \
-    && /isaac-sim/python.sh -m pip install --no-cache-dir -e ".[dev]" \
-       --no-build-isolation
+    && /isaac-sim/python.sh -m pip install --no-cache-dir --no-deps .
 
 # ── Fluxa Python dependencies ─────────────────────────────────
 COPY requirements.txt /tmp/fluxa_requirements.txt
-RUN /isaac-sim/python.sh -m pip install --no-cache-dir \
+RUN /isaac-sim/python.sh -m pip install --no-cache-dir --no-deps \
     -r /tmp/fluxa_requirements.txt
 
 # ── Fluxa source ─────────────────────────────────────────────
