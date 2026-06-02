@@ -36,10 +36,6 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - DISPLAY=
       - OMNI_KIT_ALLOW_ROOT=1
-      # ── FORCE NATIVE NVIDIA VULKAN HOOKS ────────────────────
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all,graphics,utility,compute
-      - VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
       
     volumes:
       # Live-mount agent pack so edits don't require rebuild
