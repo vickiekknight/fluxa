@@ -138,11 +138,21 @@ FRANKA_PANDA_CFG.spawn.usd_path = LAB_DIR + "/Robots/FrankaEmika/panda_instancea
 UR10_CFG.spawn.usd_path = LAB_DIR + "/Robots/UniversalRobots/UR10/ur10_instanceable.usd"
 
 env_cfg = task_configs[task_name]()
-env_cfg.commands.ee_pose.debug_vis = False
+env_cfg.commands.ee_pose.debug_vis = True
 env_cfg.scene.ground.spawn.usd_path = ISAAC_DIR + "/Environments/Grid/default_environment.usd"
 
 if hasattr(env_cfg.scene, "table"):
     env_cfg.scene.table.spawn.usd_path = ISAAC_DIR + "/Props/Mounts/SeattleLabTable/table_instanceable.usd"
+
+# Patches for USD path errors 
+for marker_cfg in env_cfg.commands.ee_pose.goal_pose_visualizer_cfg.markers.values():
+    if getattr(marker_cfg, "usd_path", None) and marker_cfg.usd_path.startswith("None"):
+        marker_cfg.usd_path = marker_cfg.usd_path.replace("None", S3_ROOT_50, 1)
+
+if hasattr(env_cfg.commands.ee_pose, "current_pose_visualizer_cfg"):
+    for marker_cfg in env_cfg.commands.ee_pose.current_pose_visualizer_cfg.markers.values():
+        if getattr(marker_cfg, "usd_path", None) and marker_cfg.usd_path.startswith("None"):
+            marker_cfg.usd_path = marker_cfg.usd_path.replace("None", S3_ROOT_50, 1)
 
 # === Reward modifications (from reward-designer Stage 1) ===
 # Injected code, if any, should operate on `env_cfg`
