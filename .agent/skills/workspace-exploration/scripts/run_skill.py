@@ -28,14 +28,23 @@ simulation_app = app_launcher.app
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from isaaclab.scene import InteractiveScene, InteractiveSceneCfg  # noqa: E402
-from isaaclab.sim import SimulationContext, SimulationCfg  # noqa: E402
-from isaaclab.utils import configclass  # noqa: E402
-from isaaclab_assets import FRANKA_PANDA_CFG  # noqa: E402
+from isaaclab.scene import InteractiveScene, InteractiveSceneCfg
+from isaaclab.sim import SimulationContext, SimulationCfg
+from isaaclab.utils import configclass
+from isaaclab_assets import FRANKA_PANDA_CFG
 
-from parser.task_parser import parse_task_description  # noqa: E402
-from probes.workspace_probe import workspace_probe  # noqa: E402
-from helpers.io import save_json, save_scatter_plot  # noqa: E402
+from parser.task_parser import parse_task_description
+from probes.workspace_probe import workspace_probe
+from helpers.io import save_json, save_scatter_plot
+
+_SKILLS_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path.insert(0, _SKILLS_DIR)
+from common.schemas import (
+    DiscoveredConfig, RobotConfig, ProbeResults, WorkspaceProbeResult
+)
+
 
 
 # Robot-frame z = 0 corresponds to the table surface in v1.
@@ -97,31 +106,35 @@ def main(user_description: str, num_envs: int, n_samples: int, seed: int):
             seed=seed,
             ee_body_name=task_spec.ee_body_name,
         )
-        discovered_config["robot"]["workspace_bounds"] = result.bounds
-        save_scatter_plot(
-            result,
-            "outputs/diagnostics/workspace_scatter.png",
-            title_suffix=task_spec.robot_name,
-        )
-        print(f"Probe ran in {result.runtime_seconds:.6f}s")
     else:
         raise NotImplementedError(
             f"Task type {task_spec.task_type!r} not supported in v1"
         )
 
     # === Stage 4: Apply constraints ===
-    if task_spec.constraints.get("surface") == "table":
-        bounds = discovered_config["robot"]["workspace_bounds"]
-        original_z_min = bounds["z"][0]
-        bounds["z"][0] = max(original_z_min, TABLE_HEIGHT)
-        if bounds["z"][0] != original_z_min:
-            print(f"Clipped z_min from {original_z_min:.3f} "
-                  f"to {bounds['z'][0]:.3f} (table constraint)")
+    z_lo = max(result.bounds["z"][0], TABLE_HEIGHT) if task_spec.constraints.get("surface") == "table" else result.bounds["z"][0]
+    z_hi = result.bounds["z"][1]
 
     # === Stage 5: Write outputs ===
-    save_json(discovered_config, "outputs/discovered_config.json")
+    discovered = DiscoveredConfig(
+        robot=RobotConfig(name=task_spec.robot_name),
+        probes=ProbeResults(
+            workspace=WorkspaceProbeResult(
+                x=tuple(result.bounds["x"]),
+                y=tuple(result.bounds["y"]),
+                z=(z_lo, z_hi), 
+            ),
+        ),
+    )
+    save_json(discovered.model_dump(), "outputs/discovered_config.json")
+
+    save_scatter_plot(
+        result,
+        "outputs/diagnostics/workspace_scatter.png",
+        title_suffix=task_spec.robot_name,
+    )
     print("\n=== Discovered Config ===")
-    print(f"Workspace bounds: {discovered_config['robot']['workspace_bounds']}")
+    print(f"Workspace bounds: {discovered.probes.workspace}")
     print("\nOutputs written:")
     print("  outputs/task_spec.json")
     print("  outputs/discovered_config.json")

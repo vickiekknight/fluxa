@@ -1,7 +1,9 @@
 {
   "robot": {
-    "name": "franka",
-    "workspace_bounds": {
+    "name": "franka"
+  },
+  "probes": {
+    "workspace": {
       "x": [
         -0.8402462005615234,
         0.8198883533477783
@@ -14,6 +16,9 @@
         0.0,
         1.1816558837890625
       ]
-    }
+    },
+    "joint_limits": null,
+    "success_threshold": null,
+    "controller_gains": null
   }
 }

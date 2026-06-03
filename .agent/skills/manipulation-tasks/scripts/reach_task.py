@@ -23,8 +23,13 @@ import asyncio
 import json
 import os
 import sys
-
 import websockets
+
+_SKILLS_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path.insert(0, _SKILLS_DIR)
+from common.schemas import DiscoveredConfig
 
 
 RUN_TASK_CODE_TEMPLATE = """
@@ -193,27 +198,49 @@ if task_name in task_configs:
 else:
     print(f"❌ Task {task_name} not found.")
 """
+def extract_template_overrides(config):
+    """Return all template placeholder values as a dict."""
+    overrides = {
+        # workspace defaults
+        "pos_x_override": "None",
+        "pos_y_override": "None",
+        "pos_z_override": "None",
+        # joint limits defaults (future)
+        # success threshold defaults (future)
+        # controller gain defaults (future)
+    }
+    if config is None:
+        return overrides
 
+    ws = config.probes.workspace
+    if ws is not None:
+        overrides["pos_x_override"] = repr(ws.x)
+        overrides["pos_y_override"] = repr(ws.y)
+        overrides["pos_z_override"] = repr(ws.z)
 
-def load_workspace_bounds(config_path):
-    """Load discovered_config.json and extract workspace bounds.
+    # joint limits, success threshold, controller gains: same pattern,
+    # added here as each probe is implemented
 
-    Returns (pos_x, pos_y, pos_z) as (lo, hi) tuples, or (None, None, None)
-    if config_path is falsy or the file is missing.
+    return overrides
+
+def load_discovered_config(config_path):
+    """
+    Load and validate discovered_config.json.
+
+    Returns:
+        DiscoveredConfig | None
     """
     if not config_path:
-        return None, None, None
+        return None
+
     if not os.path.exists(config_path):
-        print(f"⚠️  WARNING: --config path does not exist: {config_path}")
-        print("   Falling back to Isaac Lab default workspace bounds.")
-        return None, None, None
+        print(f"⚠️ WARNING: --config path does not exist: {config_path}")
+        return None
 
     with open(config_path) as f:
-        cfg = json.load(f)
-    bounds = cfg["robot"]["workspace_bounds"]
-    return tuple(bounds["x"]), tuple(bounds["y"]), tuple(bounds["z"])
+        return DiscoveredConfig.model_validate_json(f.read())
 
-
+# For DrEureka stage of the pipeline
 def load_injection_code(file_path, label):
     """Read a Python file for injection into the template.
 
@@ -240,25 +267,19 @@ async def send_run_task_command(task_name, num_envs, env_spacing, duration,
     uri = f"ws://{host}:{port}"
 
     # Load all three injections (each is a no-op if its path is None/missing)
-    pos_x, pos_y, pos_z = load_workspace_bounds(config_file)
+    config = load_discovered_config(config_file)
     reward_code = load_injection_code(reward_file, "reward")
     dr_config_code = load_injection_code(dr_config_file, "dr-config")
 
-    if pos_x is not None:
-        print(f"   Workspace bounds: x={pos_x}, y={pos_y}, z={pos_z}")
-
-    # repr() so None becomes the literal "None" in the substituted code,
-    # and tuples become valid Python tuple literals.
+    overrides = extract_template_overrides(config)
     code = RUN_TASK_CODE_TEMPLATE.format(
         task_name=task_name,
         num_envs=num_envs,
         env_spacing=env_spacing,
         duration=duration,
-        pos_x_override=repr(pos_x),
-        pos_y_override=repr(pos_y),
-        pos_z_override=repr(pos_z),
         reward_code=reward_code,
         dr_config_code=dr_config_code,
+        **overrides,
     )
 
     command = {"type": "execute_python", "code": code}
