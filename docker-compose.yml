@@ -39,7 +39,7 @@ services:
       
     volumes:
       # Live-mount agent pack so edits don't require rebuild
-      - .:/isaac-sim/fluxa-agent-pack
+      - .:/isaac-sim/fluxa
       
     # Directly uses host network stack
     network_mode: host
