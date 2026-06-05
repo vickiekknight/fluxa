@@ -53,13 +53,26 @@ RUN git clone https://github.com/isaac-sim/IsaacLab.git /isaac-sim/IsaacLab \
     && ln -sf /isaac-sim /isaac-sim/IsaacLab/_isaac_sim \
     && /isaac-sim/IsaacLab/isaaclab.sh --install
 
+# ── CUDA toolkit (nvcc, to compile cuRobo kernels) ───────────
+RUN apt-get update && apt-get install -y --no-install-recommends wget \
+    && wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb \
+    && dpkg -i cuda-keyring_1.1-1_all.deb \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends cuda-toolkit-12-8 \
+    && rm cuda-keyring_1.1-1_all.deb \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV CUDA_HOME=/usr/local/cuda-12.8 \
+    PATH=/usr/local/cuda-12.8/bin:${PATH} \
+    TORCH_CUDA_ARCH_LIST="8.9+PTX"
+
 # ── CuRobo ───────────────────────────────────────────────────
 # GPU-accelerated motion generation for robot manipulation
 RUN git clone https://github.com/NVlabs/curobo.git /isaac-sim/curobo \
     && cd /isaac-sim/curobo \
     && git checkout 8726021 \
     && /isaac-sim/python.sh -m pip install --no-cache-dir tomli \
-    && /isaac-sim/python.sh -m pip install --no-cache-dir --no-deps .
+    && /isaac-sim/python.sh -m pip install --no-cache-dir --no-deps --no-build-isolation .
 
 # ── Fluxa Python dependencies ─────────────────────────────────
 COPY requirements.txt /tmp/fluxa_requirements.txt
@@ -67,7 +80,7 @@ RUN /isaac-sim/python.sh -m pip install --no-cache-dir --no-deps \
     -r /tmp/fluxa_requirements.txt
 
 # ── Fluxa source ─────────────────────────────────────────────
-COPY . /isaac-sim/fluxa-agent-pack
+COPY . /isaac-sim/fluxa
 
 # ── Shell aliases ─────────────────────────────────────────────
 RUN echo 'alias runapp=/isaac-sim/runapp.sh' >> ~/.bashrc \
