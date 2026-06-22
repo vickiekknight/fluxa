@@ -70,8 +70,9 @@ ENV CUDA_HOME=/usr/local/cuda-12.8 \
 # GPU-accelerated motion generation for robot manipulation
 RUN git clone https://github.com/NVlabs/curobo.git /isaac-sim/curobo \
     && cd /isaac-sim/curobo \
-    && git checkout 8726021 \
+    && git checkout v0.7.7 \
     && /isaac-sim/python.sh -m pip install --no-cache-dir tomli \
+    && /isaac-sim/python.sh -m pip install --no-cache-dir yourdfpy trimesh numpy-quaternion cuda-python \
     && /isaac-sim/python.sh -m pip install --no-cache-dir --no-deps --no-build-isolation .
 
 # ── Fluxa Python dependencies ─────────────────────────────────

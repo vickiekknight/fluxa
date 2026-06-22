@@ -10,11 +10,20 @@ class WorkspaceProbeResult(BaseModel):
 
 
 class JointLimitsProbeResult(BaseModel):
+    """Self-collision-free region of configuration space.
+
+    Self-collision is multi-joint, so there is no per-joint box. We store
+    summary stats plus a path to the validated collision-free configs (.npy,
+    shape (n_safe, n_joints), robot joint order), which downstream stages
+    sample from directly.
     """
-    Placeholder for future probe output.
-    Replace fields once output format is finalized.
-    """
-    pass
+    n_sampled: int
+    n_safe: int
+    collision_rate: float
+    seed: int
+    joint_lower: list[float]
+    joint_upper: list[float]
+    safe_config_path: str
 
 
 class SuccessThresholdProbeResult(BaseModel):

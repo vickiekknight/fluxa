@@ -6,6 +6,7 @@ Usage:
 import argparse
 import os
 import sys
+import numpy as np
 
 from isaaclab.app import AppLauncher
 
@@ -35,17 +36,37 @@ from isaaclab_assets import FRANKA_PANDA_CFG
 
 from parser.task_parser import parse_task_description
 from probes.workspace_probe import workspace_probe
+from probes.joint_limits_probe import joint_limits_probe
 from helpers.io import save_json, save_scatter_plot
+
+from isaaclab.sensors import ContactSensorCfg
+from isaaclab.sim.schemas import ArticulationRootPropertiesCfg
 
 _SKILLS_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 sys.path.insert(0, _SKILLS_DIR)
 from common.schemas import (
-    DiscoveredConfig, RobotConfig, ProbeResults, WorkspaceProbeResult
+    DiscoveredConfig, RobotConfig, ProbeResults, WorkspaceProbeResult, JointLimitsProbeResult
 )
 
+def _make_franka_cfg():
+    cfg = FRANKA_PANDA_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+    if cfg.spawn.articulation_props is None:
+        cfg.spawn.articulation_props = ArticulationRootPropertiesCfg()
+    cfg.spawn.articulation_props.enabled_self_collisions = True
+    cfg.spawn.activate_contact_sensors = True   # required for ContactSensor to report
+    return cfg
 
+
+@configclass
+class FrankaSceneCfg(InteractiveSceneCfg):
+    robot = _make_franka_cfg()
+    contact_forces = ContactSensorCfg(
+        prim_path="{ENV_REGEX_NS}/Robot/.*",
+        history_length=0,
+        track_air_time=False,
+    )
 
 # Robot-frame z = 0 corresponds to the table surface in v1.
 TABLE_HEIGHT = 0.0
@@ -99,37 +120,55 @@ def main(user_description: str, num_envs: int, n_samples: int, seed: int):
     discovered_config = {"robot": {"name": task_spec.robot_name}}
 
     if task_spec.task_type == "reach":
-        result = workspace_probe(
+        ws_result = workspace_probe(
             scene=scene,
             robot=robot,
             n_samples=n_samples,
             seed=seed,
             ee_body_name=task_spec.ee_body_name,
         )
+        jl_result = joint_limits_probe(
+            sim=sim, scene=scene, robot=robot,
+            n_samples=n_samples, seed=seed,
+        )
+        safe_path = "outputs/diagnostics/safe_configs.npy"
+        os.makedirs("outputs/diagnostics", exist_ok=True)
+        np.save(safe_path, jl_result.safe_configs)
+        print(f"Joint-limits: {jl_result.n_safe}/{jl_result.n_sampled} safe "
+            f"({jl_result.collision_rate:.1%} collide)")
     else:
         raise NotImplementedError(
             f"Task type {task_spec.task_type!r} not supported in v1"
         )
 
     # === Stage 4: Apply constraints ===
-    z_lo = max(result.bounds["z"][0], TABLE_HEIGHT) if task_spec.constraints.get("surface") == "table" else result.bounds["z"][0]
-    z_hi = result.bounds["z"][1]
+    z_lo = max(ws_result.bounds["z"][0], TABLE_HEIGHT) if task_spec.constraints.get("surface") == "table" else ws_result.bounds["z"][0]
+    z_hi = ws_result.bounds["z"][1]
 
     # === Stage 5: Write outputs ===
     discovered = DiscoveredConfig(
         robot=RobotConfig(name=task_spec.robot_name),
         probes=ProbeResults(
             workspace=WorkspaceProbeResult(
-                x=tuple(result.bounds["x"]),
-                y=tuple(result.bounds["y"]),
+                x=tuple(ws_result.bounds["x"]),
+                y=tuple(ws_result.bounds["y"]),
                 z=(z_lo, z_hi), 
+            ),
+            joint_limits=JointLimitsSchema(
+                n_sampled=jl_result.n_sampled,
+                n_safe=jl_result.n_safe,
+                collision_rate=jl_result.collision_rate,
+                seed=jl_result.seed,
+                joint_lower=jl_result.joint_lower.tolist(),
+                joint_upper=jl_result.joint_upper.tolist(),
+                safe_config_path=safe_path,
             ),
         ),
     )
     save_json(discovered.model_dump(), "outputs/discovered_config.json")
 
     save_scatter_plot(
-        result,
+        ws_result,
         "outputs/diagnostics/workspace_scatter.png",
         title_suffix=task_spec.robot_name,
     )

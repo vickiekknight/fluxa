@@ -143,6 +143,31 @@ FRANKA_PANDA_CFG.spawn.usd_path = LAB_DIR + "/Robots/FrankaEmika/panda_instancea
 UR10_CFG.spawn.usd_path = LAB_DIR + "/Robots/UniversalRobots/UR10/ur10_instanceable.usd"
 
 env_cfg = task_configs[task_name]()
+
+# === Joint-limits reset override (from workspace-exploration) ===
+safe_config_path = {safe_config_path_override}
+if safe_config_path is not None:
+    import numpy as _np
+    import torch as _torch
+    from isaaclab.managers import EventTermCfg as _EventTerm, SceneEntityCfg as _SceneEntityCfg
+
+    _safe = _torch.tensor(_np.load(safe_config_path), dtype=_torch.float32)
+
+    def _reset_joints_from_safe_set(env, env_ids, asset_cfg, safe_configs):
+        asset = env.scene[asset_cfg.name]
+        safe = safe_configs.to(env.device)
+        pick = _torch.randint(0, safe.shape[0], (len(env_ids),), device=env.device)
+        q = safe[pick]
+        asset.write_joint_state_to_sim(q, _torch.zeros_like(q), env_ids=env_ids)
+
+    env_cfg.events.reset_robot_joints = _EventTerm(
+        func=_reset_joints_from_safe_set, mode="reset",
+        params={{"asset_cfg": _SceneEntityCfg("robot"), "safe_configs": _safe}},
+    )
+    print("[reach_task] OVERRIDE: joint reset from safe set,", _safe.shape[0], "configs")
+else:
+    print("[reach_task] DEFAULT: Isaac Lab built-in joint reset")
+    
 env_cfg.commands.ee_pose.debug_vis = True
 env_cfg.scene.ground.spawn.usd_path = ISAAC_DIR + "/Environments/Grid/default_environment.usd"
 
@@ -198,6 +223,7 @@ if task_name in task_configs:
 else:
     print(f"❌ Task {task_name} not found.")
 """
+
 def extract_template_overrides(config):
     """Return all template placeholder values as a dict."""
     overrides = {
@@ -205,7 +231,10 @@ def extract_template_overrides(config):
         "pos_x_override": "None",
         "pos_y_override": "None",
         "pos_z_override": "None",
-        # joint limits defaults (future)
+        
+        # joint limits defaults
+        "safe_config_path_override": "None",
+        
         # success threshold defaults (future)
         # controller gain defaults (future)
     }
@@ -220,6 +249,9 @@ def extract_template_overrides(config):
 
     # joint limits, success threshold, controller gains: same pattern,
     # added here as each probe is implemented
+    jl = config.probes.joint_limits
+    if jl is not None:
+        overrides["safe_config_path_override"] = repr(jl.safe_config_path)
 
     return overrides
 

@@ -5,9 +5,10 @@ have an initialized Isaac Lab scene with a Franka.
 """
 import torch
 
-from curobo.kinematics import Kinematics, KinematicsCfg
-from curobo.types import JointState
-
+from curobo.cuda_robot_model.cuda_robot_model import CudaRobotModel
+from curobo.types.base import TensorDeviceType
+from curobo.types.robot import RobotConfig
+from curobo.util_file import get_robot_path, join_path, load_yaml
 
 def run_integration_test(scene, robot, n_configs: int = 50, seed: int = 0,
                          atol: float = 2e-3) -> dict:
@@ -33,30 +34,44 @@ def run_integration_test(scene, robot, n_configs: int = 50, seed: int = 0,
     print("\n=== FK Integration Test (Isaac Lab vs CuRobo) ===")
 
     # --- 1. CuRobo kinematics ---
-    cfg = KinematicsCfg.from_robot_yaml_file("franka.yml")
-    curobo_kin = Kinematics(cfg)
+    tensor_args = TensorDeviceType()
+    robot_yaml = load_yaml(join_path(get_robot_path(), "franka.yml"))["robot_cfg"]
+    robot_cfg = RobotConfig.from_dict(robot_yaml, tensor_args)
+    kin_model = CudaRobotModel(robot_cfg.kinematics)
+    curobo_joint_names = kin_model.joint_names
     
     # --- 2. Map CuRobo's joints onto Isaac Lab's joint vector ---
     # CuRobo's franka.yml uses 7 arm DOF; Isaac Lab's Franka has 9 joints
     # (7 arm + 2 finger). We test the 7 arm joints and leave fingers at default.
-    missing = [j for j in curobo_kin.joint_names if j not in robot.joint_names]
+    missing = [j for j in curobo_joint_names if j not in robot.joint_names]
     assert not missing, (
         f"CuRobo joints not present in Isaac Lab robot: {missing}\n"
-        f"  CuRobo:    {curobo_kin.joint_names}\n"
+        f"  CuRobo:    {curobo_joint_names}\n"
         f"  Isaac Lab: {robot.joint_names}"
     )
-    isaac_indices = [robot.joint_names.index(j) for j in curobo_kin.joint_names]
+    isaac_indices = [robot.joint_names.index(j) for j in curobo_joint_names]
     idx_tensor = torch.tensor(isaac_indices, device=robot.device, dtype=torch.long)
     
-    print(f"  CuRobo DOF: {len(curobo_kin.joint_names)} | "
+    print(f"  CuRobo DOF: {len(curobo_joint_names)} | "
           f"Isaac Lab joints: {len(robot.joint_names)}")
     print(f"  Arm-joint indices in Isaac Lab: {isaac_indices}")
 
-    ee_link = curobo_kin.tool_frames[0]
+    # ee_link comes from the cuRobo config. For the comparison below to be
+    # frame-consistent it must (a) name a body present in Isaac Lab, and
+    # (b) be expressed in a base frame matching Isaac Lab's robot root.
+    # If ee_link is not an Isaac body (e.g. panda_grasptarget), either point it
+    # at panda_hand in franka.yml, or pull that link explicitly from the cuRobo
+    # state via out.link_pose["panda_hand"].position (link must be tracked).
+    ee_link = robot_yaml["kinematics"]["ee_link"]
+    assert ee_link in robot.body_names, (
+        f"CuRobo ee_link '{ee_link}' is not an Isaac Lab body name.\n"
+        f"  Isaac Lab bodies: {robot.body_names}"
+    )
     ee_idx = robot.body_names.index(ee_link)
     assert n_configs <= scene.num_envs, (
         f"Need scene.num_envs ({scene.num_envs}) >= n_configs ({n_configs})."
     )
+
 
     # --- 3. Sample random configs within URDF joint limits ---
     # Match workspace_probe's sampling distribution. We sample only the 7
@@ -80,13 +95,9 @@ def run_integration_test(scene, robot, n_configs: int = 50, seed: int = 0,
     arm_configs = lo + u * (hi - lo)                                     # (N, 7)
 
     # --- 4. CuRobo reference FK on the 7-DOF arm configs ---
-    state = curobo_kin.compute_kinematics(
-        JointState.from_position(
-            arm_configs.to(device="cuda:0", dtype=torch.float32).contiguous(),
-            joint_names=curobo_kin.joint_names,
-        )
-    )
-    ee_curobo = state.tool_poses.get_link_pose(ee_link).position         # (N, 3)
+    q = arm_configs.to(device="cuda:0", dtype=torch.float32).contiguous()  # (N, 7)
+    out = kin_model.get_state(q)                                           # CudaRobotModelState
+    ee_curobo = out.ee_position                                           # (N, 3)
 
     # --- 5. Isaac Lab FK: build full 9-joint vector, vary only the arm 7 ---
     # Fingers stay at default; they don't affect panda_hand pose.
