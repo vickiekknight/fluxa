@@ -146,27 +146,52 @@ env_cfg = task_configs[task_name]()
 
 # === Joint-limits reset override (from workspace-exploration) ===
 safe_config_path = {safe_config_path_override}
+_jl_status = {{"requested": safe_config_path is not None, "applied": False,
+              "n_configs": 0, "path": safe_config_path, "error": None}}
 if safe_config_path is not None:
     import numpy as _np
     import torch as _torch
     from isaaclab.managers import EventTermCfg as _EventTerm, SceneEntityCfg as _SceneEntityCfg
+    try:
+        _safe = _torch.tensor(_np.load(safe_config_path), dtype=_torch.float32)
 
-    _safe = _torch.tensor(_np.load(safe_config_path), dtype=_torch.float32)
+        def _reset_joints_from_safe_set(env, env_ids, asset_cfg, safe_configs):
+            asset = env.scene[asset_cfg.name]
+            safe = safe_configs.to(env.device)
+            pick = _torch.randint(0, safe.shape[0], (len(env_ids),), device=env.device)
+            q = safe[pick]
+            asset.write_joint_state_to_sim(q, _torch.zeros_like(q), env_ids=env_ids)
 
-    def _reset_joints_from_safe_set(env, env_ids, asset_cfg, safe_configs):
-        asset = env.scene[asset_cfg.name]
-        safe = safe_configs.to(env.device)
-        pick = _torch.randint(0, safe.shape[0], (len(env_ids),), device=env.device)
-        q = safe[pick]
-        asset.write_joint_state_to_sim(q, _torch.zeros_like(q), env_ids=env_ids)
-
-    env_cfg.events.reset_robot_joints = _EventTerm(
-        func=_reset_joints_from_safe_set, mode="reset",
-        params={{"asset_cfg": _SceneEntityCfg("robot"), "safe_configs": _safe}},
-    )
-    print("[reach_task] OVERRIDE: joint reset from safe set,", _safe.shape[0], "configs")
+        env_cfg.events.reset_robot_joints = _EventTerm(
+            func=_reset_joints_from_safe_set, mode="reset",
+            params={{"asset_cfg": _SceneEntityCfg("robot"), "safe_configs": _safe}},
+        )
+        _jl_status["applied"] = True
+        _jl_status["n_configs"] = int(_safe.shape[0])
+        print("[reach_task] OVERRIDE: joint reset from safe set,", _safe.shape[0], "configs")
+    except Exception as _e:
+        _jl_status["error"] = repr(_e)
+        print("[reach_task] ERROR applying joint-reset override:", repr(_e))
 else:
     print("[reach_task] DEFAULT: Isaac Lab built-in joint reset")
+
+# === Apply-status marker (durable receipt of what actually applied) ===
+import json as _json, os as _os, time as _time
+_ws_x = {pos_x_override}
+_status = {{
+    "time": _time.strftime("%Y-%m-%d %H:%M:%S"),
+    "task": "{task_name}",
+    "workspace": {{"applied": _ws_x is not None, "bounds_x": _ws_x}},
+    "joint_limits": _jl_status,
+}}
+_status_path = "/isaac-sim/outputs/reach_task_status.json"
+try:
+    _os.makedirs(_os.path.dirname(_status_path), exist_ok=True)
+    with open(_status_path, "w") as _f:
+        _json.dump(_status, _f, indent=2)
+    print("[reach_task] status written ->", _status_path)
+except Exception as _e:
+    print("[reach_task] could not write status file:", repr(_e))
     
 env_cfg.commands.ee_pose.debug_vis = True
 env_cfg.scene.ground.spawn.usd_path = ISAAC_DIR + "/Environments/Grid/default_environment.usd"
