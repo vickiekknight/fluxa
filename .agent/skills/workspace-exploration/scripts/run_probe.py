@@ -1,8 +1,13 @@
 """Probe-only entry point. Hardcoded args for fast iteration.
 
 Usage:
-    python scripts/run_probe.py
-    python scripts/run_probe.py --num_envs 1000 --n_samples 10000
+    ./python scripts/run_probe.py
+    ./python scripts/run_probe.py --num_envs 1000 --n_samples 10000
+
+    # success-threshold smoke test (flips gravity ON, runs workspace -> success,
+    # skips joint-limits since gravity-on is not its validated condition):
+    ./python scripts/run_probe.py --success-threshold
+    ./python scripts/run_probe.py --success-threshold --n_targets 1000 --st_n_steps 250
 """
 import argparse
 import os
@@ -22,6 +27,22 @@ parser.add_argument("--n_validate", type=int, default=50,
                     help="Number of random configs for FK validation.")
 parser.add_argument("--validate-collision", action="store_true",
                     help="Run collision validation against CuRobo before probing.")
+
+# --- success-threshold probe ---
+parser.add_argument("--success-threshold", action="store_true",
+                    help="Run the success-threshold probe. Requires gravity ON, "
+                         "so this flips gravity on and skips the joint-limits probe.")
+parser.add_argument("--n_targets", type=int, default=500,
+                    help="Targets for the success-threshold probe (padded to a "
+                         "multiple of num_envs).")
+parser.add_argument("--st_n_steps", type=int, default=200,
+                    help="Oracle rollout horizon for the success-threshold probe.")
+parser.add_argument("--st_statistic", type=str, default="p90",
+                    help="Percentile of the error distribution to use as threshold.")
+parser.add_argument("--gravity_z", type=float, default=None,
+                    help="Override gravity z. Default: -9.81 when --success-threshold "
+                         "is set, else 0.0 (the validated condition for the other probes).")
+
 AppLauncher.add_app_launcher_args(parser)
 args_cli = parser.parse_args()
 args_cli.headless = True
@@ -42,6 +63,7 @@ from isaaclab_assets import FRANKA_PANDA_CFG
 
 from probes.workspace_probe import workspace_probe
 from probes.joint_limits_probe import joint_limits_probe
+from probes.success_threshold_probe import success_threshold_probe
 from helpers.io import save_scatter_plot
 
 from isaaclab.sensors import ContactSensorCfg
@@ -65,9 +87,36 @@ class FrankaSceneCfg(InteractiveSceneCfg):
         track_air_time=False,
     )
 
+def _save_error_hist(errors_m, path, threshold_m, statistic):
+    """Quick histogram of EE-position error (mm) with the chosen percentile marked."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.hist(errors_m * 1000.0, bins=50, color="#4C72B0", alpha=0.85)
+        ax.axvline(threshold_m * 1000.0, color="crimson", ls="--",
+                   label=f"{statistic} = {threshold_m * 1000.0:.2f} mm")
+        ax.set_xlabel("EE position error (mm)")
+        ax.set_ylabel("count")
+        ax.set_title("Success-threshold probe: oracle execution error")
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(path, dpi=120)
+        plt.close(fig)
+        print(f"Error histogram saved to {path}")
+    except Exception as e:
+        print(f"(skipped histogram: {e})")
+
 def main():
+    # Gravity: success-threshold needs it ON; the other probes were validated OFF.
+    if args_cli.gravity_z is not None:
+        gravity_z = args_cli.gravity_z
+    else:
+        gravity_z = -9.81 if args_cli.success_threshold else 0.0
+
     # Set up sim and scene.
-    sim_cfg = SimulationCfg(device="cuda:0", gravity=(0.0, 0.0, 0.0))
+    sim_cfg = SimulationCfg(device="cuda:0", gravity=(0.0, 0.0, gravity_z))
     sim = SimulationContext(sim_cfg)
 
     scene_cfg = FrankaSceneCfg(num_envs=args_cli.num_envs, env_spacing=2.0)
@@ -105,6 +154,8 @@ def main():
             print(f"\n❌ Collision Validation Failed! (Recall threshold missed).")
 
     # Run the probe.
+
+    # --- Workspace Probe ---
     ws_result = workspace_probe(
         scene=scene,
         robot=robot,
@@ -126,19 +177,56 @@ def main():
                       title_suffix="Franka, run_probe.py")
     print(f"\nScatter plot saved to outputs/diagnostics/workspace_scatter.png")
 
-    jl_result = joint_limits_probe(
-        sim=sim, scene=scene, robot=robot,
-        n_samples=args_cli.n_samples, seed=args_cli.seed,
-    )
-    print(f"\n=== Joint-Limits Probe Results ===")
-    print(f"N sampled:      {jl_result.n_sampled}")
-    print(f"N safe:         {jl_result.n_safe}")
-    print(f"Collision rate: {jl_result.collision_rate:.1%}")
-    print(f"Runtime:        {jl_result.runtime_seconds:.2f}s")
+    # --- Joint-limits probe ---
+    # validated gravity-OFF; skip when gravity is on -> gravity off isolates
+    # the variables joint limits probe is testing. 
+    if abs(gravity_z) < 1e-6:
+        jl_result = joint_limits_probe(
+            sim=sim, scene=scene, robot=robot,
+            n_samples=args_cli.n_samples, seed=args_cli.seed,
+        )
+        print(f"\n=== Joint-Limits Probe Results ===")
+        print(f"N sampled:      {jl_result.n_sampled}")
+        print(f"N safe:         {jl_result.n_safe}")
+        print(f"Collision rate: {jl_result.collision_rate:.1%}")
+        print(f"Runtime:        {jl_result.runtime_seconds:.2f}s")
+        np.save("outputs/diagnostics/safe_configs.npy", jl_result.safe_configs)
+        print("Safe configs saved to outputs/diagnostics/safe_configs.npy")
+    else:
+        print("\n(joint-limits probe skipped: gravity is on, which is not its "
+              "validated condition. Run it in a separate gravity-off invocation.)")
 
-    os.makedirs("outputs/diagnostics", exist_ok=True)
-    np.save("outputs/diagnostics/safe_configs.npy", jl_result.safe_configs)
-    print("Safe configs saved to outputs/diagnostics/safe_configs.npy")
+    # --- Success-threshold probe (requires gravity ON) ---
+    if args_cli.success_threshold:
+        st_result = success_threshold_probe(
+            sim=sim, scene=scene, robot=robot,
+            workspace_points=ws_result.point_cloud,
+            n_targets=args_cli.n_targets,
+            seed=args_cli.seed,
+            ee_body_name="panda_hand",
+            statistic=args_cli.st_statistic,
+            n_steps=args_cli.st_n_steps,
+        )
+        print(f"\n=== Success-Threshold Probe Results ===")
+        print(f"Threshold ({st_result.statistic}): "
+              f"{st_result.threshold_m * 1000:.2f} mm  ({st_result.threshold_m:.5f} m)")
+        print(f"Targets measured: {st_result.n_measured} / {st_result.n_targets}")
+        print(f"Convergence rate: {st_result.convergence_rate:.1%} "
+              f"(settled within n_steps={st_result.n_steps})")
+        print(f"EE frame:         {st_result.ee_frame}")
+        print(f"Gravity z:        {st_result.gravity_z}")
+        print(f"Position error percentiles (mm):")
+        for k, v in st_result.position_error_percentiles_m.items():
+            print(f"  {k:>4}: {v * 1000:7.2f}")
+        if st_result.position_error_percentiles_m is not None:
+            op = st_result.position_error_percentiles_m
+            print(f"Orientation error p90: {op['p90']:.2f} deg  (max {op['max']:.2f})")
+        print(f"Runtime:          {st_result.runtime_seconds:.2f}s")
+ 
+        np.save("outputs/diagnostics/success_threshold_errors.npy", st_result.errors_m)
+        _save_error_hist(st_result.errors_m,
+                         "outputs/diagnostics/success_threshold_hist.png",
+                         st_result.threshold_m, st_result.statistic)
 
 
 if __name__ == "__main__":
