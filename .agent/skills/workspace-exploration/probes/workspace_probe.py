@@ -20,6 +20,7 @@ class WorkspaceProbeResult:
     n_sampled: int
     n_valid: int             # equals n_sampled in v1 (no filtering)
     runtime_seconds: float
+    ee_frame: str
 
 def sample_configs(lo: torch.Tensor, hi: torch.Tensor, num_envs: int,
                    generator: torch.Generator) -> torch.Tensor:
@@ -119,4 +120,5 @@ def workspace_probe(scene, robot, n_samples: int, seed: int = 0,
         bounds=bounds, point_cloud=point_cloud,
         n_sampled=n_actual, n_valid=n_actual,
         runtime_seconds=time.time() - start,
+        ee_frame=ee_body_name,
     )

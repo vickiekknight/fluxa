@@ -27,6 +27,8 @@ parser.add_argument("--n_validate", type=int, default=50,
                     help="Number of random configs for FK validation.")
 parser.add_argument("--validate-collision", action="store_true",
                     help="Run collision validation against CuRobo before probing.")
+parser.add_argument("--ee_body_name", type=str, default="panda_hand",
+                    help="EE body ALL probes measure at.")
 
 # --- success-threshold probe ---
 parser.add_argument("--success-threshold", action="store_true",
@@ -127,8 +129,6 @@ def main():
     print(f"Spawned scene with {scene.num_envs} envs.")
     print(f"Robot has {robot.num_joints} joints, body names: {robot.body_names}")
 
-    n_validate = max(args_cli.n_validate, args_cli.num_envs)
-
     # FK validation (optional; bails before probe runs if it fails)
     if args_cli.validate_fk:
         try:
@@ -161,7 +161,7 @@ def main():
         robot=robot,
         n_samples=args_cli.n_samples,
         seed=args_cli.seed,
-        ee_body_name="panda_hand",
+        ee_body_name=args_cli.ee_body_name, # "panda_hand"
     )
 
     print(f"\n=== Workspace Probe Results ===")
@@ -203,7 +203,7 @@ def main():
             workspace_points=ws_result.point_cloud,
             n_targets=args_cli.n_targets,
             seed=args_cli.seed,
-            ee_body_name="panda_hand",
+            ee_body_name=args_cli.ee_body_name,
             statistic=args_cli.st_statistic,
             n_steps=args_cli.st_n_steps,
         )
@@ -218,9 +218,6 @@ def main():
         print(f"Position error percentiles (mm):")
         for k, v in st_result.position_error_percentiles_m.items():
             print(f"  {k:>4}: {v * 1000:7.2f}")
-        if st_result.position_error_percentiles_m is not None:
-            op = st_result.position_error_percentiles_m
-            print(f"Orientation error p90: {op['p90']:.2f} deg  (max {op['max']:.2f})")
         print(f"Runtime:          {st_result.runtime_seconds:.2f}s")
  
         np.save("outputs/diagnostics/success_threshold_errors.npy", st_result.errors_m)
