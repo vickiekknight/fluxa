@@ -5,12 +5,11 @@ Position-only DLS oracle: sample target positions, drive the arm to each with
 Isaac Lab's differential-IK controller under gravity, measure settled EE error,
 take a percentile (p90) as the threshold.
 
-DEBUG SCAFFOLDING (temporary):
-  ISOLATION_TEST=True  -> targets are FK of small perturbations around home,
-                          i.e. provably reachable with a known-good solution.
-                          Used to tell "distribution problem" from "solver bug".
-  DEBUG=True           -> per-step trace on batch 0.
-Remove both once the probe is validated.
+Phase A solves each target kinematically (teleporting each iteration, so no
+dynamics or gravity are involved) to get a reference joint solution. Phase B
+then drives the real, gravity-loaded arm toward that solution via a PD
+position target plus an online damped-least-squares correction, at policy
+control cadence, and measures where it actually settles.
 """
 import time
 from dataclasses import dataclass
@@ -18,10 +17,6 @@ from typing import Optional
 
 import numpy as np
 import torch
-
-DEBUG = True
-ISOLATION_TEST = True          # True: near-home reachable targets (bug-isolation)
-ISO_DELTA_RAD = 0.3            # perturbation magnitude around home for the test
 
 
 @dataclass
@@ -33,8 +28,6 @@ class SuccessThresholdProbeResult:
     n_measured: int
     convergence_rate: float
     ee_frame: str
-    command_type: str
-    n_steps: int
     physics_dt: float
     gravity_z: Optional[float]
     units: str
@@ -59,16 +52,67 @@ def _percentiles(values: np.ndarray) -> dict:
     return out
 
 
+def solve_kinematic_ik(sim, scene, robot, p_t, *, ee_idx, arm_ids_t, ee_jacobi_idx,
+                       q_lim, default_q, zero_vel, dt, n_ik_iters=30):
+    """Pure-kinematic DLS IK solve for target EE positions `p_t` (robot-base
+    frame): teleports each iteration so measured == commanded, so no dynamics
+    or gravity are involved. Returns (q, residual, diff_ik) -- the solved full
+    joint vector, per-env EE position error, and the DifferentialIKController
+    left seeded with this target (success_threshold_probe's Phase B reuses it).
+
+    Reused by success_threshold_probe (as Phase A) and by
+    tests/test_success_threshold_validation.py (CuRobo FK cross-check).
+    """
+    from isaaclab.controllers import DifferentialIKController, DifferentialIKControllerCfg
+    from isaaclab.utils.math import subtract_frame_transforms
+
+    num_envs = scene.num_envs
+    ik_cfg = DifferentialIKControllerCfg(
+        command_type="position", use_relative_mode=False, ik_method="dls",
+    )
+    diff_ik = DifferentialIKController(ik_cfg, num_envs=num_envs, device=robot.device)
+
+    q = default_q.clone()
+    robot.write_joint_state_to_sim(q, zero_vel)
+    robot.set_joint_position_target(q)
+    scene.write_data_to_sim(); sim.step(render=False); scene.update(dt)
+
+    cur_pos_b, cur_quat_b = subtract_frame_transforms(
+        robot.data.root_pos_w, robot.data.root_quat_w,
+        robot.data.body_pos_w[:, ee_idx], robot.data.body_quat_w[:, ee_idx])
+    diff_ik.reset()
+    diff_ik.set_command(p_t, ee_pos=cur_pos_b, ee_quat=cur_quat_b)
+
+    for _ in range(n_ik_iters):                    # ~30 is plenty for DLS
+        ee_pos_b, ee_quat_b = subtract_frame_transforms(
+            robot.data.root_pos_w, robot.data.root_quat_w,
+            robot.data.body_pos_w[:, ee_idx], robot.data.body_quat_w[:, ee_idx])
+        J = robot.root_physx_view.get_jacobians()[:, ee_jacobi_idx, :, arm_ids_t]
+        q_arm = diff_ik.compute(ee_pos_b, ee_quat_b, J, q[:, arm_ids_t])
+        q[:, arm_ids_t] = torch.clamp(q_arm, q_lim[..., 0], q_lim[..., 1])
+        robot.write_joint_state_to_sim(q, zero_vel)
+        robot.set_joint_position_target(q)
+        scene.write_data_to_sim(); sim.step(render=False); scene.update(dt)
+
+    ee_pos_b, _ = subtract_frame_transforms(
+        robot.data.root_pos_w, robot.data.root_quat_w,
+        robot.data.body_pos_w[:, ee_idx], robot.data.body_quat_w[:, ee_idx])
+    residual = torch.linalg.norm(ee_pos_b - p_t, dim=-1)
+
+    return q, residual, diff_ik
+
+
 def success_threshold_probe(sim, scene, robot, workspace_points, *,
                             n_targets: int, seed: int = 0,
                             ee_body_name: str = "panda_hand",
                             arm_joint_expr: str = "panda_joint.*",
                             statistic: str = "p90",
-                            n_steps: int = 200,
-                            settle_tol_m: float = 1e-4) -> SuccessThresholdProbeResult:
-    from isaaclab.controllers import DifferentialIKController, DifferentialIKControllerCfg
+                            n_ik_iters: int = 30,
+                            decimation: int = 2,
+                            n_control_steps: int = 300,
+                            alpha: float = 0.2,
+                            ee_settle_vel_tol: float = 1e-3) -> SuccessThresholdProbeResult:
     from isaaclab.utils.math import subtract_frame_transforms
-
 
     start = time.time()
     device = robot.device
@@ -83,18 +127,10 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
     arm_ids, _ = robot.find_joints(arm_joint_expr, preserve_order=True)
     arm_ids_t = torch.as_tensor(arm_ids, device=device, dtype=torch.long)
     ee_jacobi_idx = ee_idx - 1 if robot.is_fixed_base else ee_idx
+    q_lim = robot.data.soft_joint_pos_limits[:, arm_ids_t, :] 
 
     default_q = robot.data.default_joint_pos.clone()
     zero_vel = torch.zeros_like(default_q)
-
-    if DEBUG:
-        print(f"[debug] ee_idx={ee_idx}  ee_jacobi_idx={ee_jacobi_idx}  arm_ids={arm_ids}")
-        print(f"[debug] ISOLATION_TEST={ISOLATION_TEST}")
-
-    ik_cfg = DifferentialIKControllerCfg(
-        command_type="position", use_relative_mode=False, ik_method="dls",
-    )
-    diff_ik = DifferentialIKController(ik_cfg, num_envs=num_envs, device=device)
 
     pts = torch.as_tensor(np.asarray(workspace_points), device=device, dtype=torch.float32)
     n_batches = (n_targets + num_envs - 1) // num_envs
@@ -106,83 +142,57 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
     err_chunks, tgt_chunks, settled_chunks = [], [], []
 
     for b in range(n_batches):
-        # q_known is only defined in the isolation branch; None otherwise.
-        q_known = None
 
-        if ISOLATION_TEST:
-            # Target = FK of a small perturbation around home: provably reachable,
-            # known-good joint solution (q_known), inside the DLS basin.
-            delta = ISO_DELTA_RAD * (2 * torch.rand((num_envs, len(arm_ids)), device=device) - 1)
-            q_known = default_q.clone()
-            q_known[:, arm_ids_t] = default_q[:, arm_ids_t] + delta
-            robot.write_joint_state_to_sim(q_known, zero_vel)
-            robot.set_joint_position_target(q_known)
-            scene.write_data_to_sim()
-            sim.step(render=False)
-            scene.update(dt)
-            p_t = (robot.data.body_pos_w[:, ee_idx] - robot.data.root_pos_w).clone()
-        else:
-            p_t = pts[sample_idx[b * num_envs:(b + 1) * num_envs].to(device)]
+        p_t = pts[sample_idx[b * num_envs:(b + 1) * num_envs].to(device)]
 
-        # reset arm to home; rollout always starts here
-        robot.write_joint_state_to_sim(default_q, zero_vel)
-        robot.set_joint_position_target(default_q)
-        scene.write_data_to_sim()
-        sim.step(render=False)
-        scene.update(dt)
-
-        cur_pos_b, cur_quat_b = subtract_frame_transforms(
-            robot.data.root_pos_w, robot.data.root_quat_w,
-            robot.data.body_pos_w[:, ee_idx], robot.data.body_quat_w[:, ee_idx],
+        # ---- Phase A: kinematic IK. Teleport each iter so meas == cmd.
+        q, _ik_residual, diff_ik = solve_kinematic_ik(
+            sim, scene, robot, p_t,
+            ee_idx=ee_idx, arm_ids_t=arm_ids_t, ee_jacobi_idx=ee_jacobi_idx,
+            q_lim=q_lim, default_q=default_q, zero_vel=zero_vel, dt=dt,
+            n_ik_iters=n_ik_iters,
         )
-        diff_ik.reset()
-        diff_ik.set_command(p_t, ee_pos=cur_pos_b, ee_quat=cur_quat_b)
 
-        prev_ee_w = robot.data.body_pos_w[:, ee_idx].clone()
-        last_step_disp = torch.full((num_envs,), float("inf"), device=device)
+        # ---- Phase B: closed-loop correction under gravity, at policy cadence.
+        robot.write_joint_state_to_sim(default_q, zero_vel)
+        q_des = q.clone()
 
-        for step in range(n_steps):
-            ee_pos_w = robot.data.body_pos_w[:, ee_idx]
-            ee_quat_w = robot.data.body_quat_w[:, ee_idx]
+        control_dt = decimation * dt
+        prev_ee_pos_b = None
+        ee_vel = torch.zeros(num_envs, device=device)
+
+        for step in range(n_control_steps):          # = episode_length_s / (dt*decimation)
+            robot.set_joint_position_target(q_des)
+            for _ in range(decimation):
+                scene.write_data_to_sim(); sim.step(render=False); scene.update(dt)
+
             ee_pos_b, ee_quat_b = subtract_frame_transforms(
-                robot.data.root_pos_w, robot.data.root_quat_w, ee_pos_w, ee_quat_w
-            )
-            jacobian = robot.root_physx_view.get_jacobians()[:, ee_jacobi_idx, :, arm_ids_t]
-            joint_pos = robot.data.joint_pos[:, arm_ids_t]
+                robot.data.root_pos_w, robot.data.root_quat_w,
+                robot.data.body_pos_w[:, ee_idx], robot.data.body_quat_w[:, ee_idx])
+            q_meas = robot.data.joint_pos[:, arm_ids_t]
 
-            joint_pos_des = diff_ik.compute(ee_pos_b, ee_quat_b, jacobian, joint_pos)
-            robot.set_joint_position_target(joint_pos_des, joint_ids=arm_ids)
-            scene.write_data_to_sim()
-            for _sub in range(4):                     # let the PD reach q_des
-                sim.step(render=False)
-                scene.update(dt)
+            # EE velocity (task-space), not joint velocity: a redundant 7-DOF
+            # arm doing a position-only task has null-space motion that never
+            # settles in joint space even once the EE itself has stopped.
+            if prev_ee_pos_b is not None:
+                ee_vel = torch.linalg.norm(ee_pos_b - prev_ee_pos_b, dim=-1) / control_dt
+            prev_ee_pos_b = ee_pos_b.clone()
 
-            if DEBUG and b == 0 and step % 25 == 0:
-                ee_now = robot.data.body_pos_w[:, ee_idx] - robot.data.root_pos_w
-                med_err = torch.linalg.norm(ee_now - p_t, dim=-1).median()
-                cmd_gap = torch.linalg.norm(ee_pos_b - p_t, dim=-1).median()
-                des_gap = torch.linalg.norm(
-                    joint_pos_des - robot.data.joint_pos[:, arm_ids_t], dim=-1
-                ).median()
-                msg = (f"[debug] step {step:4d}  med_err={med_err*1000:7.1f}mm  "
-                       f"cmd_gap={cmd_gap*1000:7.1f}mm  des_gap={des_gap:.4f}")
-                if q_known is not None:
-                    sol_gap = torch.linalg.norm(
-                        joint_pos_des - q_known[:, arm_ids_t], dim=-1
-                    ).median()
-                    msg += f"  sol_gap={sol_gap:.4f}rad"
-                print(msg)
+            J = robot.root_physx_view.get_jacobians()[:, ee_jacobi_idx, :, arm_ids_t]
+            delta = diff_ik.compute(ee_pos_b, ee_quat_b, J, q_meas) - q_meas
+            q_des[:, arm_ids_t] = torch.clamp(
+                q_des[:, arm_ids_t] + alpha * delta, q_lim[..., 0], q_lim[..., 1])
 
-            cur_ee_w = robot.data.body_pos_w[:, ee_idx]
-            last_step_disp = torch.linalg.norm(cur_ee_w - prev_ee_w, dim=-1)
-            prev_ee_w = cur_ee_w.clone()
+        ee_pos_b, _ = subtract_frame_transforms(
+            robot.data.root_pos_w, robot.data.root_quat_w,
+            robot.data.body_pos_w[:, ee_idx], robot.data.body_quat_w[:, ee_idx])
 
-        ee_rel = robot.data.body_pos_w[:, ee_idx] - robot.data.root_pos_w
-        err = torch.linalg.norm(ee_rel - p_t, dim=-1)
+        err = torch.linalg.norm(ee_pos_b - p_t, dim=-1)
+        settled = ee_vel < ee_settle_vel_tol
 
         err_chunks.append(err)
-        tgt_chunks.append(p_t)
-        settled_chunks.append(last_step_disp < settle_tol_m)
+        tgt_chunks.append(p_t.cpu())
+        settled_chunks.append(settled.cpu())
 
     errors = torch.cat(err_chunks).cpu().numpy()
     targets = torch.cat(tgt_chunks).cpu().numpy()
@@ -190,9 +200,6 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
 
     n_measured = int(errors.shape[0])
     convergence_rate = float(settled_all.float().mean().item())
-    if convergence_rate < 0.8:
-        print(f"⚠️  success-threshold probe: only {convergence_rate:.0%} of targets "
-              f"settled within n_steps={n_steps}. Consider raising n_steps.")
 
     pct = _percentiles(errors)
     if statistic not in pct:
@@ -207,7 +214,6 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
         n_measured=n_measured,
         convergence_rate=convergence_rate,
         ee_frame=ee_body_name,
-        n_steps=n_steps,
         physics_dt=dt,
         gravity_z=grav_z,
         units="meters",
@@ -215,6 +221,4 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
         runtime_seconds=time.time() - start,
         errors_m=errors,
         targets_base=targets,
-        command_type=ik_cfg.command_type,
-
     )

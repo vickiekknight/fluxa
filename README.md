@@ -159,7 +159,7 @@ Wait until it reports the command server is listening before moving on — `reac
 In a second terminal, run the task. To use the workspace bounds and safe configs discovered by workspace-exploration, pass its `discovered_config.json` (written to `outputs/discovered_config.json` by `run_skill.py`) via `--config`:
 
 ```
-./python.sh /isaac-sim/fluxa/.agent/skills/manipulation-tasks/scripts/reach_task.py --task franka-reach --config outputs/discovered_config.json
+./python.sh /isaac-sim/fluxa/.agent/skills/manipulation-tasks/scripts/reach_task.py --task franka-reach --config /isaac-sim/fluxa/.agent/skills/workspace-exploration/outputs/discovered_config.json
 ```
 
 Without `--config`, the task runs with Isaac Lab's built-in target ranges and joint reset:

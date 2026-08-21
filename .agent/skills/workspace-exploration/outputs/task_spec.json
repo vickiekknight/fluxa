@@ -7,5 +7,5 @@
   "constraints": {
     "surface": "table"
   },
-  "raw_description": "train the franka to reach random targets on a table"
+  "raw_description": "train the franka to reach targets on a table"
 }

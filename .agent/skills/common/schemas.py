@@ -21,17 +21,15 @@ class JointLimitsProbeResult(BaseModel):
 class SuccessThresholdProbeResult(BaseModel):
     ee_frame: str
     threshold_m: float
-    statistic: str                                     
-    position_error_percentiles_m: dict[str, float]    
+    statistic: str
+    position_error_percentiles_m: dict[str, float]
     orientation_error_percentiles_deg: Optional[dict[str, float]] = None
     n_targets: int
     n_measured: int
-    convergence_rate: float                                          
-    command_type: str                                  
-    n_steps: int                                       
+    convergence_rate: float
     physics_dt: float
     gravity_z: Optional[float] = None
-    target_orientation_rpy: Optional(tuple[float, float, float]) = None
+    target_orientation_rpy: Optional[tuple[float, float, float]] = None
     units: str = "meters"
     seed: int
 

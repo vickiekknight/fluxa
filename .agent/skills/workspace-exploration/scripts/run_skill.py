@@ -37,7 +37,7 @@ from isaaclab_assets import FRANKA_PANDA_CFG
 from parser.task_parser import parse_task_description
 from probes.workspace_probe import workspace_probe
 from probes.joint_limits_probe import joint_limits_probe
-from helpers.io import save_json, save_scatter_plot
+from helpers.io import save_json, load_json, save_scatter_plot
 
 from isaaclab.sensors import ContactSensorCfg
 from isaaclab.sim.schemas import ArticulationRootPropertiesCfg
@@ -154,24 +154,28 @@ def main(user_description: str, num_envs: int, n_samples: int, seed: int):
     z_hi = ws_result.bounds["z"][1]
 
     # === Stage 5: Write outputs ===
-    discovered = DiscoveredConfig(
-        robot=RobotConfig(name=task_spec.robot_name),
-        probes=ProbeResults(
-            workspace=WorkspaceProbeResult(
-                x=tuple(ws_result.bounds["x"]),
-                y=tuple(ws_result.bounds["y"]),
-                z=(z_lo, z_hi),
-            ),
-            joint_limits=JointLimitsProbeResult(
-                n_sampled=jl_result.n_sampled,
-                n_safe=jl_result.n_safe,
-                collision_rate=jl_result.collision_rate,
-                seed=jl_result.seed,
-                joint_lower=jl_result.joint_lower.tolist(),
-                joint_upper=jl_result.joint_upper.tolist(),
-                safe_config_path=safe_path,
-            ),
-        ),
+    # Read-modify-write: success_threshold_probe (via run_probe.py) writes its
+    # section into this same file on its own gravity-on pass (see setup_scene's
+    # docstring for why the two can't share a scene). A full overwrite here
+    # would silently wipe that section if this runs second.
+    existing = load_json("outputs/discovered_config.json")
+    discovered = (DiscoveredConfig.model_validate(existing) if existing is not None
+                 else DiscoveredConfig(robot=RobotConfig(name=task_spec.robot_name),
+                                       probes=ProbeResults()))
+    discovered.robot = RobotConfig(name=task_spec.robot_name)
+    discovered.probes.workspace = WorkspaceProbeResult(
+        x=tuple(ws_result.bounds["x"]),
+        y=tuple(ws_result.bounds["y"]),
+        z=(z_lo, z_hi),
+    )
+    discovered.probes.joint_limits = JointLimitsProbeResult(
+        n_sampled=jl_result.n_sampled,
+        n_safe=jl_result.n_safe,
+        collision_rate=jl_result.collision_rate,
+        seed=jl_result.seed,
+        joint_lower=jl_result.joint_lower.tolist(),
+        joint_upper=jl_result.joint_upper.tolist(),
+        safe_config_path=safe_path,
     )
     save_json(discovered.model_dump(), "outputs/discovered_config.json")
 

@@ -91,6 +91,16 @@ class FrankaReachEnvCfg(ReachEnvCfg):
             print(f"  y={{self.commands.ee_pose.ranges.pos_y}}")
             print(f"  z={{self.commands.ee_pose.ranges.pos_z}}")
 
+        # === Success-threshold reward-std override (from workspace-exploration) ===
+        success_threshold_override = {success_threshold_override}
+        if success_threshold_override is not None:
+            self.rewards.end_effector_position_tracking_fine_grained.params["std"] = success_threshold_override
+            print("[reach_task] OVERRIDE: fine-grained reward std from --config")
+            print(f"  std={{success_threshold_override}}")
+        else:
+            print("[reach_task] DEFAULT: using Isaac Lab built-in reward std")
+            print(f"  std={{self.rewards.end_effector_position_tracking_fine_grained.params['std']}}")
+
 
 @configclass
 class UR10ReachEnvCfg(ReachEnvCfg):
@@ -122,6 +132,16 @@ class UR10ReachEnvCfg(ReachEnvCfg):
             print(f"  z={{pos_z_override}}")
         else:
             print("[reach_task] DEFAULT: using Isaac Lab built-in target ranges")
+
+        # === Success-threshold reward-std override (from workspace-exploration) ===
+        success_threshold_override = {success_threshold_override}
+        if success_threshold_override is not None:
+            self.rewards.end_effector_position_tracking_fine_grained.params["std"] = success_threshold_override
+            print("[reach_task] OVERRIDE: fine-grained reward std from --config")
+            print(f"  std={{success_threshold_override}}")
+        else:
+            print("[reach_task] DEFAULT: using Isaac Lab built-in reward std")
+            print(f"  std={{self.rewards.end_effector_position_tracking_fine_grained.params['std']}}")
 
 
 # 2. Execution Logic
@@ -178,11 +198,13 @@ else:
 # === Apply-status marker (durable receipt of what actually applied) ===
 import json as _json, os as _os, time as _time
 _ws_x = {pos_x_override}
+_st_threshold = {success_threshold_override}
 _status = {{
     "time": _time.strftime("%Y-%m-%d %H:%M:%S"),
     "task": "{task_name}",
     "workspace": {{"applied": _ws_x is not None, "bounds_x": _ws_x}},
     "joint_limits": _jl_status,
+    "success_threshold": {{"applied": _st_threshold is not None, "std_m": _st_threshold}},
 }}
 _status_path = "/isaac-sim/outputs/reach_task_status.json"
 try:
@@ -256,11 +278,13 @@ def extract_template_overrides(config):
         "pos_x_override": "None",
         "pos_y_override": "None",
         "pos_z_override": "None",
-        
+
         # joint limits defaults
         "safe_config_path_override": "None",
-        
-        # success threshold defaults (future)
+
+        # success threshold defaults
+        "success_threshold_override": "None",
+
         # controller gain defaults (future)
     }
     if config is None:
@@ -277,6 +301,10 @@ def extract_template_overrides(config):
     jl = config.probes.joint_limits
     if jl is not None:
         overrides["safe_config_path_override"] = repr(jl.safe_config_path)
+
+    st = config.probes.success_threshold
+    if st is not None:
+        overrides["success_threshold_override"] = repr(st.threshold_m)
 
     return overrides
 

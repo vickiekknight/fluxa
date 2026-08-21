@@ -23,6 +23,15 @@ def save_json(obj, path: str):
         json.dump(obj, f, indent=2, default=str)
 
 
+def load_json(path: str):
+    """Load a JSON file, resolved against the skill root. None if missing."""
+    path = _resolve(path)
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        return json.load(f)
+
+
 def save_scatter_plot(result, path: str, title_suffix: str = ""):
     """Save a 3D scatter plot of the reachable workspace point cloud.
     
