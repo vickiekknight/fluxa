@@ -46,7 +46,29 @@
       ],
       "safe_config_path": "/isaac-sim/outputs/diagnostics/safe_configs.npy"
     },
-    "success_threshold": null,
+    "success_threshold": {
+      "ee_frame": "panda_hand",
+      "threshold_m": 0.00017956048977794153,
+      "statistic": "p90",
+      "position_error_percentiles_m": {
+        "p50": 9.830249609876773e-07,
+        "p75": 2.7036834922000708e-06,
+        "p90": 0.00017956048977794153,
+        "p95": 0.006300338963046634,
+        "p99": 0.16622903168201414,
+        "mean": 0.004416744224727154,
+        "max": 0.3037755489349365
+      },
+      "orientation_error_percentiles_deg": null,
+      "n_targets": 1000,
+      "n_measured": 1000,
+      "convergence_rate": 0.9020000100135803,
+      "physics_dt": 0.016666666666666666,
+      "gravity_z": -9.81,
+      "target_orientation_rpy": null,
+      "units": "meters",
+      "seed": 42
+    },
     "controller_gains": null
   }
 }

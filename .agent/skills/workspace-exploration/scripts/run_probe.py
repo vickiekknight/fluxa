@@ -48,6 +48,36 @@ parser.add_argument("--controller-gains", action="store_true",
                     help="Run the controller-gains probe. Requires gravity ON, "
                          "same as --success-threshold. Standalone for now -- "
                          "not yet wired into success_threshold_probe's gains.")
+parser.add_argument("--cg_pos_tol", type=float, default=1e-2,
+                    help="controller-gains: joint-space position-error norm "
+                         "(rad) to count as settled.")
+parser.add_argument("--cg_vel_tol", type=float, default=5e-2,
+                    help="controller-gains: joint-space velocity norm (rad/s) "
+                         "to count as settled.")
+parser.add_argument("--cg_n_steps", type=int, default=400,
+                    help="controller-gains: physics steps to observe the "
+                         "step response over. Needs headroom for the "
+                         "heaviest load tested (see controller_gains_probe.py "
+                         "docstring) or it silently falls back to a "
+                         "not-actually-feasible answer.")
+parser.add_argument("--cg_settle_window", type=int, default=150,
+                    help="controller-gains: trailing steps that must all be "
+                         "within tolerance to count as settled -- must be "
+                         "wide enough to overlap real ringing, or it goes "
+                         "undetected (see controller_gains_probe.py docstring).")
+parser.add_argument("--cg_kd_mult_hi", type=float, default=100.0,
+                    help="controller-gains: upper multiplier on the robot's "
+                         "default Kd for the sweep range's ceiling.")
+parser.add_argument("--controller-gains-load-profile", action="store_true",
+                    help="Run controller_gains_probe once per end-effector "
+                         "payload in --cg_payloads_kg instead of a single "
+                         "unloaded sweep. Requires gravity ON, same as "
+                         "--controller-gains.")
+parser.add_argument("--cg_payloads_kg", type=float, nargs="+",
+                    default=[0.0, 1.5, 3.0],
+                    help="controller-gains-load-profile: EE payload masses "
+                         "(kg) to sweep gains under. Default spans bare arm "
+                         "to Franka's rated 3kg payload.")
 
 parser.add_argument("--gravity_z", type=float, default=None,
                     help="Override gravity z. Default: -9.81 when --success-threshold "
@@ -75,7 +105,7 @@ from isaaclab_assets import FRANKA_PANDA_CFG
 from probes.workspace_probe import workspace_probe
 from probes.joint_limits_probe import joint_limits_probe
 from probes.success_threshold_probe import success_threshold_probe
-from probes.controller_gains_probe import controller_gains_probe
+from probes.controller_gains_probe import controller_gains_probe, controller_gains_load_profile
 from helpers.io import save_scatter_plot, save_json, load_json
 
 from isaaclab.sensors import ContactSensorCfg
@@ -97,10 +127,16 @@ def _make_franka_cfg():
     # produce large steady-state gravity droop. Use the same higher gains as
     # FRANKA_PANDA_HIGH_PD_CFG, but keep gravity ON (unlike that preset, which
     # disables it) since this probe measures settled error under gravity.
-    cfg.actuators["panda_shoulder"].stiffness = 400.0
-    cfg.actuators["panda_shoulder"].damping = 80.0
-    cfg.actuators["panda_forearm"].stiffness = 400.0
-    cfg.actuators["panda_forearm"].damping = 80.0
+    #
+    # Only applied for --success-threshold: controller_gains_probe searches
+    # FROM the robot's own raw ArticulationCfg gains, so it must see the true
+    # 80/4 baseline, not this already-elevated value, or its sweep range ends
+    # up centered on an already-good answer instead of searching from scratch.
+    if args_cli.success_threshold:
+        cfg.actuators["panda_shoulder"].stiffness = 400.0
+        cfg.actuators["panda_shoulder"].damping = 80.0
+        cfg.actuators["panda_forearm"].stiffness = 400.0
+        cfg.actuators["panda_forearm"].damping = 80.0
     if cfg.spawn.articulation_props is None:
         cfg.spawn.articulation_props = ArticulationRootPropertiesCfg()
     cfg.spawn.articulation_props.enabled_self_collisions = True
@@ -138,13 +174,207 @@ def _save_error_hist(errors_m, path, threshold_m, statistic):
     except Exception as e:
         print(f"(skipped histogram: {e})")
 
+def _save_gains_sweep_plot(cg_result, path):
+    """Kp/Kd sweep: the feasible region, and the error-vs-Kp tradeoff curve."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+
+        kp = cg_result.candidates_kp
+        kd = cg_result.candidates_kd
+        feasible = cg_result.candidates_feasible.astype(bool)
+        err = cg_result.candidates_steady_state_error_rad
+
+        # Color scale centered on the decision boundary (near the discovered
+        # candidate's own error), not the full range -- a few badly-drooping
+        # candidates would otherwise wash out contrast in the region that
+        # actually matters (near the feasible/infeasible line).
+        err_cap = max(cg_result.steady_state_error_rad * 4, 1e-6)
+        err_clipped = np.clip(err, None, err_cap)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.5))
+
+        ax1.scatter(kp[~feasible], kd[~feasible], c=err_clipped[~feasible],
+                   cmap="Blues", marker="x", s=25, alpha=0.6,
+                   vmin=0, vmax=err_cap, label="infeasible")
+        sc = ax1.scatter(kp[feasible], kd[feasible], c=err_clipped[feasible],
+                        cmap="Blues", marker="o", s=35, edgecolors="#333333",
+                        linewidths=0.5, vmin=0, vmax=err_cap, label="feasible")
+        ax1.scatter([cg_result.kp], [cg_result.kd], marker="*", s=300,
+                   color="crimson", edgecolors="black", linewidths=0.8,
+                   zorder=5, label="discovered")
+        ax1.set_xscale("log"); ax1.set_yscale("log")
+        ax1.set_xlabel("Kp"); ax1.set_ylabel("Kd")
+        ax1.set_title("Sweep: feasible region")
+        ax1.legend(loc="best", fontsize=8)
+        fig.colorbar(sc, ax=ax1, label="steady-state error (rad)")
+
+        ax2.scatter(kp[~feasible], err[~feasible], c="#B0B0B0", s=20, alpha=0.5,
+                   marker="x", label="infeasible")
+        ax2.scatter(kp[feasible], err[feasible], c="#4C72B0", s=25,
+                   label="feasible")
+        ax2.scatter([cg_result.kp], [cg_result.steady_state_error_rad],
+                   marker="*", s=300, color="crimson", edgecolors="black",
+                   linewidths=0.8, zorder=5, label="discovered")
+        ax2.set_xscale("log"); ax2.set_yscale("log")
+        ax2.set_xlabel("Kp"); ax2.set_ylabel("steady-state error (rad)")
+        ax2.set_title("Error vs Kp")
+        ax2.legend(loc="best", fontsize=8)
+
+        fig.tight_layout()
+        fig.savefig(path, dpi=130)
+        plt.close(fig)
+        print(f"Gains-sweep plot saved to {path}")
+    except Exception as e:
+        print(f"(skipped gains-sweep plot: {e})")
+
+def _save_gains_cost_plot(cg_result, path):
+    """Kp/Kd sweep colored by (steady-state error x settling steps) -- a
+    combined accuracy+speed cost, vs. the error-only view in the sweep plot."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+
+        kp = cg_result.candidates_kp
+        kd = cg_result.candidates_kd
+        feasible = cg_result.candidates_feasible.astype(bool)
+        cost = cg_result.candidates_steady_state_error_rad * cg_result.candidates_settling_steps
+        discovered_cost = (cg_result.steady_state_error_rad * cg_result.settling_steps)
+
+        cost_cap = max(discovered_cost * 4, 1e-6)
+        cost_clipped = np.clip(cost, None, cost_cap)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.5))
+
+        ax1.scatter(kp[~feasible], kd[~feasible], c=cost_clipped[~feasible],
+                   cmap="Blues", marker="x", s=25, alpha=0.6,
+                   vmin=0, vmax=cost_cap, label="infeasible")
+        sc = ax1.scatter(kp[feasible], kd[feasible], c=cost_clipped[feasible],
+                        cmap="Blues", marker="o", s=35, edgecolors="#333333",
+                        linewidths=0.5, vmin=0, vmax=cost_cap, label="feasible")
+        ax1.scatter([cg_result.kp], [cg_result.kd], marker="*", s=300,
+                   color="crimson", edgecolors="black", linewidths=0.8,
+                   zorder=5, label="discovered")
+        ax1.set_xscale("log"); ax1.set_yscale("log")
+        ax1.set_xlabel("Kp"); ax1.set_ylabel("Kd")
+        ax1.set_title("Sweep: error x settling-steps cost")
+        ax1.legend(loc="best", fontsize=8)
+        fig.colorbar(sc, ax=ax1, label="error (rad) x settling steps")
+
+        ax2.scatter(kd[~feasible], cost[~feasible], c="#B0B0B0", s=20, alpha=0.5,
+                   marker="x", label="infeasible")
+        ax2.scatter(kd[feasible], cost[feasible], c="#4C72B0", s=25,
+                   label="feasible")
+        ax2.scatter([cg_result.kd], [discovered_cost],
+                   marker="*", s=300, color="crimson", edgecolors="black",
+                   linewidths=0.8, zorder=5, label="discovered")
+        ax2.set_xscale("log"); ax2.set_yscale("log")
+        ax2.set_xlabel("Kd"); ax2.set_ylabel("error (rad) x settling steps")
+        ax2.set_title("Cost vs Kd")
+        ax2.legend(loc="best", fontsize=8)
+
+        fig.tight_layout()
+        fig.savefig(path, dpi=130)
+        plt.close(fig)
+        print(f"Gains-cost plot saved to {path}")
+    except Exception as e:
+        print(f"(skipped gains-cost plot: {e})")
+
+def _save_gains_transient_plot(cg_result, pos_tol, vel_tol, path):
+    """Full err(t)/vel(t) trajectories for a handful of candidates at roughly
+    fixed Kp, spread across Kd -- shows whether Kd actually affects the
+    transient (ringing), not just whether it settles by the final window."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+
+        kd = cg_result.representative_kd
+        err = cg_result.representative_err_hist_rad     # (n_steps, n_reps)
+        vel = cg_result.representative_vel_hist_rad_s
+        n_steps = err.shape[0]
+        steps = np.arange(n_steps)
+
+        # Sequential: one hue, light (low Kd) -> dark (high Kd) -- Kd is the
+        # single continuous variable being compared across these lines.
+        order = np.argsort(kd)
+        cmap = matplotlib.colormaps["Blues"]
+        shades = cmap(np.linspace(0.35, 0.95, len(order)))
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.5))
+
+        for color, i in zip(shades, order):
+            ax1.plot(steps, err[:, i], color=color, lw=1.6,
+                    label=f"Kd={kd[i]:.1f}")
+            ax2.plot(steps, vel[:, i], color=color, lw=1.6,
+                    label=f"Kd={kd[i]:.1f}")
+
+        ax1.axhline(pos_tol, color="crimson", ls="--", lw=1, label="pos_tol")
+        ax1.set_xlabel("step"); ax1.set_ylabel("position error (rad)")
+        ax1.set_title(f"Transient at Kp≈{cg_result.kp:.0f}: error")
+        ax1.legend(loc="best", fontsize=7)
+
+        ax2.axhline(vel_tol, color="crimson", ls="--", lw=1, label="vel_tol")
+        ax2.set_xlabel("step"); ax2.set_ylabel("joint velocity (rad/s)")
+        ax2.set_title(f"Transient at Kp≈{cg_result.kp:.0f}: velocity")
+        ax2.legend(loc="best", fontsize=7)
+
+        fig.tight_layout()
+        fig.savefig(path, dpi=130)
+        plt.close(fig)
+        print(f"Gains-transient plot saved to {path}")
+    except Exception as e:
+        print(f"(skipped gains-transient plot: {e})")
+
+def _save_gains_load_profile_plot(profile_result, path):
+    """Discovered Kp/Kd, error, and settling time vs. EE payload -- the
+    actual profile across loading scenarios."""
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+
+        payloads = profile_result.payload_masses_kg
+        kp = [r.kp for r in profile_result.results]
+        kd = [r.kd for r in profile_result.results]
+        err = [r.steady_state_error_rad for r in profile_result.results]
+        settle = [r.settling_steps for r in profile_result.results]
+
+        fig, axes = plt.subplots(1, 4, figsize=(16, 4))
+
+        axes[0].plot(payloads, kp, "o-", color="#4C72B0")
+        axes[0].set_xlabel("EE payload (kg)"); axes[0].set_ylabel("discovered Kp")
+        axes[0].set_title("Kp vs load")
+
+        axes[1].plot(payloads, kd, "o-", color="#4C72B0")
+        axes[1].set_xlabel("EE payload (kg)"); axes[1].set_ylabel("discovered Kd")
+        axes[1].set_title("Kd vs load")
+
+        axes[2].plot(payloads, err, "o-", color="#4C72B0")
+        axes[2].set_xlabel("EE payload (kg)"); axes[2].set_ylabel("steady-state error (rad)")
+        axes[2].set_title("Error vs load")
+
+        axes[3].plot(payloads, settle, "o-", color="#4C72B0")
+        axes[3].set_xlabel("EE payload (kg)"); axes[3].set_ylabel("settling steps")
+        axes[3].set_title("Settling time vs load")
+
+        fig.tight_layout()
+        fig.savefig(path, dpi=130)
+        plt.close(fig)
+        print(f"Gains-load-profile plot saved to {path}")
+    except Exception as e:
+        print(f"(skipped gains-load-profile plot: {e})")
+
 def main():
     # Gravity: success-threshold and controller-gains need it ON; the other
     # probes were validated OFF.
     if args_cli.gravity_z is not None:
         gravity_z = args_cli.gravity_z
     else:
-        gravity_z = (-9.81 if (args_cli.success_threshold or args_cli.controller_gains)
+        gravity_z = (-9.81 if (args_cli.success_threshold or args_cli.controller_gains
+                              or args_cli.controller_gains_load_profile)
                     else 0.0)
 
     # Set up sim and scene.
@@ -231,6 +461,11 @@ def main():
         cg_result = controller_gains_probe(
             sim=sim, scene=scene, robot=robot,
             seed=args_cli.seed,
+            pos_tol=args_cli.cg_pos_tol,
+            vel_tol=args_cli.cg_vel_tol,
+            n_steps=args_cli.cg_n_steps,
+            settle_window=args_cli.cg_settle_window,
+            kd_range_mult=(0.5, args_cli.cg_kd_mult_hi),
         )
         print(f"\n=== Controller-Gains Probe Results ===")
         print(f"Discovered:       Kp={cg_result.kp:.2f}  Kd={cg_result.kd:.2f}")
@@ -240,11 +475,37 @@ def main():
         print(f"Settling steps:   {cg_result.settling_steps}")
         print(f"Steady-state err: {cg_result.steady_state_error_rad:.5f} rad")
         print(f"Runtime:          {cg_result.runtime_seconds:.2f}s")
-        np.save("outputs/diagnostics/controller_gains_candidates.npy",
+        np.save("fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_candidates.npy",
                np.stack([cg_result.candidates_kp, cg_result.candidates_kd,
                         cg_result.candidates_feasible.astype(np.float32),
-                        cg_result.candidates_steady_state_error_rad], axis=1))
-        print("Candidate sweep saved to outputs/diagnostics/controller_gains_candidates.npy")
+                        cg_result.candidates_steady_state_error_rad,
+                        cg_result.candidates_settling_steps], axis=1))
+        print("Candidate sweep saved to fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_candidates.npy")
+        _save_gains_sweep_plot(cg_result, "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_sweep.png")
+        _save_gains_cost_plot(cg_result, "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_cost.png")
+        _save_gains_transient_plot(cg_result, args_cli.cg_pos_tol, args_cli.cg_vel_tol,
+                                   "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_transient.png")
+
+    # --- Controller-gains load profile (requires gravity ON) ---
+    if args_cli.controller_gains_load_profile:
+        profile_result = controller_gains_load_profile(
+            sim=sim, scene=scene, robot=robot,
+            payload_masses_kg=tuple(args_cli.cg_payloads_kg),
+            ee_body_name=args_cli.ee_body_name,
+            seed=args_cli.seed,
+            pos_tol=args_cli.cg_pos_tol,
+            vel_tol=args_cli.cg_vel_tol,
+            n_steps=args_cli.cg_n_steps,
+            settle_window=args_cli.cg_settle_window,
+            kd_range_mult=(0.5, args_cli.cg_kd_mult_hi),
+        )
+        print(f"\n=== Controller-Gains Load-Profile Results ===")
+        for payload_kg, r in zip(profile_result.payload_masses_kg, profile_result.results):
+            print(f"  payload={payload_kg:5.2f} kg  Kp={r.kp:8.2f}  Kd={r.kd:7.2f}  "
+                 f"feasible={r.n_feasible:4d}/{r.n_candidates}  "
+                 f"err={r.steady_state_error_rad:.5f} rad  settle={r.settling_steps} steps")
+        _save_gains_load_profile_plot(profile_result,
+            "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_load_profile.png")
 
     # --- Success-threshold probe (requires gravity ON) ---
     if args_cli.success_threshold:
