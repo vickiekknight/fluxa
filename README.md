@@ -69,7 +69,7 @@ This skill explores the reachable workspace of the robot to identify safe and va
 4. `controller_gains_probe.py`: find the kp and kd of what would make the arm move smoothly
 
 #### Running the full skill
-`run_skill.py` is the main entry point. It takes a natural-language task description and runs the workspace-exploration pipeline end to end: parsing the prompt into a task spec, spawning the sim, running the probes, applying task constraints, and writing a `discovered_config.json` that downstream stages consume.
+`run_skill.py` is the main entry point. It takes a natural-language task description and runs the workspace-exploration pipeline end to end: parsing the prompt into a task spec, checking the task is one the probes can characterize, then sequencing the probe passes and writing a `discovered_config.json` that downstream stages consume. It runs no simulation itself — each pass is a `run_probe.py` subprocess (see the note below).
 
 ```
 ./python.sh /isaac-sim/fluxa/.agent/skills/workspace-exploration/scripts/run_skill.py "train the franka to reach random targets on a table"
@@ -88,7 +88,7 @@ Constraints are read from the prompt: for example, "on a table" clamps the works
 - `outputs/diagnostics/safe_configs.npy` — collision-free joint configs, referenced by `discovered_config.json` via `safe_config_path`
 - `outputs/diagnostics/workspace_scatter.png` — scatter plot of the reachable workspace
 
-> Note: v1 supports `franka` + `reach` only. `run_skill.py` currently wires in the workspace and joint-limits probes; the success-threshold and controller-gains probes aren't part of the orchestrated run yet, so use `run_probe.py` below to exercise those on their own.
+> Note: v1 supports `franka` + `reach` only. `run_skill.py` orchestrates all four probes — it parses the description, gates on whether the probes can characterize that task type, then runs `run_probe.py` as three subprocesses: workspace + joint-limits (gravity off), controller-gains, then success-threshold (both gravity on). They have to be separate processes because gravity is fixed per `SimulationContext` and the probes disagree about it; each merges only its own section into `discovered_config.json`. Controller-gains runs before success-threshold because success-threshold applies the gains it discovers. An unsupported task type (e.g. "stack the blocks") reports what it parsed and exits 2 without spawning a sim.
 
 #### Debugging individual probes
 Each probe can also be tested independently with `run_probe.py` using hardcoded args to debug. Note that the workspace probe always runs (the success-threshold probe reuses its point cloud), and the gravity state determines which of the remaining probes runs with it: gravity-off (the default) runs joint-limits, while `--success-threshold` flips gravity on and runs the success-threshold probe instead.
@@ -297,12 +297,12 @@ fluxa/
 This skill discovers the reachable workspace and safe joint configs for a robot and writes them to `discovered_config.json`.
  
 `scripts/run_skill.py` is the top-level entry point (NL description → `discovered_config.json`). It uses:
-- **A task parser**, `parser/task_parser.py` (`parse_task_description`), which turns the natural-language prompt into a `task_spec` (task type, robot name, EE body name, constraints). This is the current hardcoded/keyword parser slated to be replaced with an LLM parser.
-- **The probes**, in `probes/`: `workspace_probe.py` (Monte-Carlo FK sampling of the reachable envelope) and `joint_limits_probe.py` (rejection sampling of collision-free configs via PhysX contact labels). Both are validated against cuRobo before use.
+- **A task parser**, `parser/task_parser.py` (`parse_task_description`), which turns the natural-language prompt into a `task_spec` (task type, robot name, EE body name, objects, constraints). It uses Gemini structured output, falling back to keyword matching when no API key is set or the call fails. It emits an *open* `task_type` — deciding whether a task is supported is the caller's job, not the parser's.
+- **The probes**, in `probes/`: `workspace_probe.py` (Monte-Carlo FK sampling of the reachable envelope), `joint_limits_probe.py` (rejection sampling of collision-free configs via PhysX contact labels), `success_threshold_probe.py` (settled EE error under gravity, which defines what "success" can mean), and `controller_gains_probe.py` (a parallel Kp/Kd sweep, one candidate per env). The first two are validated against cuRobo before use; the third has a cuRobo FK cross-check on its IK solve.
 - **FK validation**, `tests/test_workspace_integration.py` (`run_integration_test`), run before probing unless `--skip-validation` is passed, to catch kinematics regressions from URDF/Isaac Lab drift.
 - **I/O helpers**, `helpers/io.py` (`save_json`, `save_scatter_plot`), which serialize the results and diagnostics.
 - **The shared schema**, `common/schemas.py`, to assemble and validate the final `DiscoveredConfig` before writing `outputs/discovered_config.json` (plus `outputs/task_spec.json`, `outputs/diagnostics/safe_configs.npy`, and a workspace scatter plot).
-`scripts/run_probe.py` is a debug entry point that runs probes individually with hardcoded args. It also drives `probes/success_threshold_probe.py` (the third probe, gravity-on), which is still in progress and not yet wired into `run_skill.py` or the schema. `scripts/convergence_analysis.py` and the `tests/` unit/validation scripts support probe development.
+`scripts/run_probe.py` runs individual probes, both as a debug entry point and as the worker `run_skill.py` drives for each pass. All four probes write their own section of `discovered_config.json`; `--write-config` gates the workspace/joint-limits sections so standalone debug runs don't touch the artifact, while `--success-threshold` and `--controller-gains` always record theirs. `scripts/convergence_analysis.py` and the `tests/` unit/validation scripts support probe development.
  
 ## manipulation-tasks
 This skill runs an Isaac Lab manipulation task, consuming the artifacts from the other two skills. It is the point where the pipeline currently converges.
@@ -344,10 +344,11 @@ This project is currently ongoing.
 What's left for the initial basic pipeline:
 
 - The reward-designer skill is still in progress, so the results are not where we would like yet. The Erueka and DrEureka algorithms need to be updated to match their paper implementations in Isaac Lab. The scripts also need to take in the discovered outputs from workspace exploration.
-- The SKILL.md files need to be updated to include the latest changes in the skills. 
+- The `manipulation-tasks` and `reward-designer` SKILL.md files need to be updated to include the latest changes in those skills (workspace-exploration's is current).
 - In the workspace-exploration skill, Joint Limit Probe validation test needs to be updated to pass a p70 threshold instead of p95.
-- In the workspace-exploration skill, the success-threshold probe is still in progress.
-- The workspace-exploration skill still needs the remaining controller gains probe and replace current parser with LLM parser.
+- In the workspace-exploration skill, ~5% of success-threshold targets never converge. A 6x increase in controller stiffness left the worst-case error essentially unchanged, so this is not a controller-authority problem — root cause unknown.
+- The controller-gains probe has no CuRobo cross-validation. It's pure joint-space (no FK to compare against, unlike the other probes) and CuRobo's franka config exposes only a scalar `max_acceleration`, so a meaningful independent check still needs designing.
+- The LLM task parser uses Gemini. Whether to move it (and the reward-designer's Eureka loops) to another provider is an open decision.
 
 Next steps:
 - Add more complex manipulation tasks in manipulation-tasks skill.
