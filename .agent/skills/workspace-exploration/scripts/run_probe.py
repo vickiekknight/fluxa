@@ -11,9 +11,22 @@ Usage:
 import argparse
 import os
 import sys
+import traceback
 import numpy as np
 
 from isaaclab.app import AppLauncher
+
+_SKILL_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _out(rel_path: str) -> str:
+    """Resolve an output path against the skill root and ensure its directory
+    exists. Everything this script writes goes through here so it works from
+    any working directory -- run_skill.py launches it as a subprocess, and
+    cwd-relative paths silently wrote to (or failed in) the wrong place."""
+    path = os.path.join(_SKILL_ROOT, rel_path)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    return path
 
 # CLI args
 parser = argparse.ArgumentParser()
@@ -28,6 +41,18 @@ parser.add_argument("--validate-collision", action="store_true",
                     help="Run collision validation against CuRobo before probing.")
 parser.add_argument("--ee_body_name", type=str, default="panda_hand",
                     help="EE body ALL probes measure at.")
+parser.add_argument("--write-config", action="store_true",
+                    help="Record the workspace and joint-limits sections into "
+                         "discovered_config.json. Off by default so standalone "
+                         "debug runs don't touch the artifact; run_skill.py "
+                         "passes it for the gravity-off pass. (The "
+                         "success-threshold and controller-gains sections are "
+                         "always written by their own flags.)")
+parser.add_argument("--task-spec", type=str, default=None,
+                    help="Path to outputs/task_spec.json. When given, the "
+                         "robot name, EE body, and surface constraint are taken "
+                         "from the parsed task instead of this script's "
+                         "defaults.")
 
 # --- success-threshold probe ---
 parser.add_argument("--success-threshold", action="store_true",
@@ -42,18 +67,29 @@ parser.add_argument("--validate-success-threshold", action="store_true",
                     help="Run CuRobo cross-validation of the success-threshold "
                          "probe's Phase A IK solve before probing. Requires "
                          "--success-threshold.")
+parser.add_argument("--st-ignore-discovered-gains", action="store_true",
+                    help="Don't apply the controller_gains section from "
+                         "discovered_config.json to the success-threshold "
+                         "probe; use the gains the scene was spawned with "
+                         "instead. For A/B comparing discovered vs. hardcoded "
+                         "gains.")
 
 # --- controller-gains probe ---
 parser.add_argument("--controller-gains", action="store_true",
                     help="Run the controller-gains probe. Requires gravity ON, "
-                         "same as --success-threshold. Standalone for now -- "
-                         "not yet wired into success_threshold_probe's gains.")
-parser.add_argument("--cg_pos_tol", type=float, default=1e-2,
+                         "same as --success-threshold. Its discovered Kp/Kd are "
+                         "written to discovered_config.json and picked up by a "
+                         "later --success-threshold run, so run this first.")
+parser.add_argument("--cg_pos_tol", type=float, default=2e-2,
                     help="controller-gains: joint-space position-error norm "
-                         "(rad) to count as settled.")
-parser.add_argument("--cg_vel_tol", type=float, default=5e-2,
+                         "(rad) to count as settled. Empirical: 1e-2 yields "
+                         "0/1000 feasible on the Franka -- pure PD can't hold "
+                         "that tightly against gravity droop at any Kp in range.")
+parser.add_argument("--cg_vel_tol", type=float, default=0.2,
                     help="controller-gains: joint-space velocity norm (rad/s) "
-                         "to count as settled.")
+                         "to count as settled. Empirical: 5e-2 is below this "
+                         "sim's residual jitter floor (3/1000 candidates "
+                         "cleared it), so it rejects good gains too.")
 parser.add_argument("--cg_n_steps", type=int, default=400,
                     help="controller-gains: physics steps to observe the "
                          "step response over. Needs headroom for the "
@@ -117,8 +153,18 @@ _SKILLS_DIR = os.path.dirname(
 sys.path.insert(0, _SKILLS_DIR)
 from common.schemas import (
     DiscoveredConfig, RobotConfig, ProbeResults,
+    WorkspaceProbeResult as WorkspaceSchema,
+    JointLimitsProbeResult as JointLimitsSchema,
     SuccessThresholdProbeResult as SuccessThresholdSchema,
+    ControllerGainsProbeResult as ControllerGainsSchema,
 )
+
+# Robot-frame z = 0 corresponds to the table surface in v1.
+TABLE_HEIGHT = 0.0
+
+# Populated from --task-spec in main() when run_skill.py drives this script.
+_task_spec = None
+_robot_name = "franka"
 
 def _make_franka_cfg():
     cfg = FRANKA_PANDA_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
@@ -128,10 +174,17 @@ def _make_franka_cfg():
     # FRANKA_PANDA_HIGH_PD_CFG, but keep gravity ON (unlike that preset, which
     # disables it) since this probe measures settled error under gravity.
     #
-    # Only applied for --success-threshold: controller_gains_probe searches
-    # FROM the robot's own raw ArticulationCfg gains, so it must see the true
-    # 80/4 baseline, not this already-elevated value, or its sweep range ends
-    # up centered on an already-good answer instead of searching from scratch.
+    # This is now only the FALLBACK for --success-threshold: when a
+    # controller_gains section exists in discovered_config.json, the probe
+    # overrides these at runtime with the discovered pair. These 400/80 are
+    # hand-tuned for the Franka specifically and mean nothing on another robot,
+    # which is exactly why the discovered pair is preferred.
+    #
+    # Still applied only for --success-threshold: controller_gains_probe
+    # searches FROM the robot's own raw ArticulationCfg gains, so it must see
+    # the true 80/4 baseline, not this already-elevated value, or its sweep
+    # range ends up centered on an already-good answer instead of searching
+    # from scratch.
     if args_cli.success_threshold:
         cfg.actuators["panda_shoulder"].stiffness = 400.0
         cfg.actuators["panda_shoulder"].damping = 80.0
@@ -261,7 +314,7 @@ def _save_gains_cost_plot(cg_result, path):
         ax1.set_xlabel("Kp"); ax1.set_ylabel("Kd")
         ax1.set_title("Sweep: error x settling-steps cost")
         ax1.legend(loc="best", fontsize=8)
-        fig.colorbar(sc, ax=ax1, label="error (rad) x settling steps")
+        fig.colorbar(sc, ax=ax1, label="total cost")
 
         ax2.scatter(kd[~feasible], cost[~feasible], c="#B0B0B0", s=20, alpha=0.5,
                    marker="x", label="infeasible")
@@ -271,7 +324,7 @@ def _save_gains_cost_plot(cg_result, path):
                    marker="*", s=300, color="crimson", edgecolors="black",
                    linewidths=0.8, zorder=5, label="discovered")
         ax2.set_xscale("log"); ax2.set_yscale("log")
-        ax2.set_xlabel("Kd"); ax2.set_ylabel("error (rad) x settling steps")
+        ax2.set_xlabel("Kd"); ax2.set_ylabel("total cost")
         ax2.set_title("Cost vs Kd")
         ax2.legend(loc="best", fontsize=8)
 
@@ -368,6 +421,18 @@ def _save_gains_load_profile_plot(profile_result, path):
         print(f"(skipped gains-load-profile plot: {e})")
 
 def main():
+    # --- Optional parsed task spec (written by run_skill.py) ---
+    global _task_spec, _robot_name
+    _task_spec = load_json(args_cli.task_spec) if args_cli.task_spec else None
+    _robot_name = (_task_spec or {}).get("robot_name", "franka")
+    if _task_spec:
+        ee = _task_spec.get("ee_body_name")
+        if ee:
+            args_cli.ee_body_name = ee
+        print(f"Using task spec: {_task_spec.get('task_type')} on {_robot_name} "
+              f"(ee={args_cli.ee_body_name}, "
+              f"constraints={_task_spec.get('constraints')})")
+
     # Gravity: success-threshold and controller-gains need it ON; the other
     # probes were validated OFF.
     if args_cli.gravity_z is not None:
@@ -433,7 +498,7 @@ def main():
     print(f"  z: [{ws_result.bounds['z'][0]:+.3f}, {ws_result.bounds['z'][1]:+.3f}]")
 
     # Save the scatter plot.
-    save_scatter_plot(ws_result, "outputs/diagnostics/workspace_scatter.png",
+    save_scatter_plot(ws_result, _out("outputs/diagnostics/workspace_scatter.png"),
                       title_suffix="Franka, run_probe.py")
     print(f"\nScatter plot saved to outputs/diagnostics/workspace_scatter.png")
 
@@ -450,11 +515,50 @@ def main():
         print(f"N safe:         {jl_result.n_safe}")
         print(f"Collision rate: {jl_result.collision_rate:.1%}")
         print(f"Runtime:        {jl_result.runtime_seconds:.2f}s")
-        np.save("outputs/diagnostics/safe_configs.npy", jl_result.safe_configs)
+        np.save(_out("outputs/diagnostics/safe_configs.npy"), jl_result.safe_configs)
         print("Safe configs saved to outputs/diagnostics/safe_configs.npy")
     else:
+        jl_result = None
         print("\n(joint-limits probe skipped: gravity is on, which is not its "
               "validated condition. Run it in a separate gravity-off invocation.)")
+
+    # --- Record workspace + joint-limits into discovered_config.json ---
+    # Same read-modify-write merge the other two sections use, so this pass
+    # can't clobber the gravity-on sections written by a separate invocation.
+    if args_cli.write_config:
+        # Absolute path: reach_task.py loads this inside the Isaac Sim server
+        # process, which may not share this process's working directory.
+        safe_path = None
+        if jl_result is not None:
+            safe_path = os.path.abspath("outputs/diagnostics/safe_configs.npy")
+
+        z_lo, z_hi = ws_result.bounds["z"]
+        if _task_spec and _task_spec.get("constraints", {}).get("surface") == "table":
+            z_lo = max(z_lo, TABLE_HEIGHT)
+
+        existing = load_json("outputs/discovered_config.json")
+        discovered = (DiscoveredConfig.model_validate(existing) if existing is not None
+                     else DiscoveredConfig(robot=RobotConfig(name=_robot_name),
+                                           probes=ProbeResults()))
+        discovered.robot = RobotConfig(name=_robot_name)
+        discovered.probes.workspace = WorkspaceSchema(
+            x=tuple(ws_result.bounds["x"]),
+            y=tuple(ws_result.bounds["y"]),
+            z=(z_lo, z_hi),
+        )
+        if jl_result is not None:
+            discovered.probes.joint_limits = JointLimitsSchema(
+                n_sampled=jl_result.n_sampled,
+                n_safe=jl_result.n_safe,
+                collision_rate=jl_result.collision_rate,
+                seed=jl_result.seed,
+                joint_lower=jl_result.joint_lower.tolist(),
+                joint_upper=jl_result.joint_upper.tolist(),
+                safe_config_path=safe_path,
+            )
+        save_json(discovered.model_dump(), "outputs/discovered_config.json")
+        print("workspace" + ("/joint_limits" if jl_result is not None else "") +
+              " section written to outputs/discovered_config.json")
 
     # --- Controller-gains probe (requires gravity ON) ---
     if args_cli.controller_gains:
@@ -475,16 +579,38 @@ def main():
         print(f"Settling steps:   {cg_result.settling_steps}")
         print(f"Steady-state err: {cg_result.steady_state_error_rad:.5f} rad")
         print(f"Runtime:          {cg_result.runtime_seconds:.2f}s")
-        np.save("fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_candidates.npy",
+        np.save(_out("outputs/diagnostics/controller_gains_candidates.npy"),
                np.stack([cg_result.candidates_kp, cg_result.candidates_kd,
                         cg_result.candidates_feasible.astype(np.float32),
                         cg_result.candidates_steady_state_error_rad,
                         cg_result.candidates_settling_steps], axis=1))
-        print("Candidate sweep saved to fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_candidates.npy")
-        _save_gains_sweep_plot(cg_result, "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_sweep.png")
-        _save_gains_cost_plot(cg_result, "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_cost.png")
+        print("Candidate sweep saved to outputs/diagnostics/controller_gains_candidates.npy")
+        _save_gains_sweep_plot(cg_result, _out("outputs/diagnostics/controller_gains_sweep.png"))
+        _save_gains_cost_plot(cg_result, _out("outputs/diagnostics/controller_gains_cost.png"))
         _save_gains_transient_plot(cg_result, args_cli.cg_pos_tol, args_cli.cg_vel_tol,
-                                   "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_transient.png")
+                                   _out("outputs/diagnostics/controller_gains_transient.png"))
+
+        # Merge into discovered_config.json -- same read-modify-write pattern
+        # as success_threshold (this probe also needs gravity ON, so it can't
+        # share run_skill.py's gravity-off pass either). Only the single-load
+        # sweep writes here; --controller-gains-load-profile is an analysis
+        # tool for choosing tuning parameters, not a single answer to persist.
+        existing = load_json("outputs/discovered_config.json")
+        discovered = (DiscoveredConfig.model_validate(existing) if existing is not None
+                     else DiscoveredConfig(robot=RobotConfig(name="franka"), probes=ProbeResults()))
+        discovered.probes.controller_gains = ControllerGainsSchema(
+            kp=cg_result.kp,
+            kd=cg_result.kd,
+            default_kp=cg_result.default_kp,
+            default_kd=cg_result.default_kd,
+            n_candidates=cg_result.n_candidates,
+            n_feasible=cg_result.n_feasible,
+            steady_state_error_rad=cg_result.steady_state_error_rad,
+            settling_steps=cg_result.settling_steps,
+            seed=cg_result.seed,
+        )
+        save_json(discovered.model_dump(), "outputs/discovered_config.json")
+        print("controller_gains section written to outputs/discovered_config.json")
 
     # --- Controller-gains load profile (requires gravity ON) ---
     if args_cli.controller_gains_load_profile:
@@ -505,7 +631,7 @@ def main():
                  f"feasible={r.n_feasible:4d}/{r.n_candidates}  "
                  f"err={r.steady_state_error_rad:.5f} rad  settle={r.settling_steps} steps")
         _save_gains_load_profile_plot(profile_result,
-            "fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/controller_gains_load_profile.png")
+            _out("outputs/diagnostics/controller_gains_load_profile.png"))
 
     # --- Success-threshold probe (requires gravity ON) ---
     if args_cli.success_threshold:
@@ -521,6 +647,25 @@ def main():
                 print(f"\n❌ Success-Threshold Validation Failed! "
                       f"Continuing to next steps...\nError: {e}")
 
+        # Use the gains controller_gains_probe discovered, when they're on
+        # disk. Falls back to whatever the scene was spawned with (the pair in
+        # _make_franka_cfg, which is Franka-specific and hand-tuned) so a
+        # standalone run without a prior gains pass still works -- but on any
+        # other robot that fallback is meaningless, which is the whole reason
+        # to prefer the discovered pair.
+        st_kp = st_kd = None
+        if not args_cli.st_ignore_discovered_gains:
+            _cfg = load_json("outputs/discovered_config.json") or {}
+            _cg = (_cfg.get("probes") or {}).get("controller_gains")
+            if _cg:
+                st_kp, st_kd = _cg.get("kp"), _cg.get("kd")
+                print(f"\nUsing discovered controller gains: "
+                      f"Kp={st_kp:.2f} Kd={st_kd:.2f}")
+            else:
+                print("\n(no controller_gains section in discovered_config.json; "
+                      "using the gains this scene was spawned with. Run "
+                      "--controller-gains first to discover them.)")
+
         st_result = success_threshold_probe(
             sim=sim, scene=scene, robot=robot,
             workspace_points=ws_result.point_cloud,
@@ -528,6 +673,8 @@ def main():
             seed=args_cli.seed,
             ee_body_name=args_cli.ee_body_name,
             statistic=args_cli.st_statistic,
+            arm_stiffness=st_kp,
+            arm_damping=st_kd,
         )
         print(f"\n=== Success-Threshold Probe Results ===")
         print(f"Threshold ({st_result.statistic}): "
@@ -536,14 +683,15 @@ def main():
         print(f"Convergence rate: {st_result.convergence_rate:.1%}")
         print(f"EE frame:         {st_result.ee_frame}")
         print(f"Gravity z:        {st_result.gravity_z}")
+        print(f"Arm gains:        Kp={st_result.arm_stiffness:.2f}  Kd={st_result.arm_damping:.2f}")
         print(f"Position error percentiles (cm):")
         for k, v in st_result.position_error_percentiles_m.items():
             print(f"  {k:>4}: {v * 100:7.3f}")
         print(f"Runtime:          {st_result.runtime_seconds:.2f}s")
  
-        np.save("outputs/diagnostics/success_threshold_errors.npy", st_result.errors_m)
+        np.save(_out("outputs/diagnostics/success_threshold_errors.npy"), st_result.errors_m)
         _save_error_hist(st_result.errors_m,
-                         "outputs/diagnostics/success_threshold_hist.png",
+                         _out("outputs/diagnostics/success_threshold_hist.png"),
                          st_result.threshold_m, st_result.statistic)
 
         # Merge this probe's section into discovered_config.json. Read-modify-
@@ -564,6 +712,8 @@ def main():
             convergence_rate=st_result.convergence_rate,
             physics_dt=st_result.physics_dt,
             gravity_z=st_result.gravity_z,
+            arm_stiffness=st_result.arm_stiffness,
+            arm_damping=st_result.arm_damping,
             units=st_result.units,
             seed=st_result.seed,
         )
@@ -572,8 +722,19 @@ def main():
 
 
 if __name__ == "__main__":
-    # try:
+    # Deliberately NOT calling simulation_app.close(): it hangs in headless
+    # mode with a live PhysX scene (that's why it was commented out here
+    # originally). os._exit tears the process down without it -- and because
+    # it also skips atexit, Kit can't run its shutdown and force the exit code
+    # back to 0, which is what made a crashed probe look successful to
+    # run_skill.py. Print the traceback ourselves first, since nothing after
+    # this point will.
+    _rc = 0
+    try:
         main()
-    # finally:
-    #     simulation_app.close()
-    # os._exit(0)
+    except Exception:
+        traceback.print_exc()
+        _rc = 1
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(_rc)

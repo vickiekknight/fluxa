@@ -1,206 +1,214 @@
-"""Top-level skill orchestrator: NL description → discovered_config.json.
+"""Top-level skill orchestrator: NL description -> discovered_config.json.
 
 Usage:
     python scripts/run_skill.py "train the franka to reach random targets on a table"
+
+This script runs **no simulation of its own**. It parses the description,
+decides whether the task is something this skill can characterize, and then
+sequences `run_probe.py` invocations as subprocesses.
+
+Why subprocesses rather than one process: gravity is fixed when the
+SimulationContext is constructed, and the probes disagree about it --
+joint_limits_probe's PhysX contact labeling is only valid with gravity OFF
+(see run_probe.py's setup), while success_threshold_probe and
+controller_gains_probe measure settling under gravity and need it ON. One
+process gets one gravity setting, so the passes have to be separate processes.
+Each pass merges only its own section into discovered_config.json, so they
+compose in any order without clobbering each other.
+
+Keeping this script sim-free also means it must not hold a GPU while spawning
+those passes (this repo already hits that constraint in reward-designer, which
+stops the streaming Isaac Sim instance before running headless evaluations),
+and that an unsupported task costs a fraction of a second instead of a full
+Kit boot.
 """
 import argparse
 import os
+import subprocess
 import sys
-import numpy as np
+import traceback
 
-from isaaclab.app import AppLauncher
+_SKILL_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, _SKILL_ROOT)
 
-parser = argparse.ArgumentParser()
-parser.add_argument("description", type=str,
-                    help="Natural-language task description.")
-parser.add_argument("--num_envs", type=int, default=1000)
-parser.add_argument("--n_samples", type=int, default=2000)
-parser.add_argument("--seed", type=int, default=42)
-parser.add_argument("--skip-validation", action="store_true",
-                    help="Skip FK validation (CuRobo check). Default: validation runs.")
-parser.add_argument("--n_validate", type=int, default=50)
+from parser.task_parser import parse_task_description, SUPPORTED_TASK_TYPES
+from helpers.io import save_json, load_json
 
-AppLauncher.add_app_launcher_args(parser)
-args_cli = parser.parse_args()
-args_cli.headless = True
+_RUN_PROBE = os.path.join(_SKILL_ROOT, "scripts", "run_probe.py")
+_TASK_SPEC_PATH = os.path.join(_SKILL_ROOT, "outputs", "task_spec.json")
 
-app_launcher = AppLauncher(args_cli)
-simulation_app = app_launcher.app
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from isaaclab.scene import InteractiveScene, InteractiveSceneCfg
-from isaaclab.sim import SimulationContext, SimulationCfg
-from isaaclab.utils import configclass
-from isaaclab_assets import FRANKA_PANDA_CFG
-
-from parser.task_parser import parse_task_description
-from probes.workspace_probe import workspace_probe
-from probes.joint_limits_probe import joint_limits_probe
-from helpers.io import save_json, load_json, save_scatter_plot
-
-from isaaclab.sensors import ContactSensorCfg
-from isaaclab.sim.schemas import ArticulationRootPropertiesCfg
-
-_SKILLS_DIR = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-)
-sys.path.insert(0, _SKILLS_DIR)
-from common.schemas import (
-    DiscoveredConfig, RobotConfig, ProbeResults,
-    WorkspaceProbeResult, JointLimitsProbeResult,
-)
+# Exit codes. UNSUPPORTED is distinct from ERROR so a wrapper script can tell
+# "understood the task, can't characterize it" from "something broke" -- both
+# are non-zero because neither produced a complete discovered_config.json.
+EXIT_OK = 0
+EXIT_ERROR = 1
+EXIT_UNSUPPORTED = 2
 
 
-def _make_franka_cfg():
-    cfg = FRANKA_PANDA_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
-    if cfg.spawn.articulation_props is None:
-        cfg.spawn.articulation_props = ArticulationRootPropertiesCfg()
-    cfg.spawn.articulation_props.enabled_self_collisions = True
-    cfg.spawn.activate_contact_sensors = True   # required for ContactSensor to report
-    return cfg
+def _build_parser():
+    p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    p.add_argument("description", type=str,
+                   help="Natural-language task description.")
+    p.add_argument("--num_envs", type=int, default=1000)
+    p.add_argument("--n_samples", type=int, default=2000)
+    p.add_argument("--n_targets", type=int, default=1000,
+                   help="Targets for the success-threshold probe.")
+    p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--skip-validation", action="store_true",
+                   help="Skip FK validation (CuRobo check) in the probe passes.")
+    p.add_argument("--n_validate", type=int, default=50)
+    p.add_argument("--no-llm-parser", action="store_true",
+                   help="Force the deterministic keyword parser instead of the "
+                        "Gemini-backed one (offline runs, reproducibility).")
+    p.add_argument("--skip-success-threshold", action="store_true",
+                   help="Skip the gravity-on success-threshold pass.")
+    p.add_argument("--skip-controller-gains", action="store_true",
+                   help="Skip the gravity-on controller-gains pass.")
+    p.add_argument("--python", type=str, default=sys.executable,
+                   help="Interpreter used for the probe subprocesses. Defaults "
+                        "to this one, which inherits Isaac Sim's environment "
+                        "when launched via python.sh.")
+    return p
 
 
-@configclass
-class FrankaSceneCfg(InteractiveSceneCfg):
-    robot = _make_franka_cfg()
-    contact_forces = ContactSensorCfg(
-        prim_path="{ENV_REGEX_NS}/Robot/.*",
-        history_length=0,
-        track_air_time=False,
-    )
+def _report_unsupported(task_spec, user_description: str):
+    """Explain a task we understood but can't characterize.
 
-
-# Robot-frame z = 0 corresponds to the table surface in v1.
-TABLE_HEIGHT = 0.0
-
-
-def setup_scene(robot_name: str, num_envs: int):
-    """Spawn a scene with `num_envs` copies of the requested robot.
-
-    Gravity is disabled: the joint-limits probe labels self-collisions from
-    PhysX contact forces, and with a fixed base + no ground + no gravity the
-    only contacts are link-link self-collisions (matches run_probe.py, under
-    which the ~11% collision rate was validated).
+    This is an expected outcome, not a failure -- the parser deliberately
+    classifies open task types so the refusal can name what it understood.
+    Printed rather than raised so it doesn't read like a crash.
     """
-    sim_cfg = SimulationCfg(device="cuda:0", gravity=(0.0, 0.0, 0.0))
-    sim = SimulationContext(sim_cfg)
+    bar = "=" * 66
+    print(f"\n{bar}")
+    print("Task understood, but not supported by workspace-exploration")
+    print(bar)
+    print(f"  description : {user_description!r}")
+    print(f"  parsed as   : task_type={task_spec.task_type!r} "
+          f"(via {task_spec.parsed_by})")
+    if task_spec.objects:
+        print(f"  objects     : {task_spec.objects}")
+    print(f"  supported   : {sorted(SUPPORTED_TASK_TYPES)}")
+    print()
+    print("  This skill's probes are reach-shaped -- workspace_probe measures")
+    print("  EE reachability, success_threshold_probe measures EE position error")
+    print("  to a target point. Neither says anything about grasping, contact,")
+    print("  or object placement, so a family like 'lift' or 'stack' needs new")
+    print("  probes before it can be characterized here.")
+    print()
+    print("  No probes ran; discovered_config.json was not modified.")
+    print("  (outputs/task_spec.json was still written, so you can see the")
+    print("   full parse.)")
+    print(f"{bar}\n")
 
-    if robot_name == "franka":
-        scene_cfg = FrankaSceneCfg(num_envs=num_envs, env_spacing=2.0)
-    else:
-        raise NotImplementedError(
-            f"v1 supports robot_name='franka' only. Got: {robot_name!r}"
-        )
 
-    scene = InteractiveScene(scene_cfg)
-    sim.reset()
-    return sim, scene, scene["robot"]
+def _run_pass(label: str, argv: list, python_exe: str) -> int:
+    """Run one probe pass as a subprocess. Returns its exit code."""
+    bar = "-" * 66
+    print(f"\n{bar}")
+    print(f">>> {label}")
+    print(f"{bar}")
+    cmd = [python_exe, _RUN_PROBE] + argv
+    print(f"    {' '.join(cmd)}\n", flush=True)
+    # Inherit stdout/stderr so probe output streams live rather than being
+    # buffered up and replayed after the pass finishes.
+    result = subprocess.run(cmd, cwd=_SKILL_ROOT)
+    if result.returncode != 0:
+        print(f"\n!!! {label} exited {result.returncode}")
+    return result.returncode
 
 
-def main(user_description: str, num_envs: int, n_samples: int, seed: int):
+def main(args) -> int:
+    """Run the skill. Returns a process exit code."""
     # === Stage 1: Parse ===
-    task_spec = parse_task_description(user_description)
-    save_json(task_spec, "outputs/task_spec.json")
-    print(f"Parsed: {task_spec.task_type} on {task_spec.robot_name}")
+    task_spec = parse_task_description(args.description,
+                                       use_llm=not args.no_llm_parser)
+    # .model_dump(): TaskSpec is Pydantic, and save_json only unwraps
+    # dataclasses -- passing the object directly would stringify it.
+    save_json(task_spec.model_dump(), "outputs/task_spec.json")
+    print(f"Parsed: {task_spec.task_type} on {task_spec.robot_name} "
+          f"(via {task_spec.parsed_by})")
+    if task_spec.objects:
+        print(f"Objects: {task_spec.objects}")
     if task_spec.constraints:
         print(f"Constraints: {task_spec.constraints}")
+    if task_spec.notes:
+        print(f"Notes: {task_spec.notes}")
 
-    # === Stage 2: Spawn sim ===
-    sim, scene, robot = setup_scene(task_spec.robot_name, num_envs)
-    print(f"Spawned {scene.num_envs} parallel envs.")
+    # === Stage 2: Capability gate ===
+    # Parsing understands open task types; this is the single place that
+    # decides what the probes can actually measure. Checked before any
+    # subprocess spawns, so an unsupported task costs no sim time at all.
+    if task_spec.task_type not in SUPPORTED_TASK_TYPES:
+        _report_unsupported(task_spec, args.description)
+        return EXIT_UNSUPPORTED
 
-    # Validate FK before any probe runs. Catches silent kinematics regressions
-    # (URDF/Isaac Lab version drift) before they poison downstream stages.
-    if not args_cli.skip_validation:
-        from tests.test_workspace_integration import run_integration_test
-        run_integration_test(
-            scene, robot,
-            n_configs=args_cli.n_validate,
-            seed=args_cli.seed,
+    # === Stage 3: Sequence the probe passes ===
+    common = [
+        "--num_envs", str(args.num_envs),
+        "--n_samples", str(args.n_samples),
+        "--seed", str(args.seed),
+        "--n_validate", str(args.n_validate),
+        "--ee_body_name", task_spec.ee_body_name,
+        "--task-spec", _TASK_SPEC_PATH,
+    ]
+
+    passes = [
+        # Gravity OFF: workspace + joint-limits. --write-config makes this pass
+        # record both sections (run_skill.py used to do that write itself).
+        ("workspace + joint limits (gravity off)",
+         common + ["--write-config"] +
+         ([] if args.skip_validation else ["--validate-fk"])),
+    ]
+    # Controller gains BEFORE success threshold: the gains characterize the
+    # low-level PD controller that success_threshold_probe then measures
+    # settling error through, so the dependency runs first. (Note: as of now
+    # success_threshold_probe still uses the hardcoded gains in run_probe.py's
+    # _make_franka_cfg rather than reading the discovered ones -- this ordering
+    # is what makes that retrofit possible, not a substitute for it.)
+    if not args.skip_controller_gains:
+        passes.append(
+            ("controller gains (gravity on)", common + ["--controller-gains"])
+        )
+    if not args.skip_success_threshold:
+        passes.append(
+            ("success threshold (gravity on)",
+             common + ["--success-threshold", "--n_targets", str(args.n_targets)])
         )
 
-    # === Stage 3: Run probes ===
-    if task_spec.task_type != "reach":
-        raise NotImplementedError(
-            f"Task type {task_spec.task_type!r} not supported in v1"
-        )
+    # Number the passes after assembling them -- hardcoded "Pass 1/3" labels
+    # lied whenever a --skip flag dropped one.
+    total = len(passes)
+    for i, (label, argv) in enumerate(passes, start=1):
+        rc = _run_pass(f"Pass {i}/{total}: {label}", argv, args.python)
+        if rc != 0:
+            print(f"\nStopping: {label} failed. discovered_config.json may be "
+                  f"partially populated -- inspect it before relying on it.")
+            return EXIT_ERROR
 
-    ws_result = workspace_probe(
-        scene=scene,
-        robot=robot,
-        n_samples=n_samples,
-        seed=seed,
-        ee_body_name=task_spec.ee_body_name,
-    )
-    jl_result = joint_limits_probe(
-        sim=sim, scene=scene, robot=robot,
-        n_samples=n_samples, seed=seed,
-    )
-
-    # Absolute path: reach_task.py loads this inside the Isaac Sim server
-    # process, which may not share this process's working directory.
-    os.makedirs("outputs/diagnostics", exist_ok=True)
-    safe_path = os.path.abspath("outputs/diagnostics/safe_configs.npy")
-    np.save(safe_path, jl_result.safe_configs)
-    print(f"Joint-limits: {jl_result.n_safe}/{jl_result.n_sampled} safe "
-          f"({jl_result.collision_rate:.1%} collide)")
-
-    # === Stage 4: Apply constraints ===
-    if task_spec.constraints.get("surface") == "table":
-        z_lo = max(ws_result.bounds["z"][0], TABLE_HEIGHT)
-    else:
-        z_lo = ws_result.bounds["z"][0]
-    z_hi = ws_result.bounds["z"][1]
-
-    # === Stage 5: Write outputs ===
-    # Read-modify-write: success_threshold_probe (via run_probe.py) writes its
-    # section into this same file on its own gravity-on pass (see setup_scene's
-    # docstring for why the two can't share a scene). A full overwrite here
-    # would silently wipe that section if this runs second.
-    existing = load_json("outputs/discovered_config.json")
-    discovered = (DiscoveredConfig.model_validate(existing) if existing is not None
-                 else DiscoveredConfig(robot=RobotConfig(name=task_spec.robot_name),
-                                       probes=ProbeResults()))
-    discovered.robot = RobotConfig(name=task_spec.robot_name)
-    discovered.probes.workspace = WorkspaceProbeResult(
-        x=tuple(ws_result.bounds["x"]),
-        y=tuple(ws_result.bounds["y"]),
-        z=(z_lo, z_hi),
-    )
-    discovered.probes.joint_limits = JointLimitsProbeResult(
-        n_sampled=jl_result.n_sampled,
-        n_safe=jl_result.n_safe,
-        collision_rate=jl_result.collision_rate,
-        seed=jl_result.seed,
-        joint_lower=jl_result.joint_lower.tolist(),
-        joint_upper=jl_result.joint_upper.tolist(),
-        safe_config_path=safe_path,
-    )
-    save_json(discovered.model_dump(), "outputs/discovered_config.json")
-
-    save_scatter_plot(
-        ws_result,
-        "outputs/diagnostics/workspace_scatter.png",
-        title_suffix=task_spec.robot_name,
-    )
-    print("\n=== Discovered Config ===")
-    print(f"Workspace bounds: {discovered.probes.workspace}")
-    print(f"Safe configs:     {jl_result.n_safe} -> {safe_path}")
-    print("\nOutputs written:")
+    # === Stage 4: Report ===
+    bar = "=" * 66
+    print(f"\n{bar}")
+    print("Discovered config")
+    print(bar)
+    discovered = load_json("outputs/discovered_config.json") or {}
+    probes = discovered.get("probes", {})
+    for name in ("workspace", "joint_limits", "success_threshold",
+                 "controller_gains"):
+        section = probes.get(name)
+        print(f"  {name:<18} {'present' if section else 'MISSING'}")
+    print()
+    print("Outputs written:")
     print("  outputs/task_spec.json")
     print("  outputs/discovered_config.json")
-    print("  outputs/diagnostics/workspace_scatter.png")
+    print("  outputs/diagnostics/")
+    print(bar)
+    return EXIT_OK
 
 
 if __name__ == "__main__":
+    _args = _build_parser().parse_args()
     try:
-        main(
-            args_cli.description,
-            args_cli.num_envs,
-            args_cli.n_samples,
-            args_cli.seed,
-        )
-    finally:
-        simulation_app.close()
-    os._exit(0)
+        sys.exit(main(_args))
+    except Exception:
+        traceback.print_exc()
+        sys.exit(EXIT_ERROR)

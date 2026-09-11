@@ -44,7 +44,7 @@
         0.03999999910593033,
         0.03999999910593033
       ],
-      "safe_config_path": "/isaac-sim/outputs/diagnostics/safe_configs.npy"
+      "safe_config_path": "/isaac-sim/fluxa/.agent/skills/workspace-exploration/outputs/diagnostics/safe_configs.npy"
     },
     "success_threshold": {
       "ee_frame": "panda_hand",
@@ -65,10 +65,22 @@
       "convergence_rate": 0.9020000100135803,
       "physics_dt": 0.016666666666666666,
       "gravity_z": -9.81,
+      "arm_stiffness": 400.0000305175781,
+      "arm_damping": 80.0,
       "target_orientation_rpy": null,
       "units": "meters",
       "seed": 42
     },
-    "controller_gains": null
+    "controller_gains": {
+      "kp": 2459.71728515625,
+      "kd": 104.33251190185547,
+      "default_kp": 80.0,
+      "default_kd": 4.0,
+      "n_candidates": 1000,
+      "n_feasible": 316,
+      "steady_state_error_rad": 0.012613118626177311,
+      "settling_steps": 12,
+      "seed": 42
+    }
   }
 }

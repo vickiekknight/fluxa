@@ -30,6 +30,11 @@ class SuccessThresholdProbeResult:
     ee_frame: str
     physics_dt: float
     gravity_z: Optional[float]
+    # The PD gains this threshold was measured under. Recorded because the
+    # threshold is only meaningful alongside them -- the same arm with weaker
+    # gains droops under gravity and measures far worse.
+    arm_stiffness: float
+    arm_damping: float
     units: str
     seed: int
     runtime_seconds: float
@@ -111,7 +116,23 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
                             decimation: int = 2,
                             n_control_steps: int = 300,
                             alpha: float = 0.2,
+                            arm_stiffness: float = None,
+                            arm_damping: float = None,
                             ee_settle_vel_tol: float = 1e-3) -> SuccessThresholdProbeResult:
+    """Measure how close the EE settles to a target, under gravity.
+
+    arm_stiffness/arm_damping: PD gains to apply to the arm joints before
+        measuring, normally the pair discovered by controller_gains_probe.
+        Applied at runtime via write_joint_stiffness_to_sim rather than baked
+        into the ArticulationCfg, so the caller doesn't have to rebuild the
+        scene. When None, whatever gains the robot was spawned with are used.
+
+        This matters because the threshold is a property of the controller as
+        much as the arm: the same robot with weak gains droops under gravity
+        and reports a far worse threshold (that's the bug this probe was
+        originally built around). Hardcoding a gain pair here would only ever
+        be right for the robot it was tuned on.
+    """
     from isaaclab.utils.math import subtract_frame_transforms
 
     start = time.time()
@@ -126,6 +147,15 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
     ee_idx = robot.body_names.index(ee_body_name)
     arm_ids, _ = robot.find_joints(arm_joint_expr, preserve_order=True)
     arm_ids_t = torch.as_tensor(arm_ids, device=device, dtype=torch.long)
+
+    if arm_stiffness is not None:
+        robot.write_joint_stiffness_to_sim(arm_stiffness, joint_ids=arm_ids)
+    if arm_damping is not None:
+        robot.write_joint_damping_to_sim(arm_damping, joint_ids=arm_ids)
+    applied_kp = float(robot.data.joint_stiffness[0, arm_ids_t].mean())
+    applied_kd = float(robot.data.joint_damping[0, arm_ids_t].mean())
+    print(f"[success-threshold] arm gains: Kp={applied_kp:.2f} Kd={applied_kd:.2f}"
+          f"{' (from controller_gains_probe)' if arm_stiffness is not None else ' (as spawned)'}")
     ee_jacobi_idx = ee_idx - 1 if robot.is_fixed_base else ee_idx
     q_lim = robot.data.soft_joint_pos_limits[:, arm_ids_t, :] 
 
@@ -216,6 +246,8 @@ def success_threshold_probe(sim, scene, robot, workspace_points, *,
         ee_frame=ee_body_name,
         physics_dt=dt,
         gravity_z=grav_z,
+        arm_stiffness=applied_kp,
+        arm_damping=applied_kd,
         units="meters",
         seed=seed,
         runtime_seconds=time.time() - start,

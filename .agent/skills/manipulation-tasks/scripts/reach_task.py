@@ -101,6 +101,24 @@ class FrankaReachEnvCfg(ReachEnvCfg):
             print("[reach_task] DEFAULT: using Isaac Lab built-in reward std")
             print(f"  std={{self.rewards.end_effector_position_tracking_fine_grained.params['std']}}")
 
+        # === Controller-gains override (from workspace-exploration) ===
+        # Applied to every actuator group uniformly, not by name (e.g.
+        # "panda_shoulder"/"panda_forearm"): controller_gains_probe is
+        # designed to be robot-agnostic (one Kp/Kd for the whole arm,
+        # discovered from whatever ArticulationCfg is loaded), so the
+        # apply-side stays robot-agnostic too rather than hardcoding
+        # Franka-specific actuator group names here.
+        controller_gains_kp_override = {controller_gains_kp_override}
+        controller_gains_kd_override = {controller_gains_kd_override}
+        if controller_gains_kp_override is not None:
+            for _actuator_cfg in self.scene.robot.actuators.values():
+                _actuator_cfg.stiffness = controller_gains_kp_override
+                _actuator_cfg.damping = controller_gains_kd_override
+            print("[reach_task] OVERRIDE: actuator gains from --config")
+            print(f"  Kp={{controller_gains_kp_override}}  Kd={{controller_gains_kd_override}}")
+        else:
+            print("[reach_task] DEFAULT: using Isaac Lab built-in actuator gains")
+
 
 @configclass
 class UR10ReachEnvCfg(ReachEnvCfg):
@@ -142,6 +160,18 @@ class UR10ReachEnvCfg(ReachEnvCfg):
         else:
             print("[reach_task] DEFAULT: using Isaac Lab built-in reward std")
             print(f"  std={{self.rewards.end_effector_position_tracking_fine_grained.params['std']}}")
+
+        # === Controller-gains override (from workspace-exploration) ===
+        controller_gains_kp_override = {controller_gains_kp_override}
+        controller_gains_kd_override = {controller_gains_kd_override}
+        if controller_gains_kp_override is not None:
+            for _actuator_cfg in self.scene.robot.actuators.values():
+                _actuator_cfg.stiffness = controller_gains_kp_override
+                _actuator_cfg.damping = controller_gains_kd_override
+            print("[reach_task] OVERRIDE: actuator gains from --config")
+            print(f"  Kp={{controller_gains_kp_override}}  Kd={{controller_gains_kd_override}}")
+        else:
+            print("[reach_task] DEFAULT: using Isaac Lab built-in actuator gains")
 
 
 # 2. Execution Logic
@@ -199,12 +229,15 @@ else:
 import json as _json, os as _os, time as _time
 _ws_x = {pos_x_override}
 _st_threshold = {success_threshold_override}
+_cg_kp = {controller_gains_kp_override}
+_cg_kd = {controller_gains_kd_override}
 _status = {{
     "time": _time.strftime("%Y-%m-%d %H:%M:%S"),
     "task": "{task_name}",
     "workspace": {{"applied": _ws_x is not None, "bounds_x": _ws_x}},
     "joint_limits": _jl_status,
     "success_threshold": {{"applied": _st_threshold is not None, "std_m": _st_threshold}},
+    "controller_gains": {{"applied": _cg_kp is not None, "kp": _cg_kp, "kd": _cg_kd}},
 }}
 _status_path = "/isaac-sim/outputs/reach_task_status.json"
 try:
@@ -285,7 +318,9 @@ def extract_template_overrides(config):
         # success threshold defaults
         "success_threshold_override": "None",
 
-        # controller gain defaults (future)
+        # controller gains defaults
+        "controller_gains_kp_override": "None",
+        "controller_gains_kd_override": "None",
     }
     if config is None:
         return overrides
@@ -305,6 +340,11 @@ def extract_template_overrides(config):
     st = config.probes.success_threshold
     if st is not None:
         overrides["success_threshold_override"] = repr(st.threshold_m)
+
+    cg = config.probes.controller_gains
+    if cg is not None:
+        overrides["controller_gains_kp_override"] = repr(cg.kp)
+        overrides["controller_gains_kd_override"] = repr(cg.kd)
 
     return overrides
 

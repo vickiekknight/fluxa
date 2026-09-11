@@ -29,6 +29,11 @@ class SuccessThresholdProbeResult(BaseModel):
     convergence_rate: float
     physics_dt: float
     gravity_z: Optional[float] = None
+    # PD gains the threshold was measured under (normally from
+    # controller_gains_probe). Optional so configs written before this field
+    # existed still validate.
+    arm_stiffness: Optional[float] = None
+    arm_damping: Optional[float] = None
     target_orientation_rpy: Optional[tuple[float, float, float]] = None
     units: str = "meters"
     seed: int
@@ -50,11 +55,16 @@ class SuccessThresholdProbeResult(BaseModel):
 
 
 
-class ControllerGainProbeResult(BaseModel):
-    """
-    Placeholder for future probe output.
-    """
-    pass
+class ControllerGainsProbeResult(BaseModel):
+    kp: float
+    kd: float
+    default_kp: float
+    default_kd: float
+    n_candidates: int
+    n_feasible: int
+    steady_state_error_rad: float
+    settling_steps: int
+    seed: int
 
 
 class RobotConfig(BaseModel):
@@ -65,7 +75,7 @@ class ProbeResults(BaseModel):
     workspace: Optional[WorkspaceProbeResult] = None
     joint_limits: Optional[JointLimitsProbeResult] = None
     success_threshold: Optional[SuccessThresholdProbeResult] = None
-    controller_gains: Optional[ControllerGainProbeResult] = None
+    controller_gains: Optional[ControllerGainsProbeResult] = None
     model_config = ConfigDict(validate_assignment=True)
 
 class DiscoveredConfig(BaseModel):
