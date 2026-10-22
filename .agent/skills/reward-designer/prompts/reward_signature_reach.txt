@@ -1,33 +1,92 @@
-# --- Reward Function Signature for Isaac Lab Manipulation ---
+# --- Reward Function Format for Isaac Lab (manager-based workflow) ---
 
-You must implement reward functions following the Isaac Lab MDP naming convention. 
-Each function must accept the 'env' (ManagerBasedRLEnv) and any required 'params'.
+Your output is injected at MODULE LEVEL into a file that already has these
+imports. Do not write any imports yourself:
 
-Signature:
-def your_reward_function(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, command_name: str) -> torch.Tensor:
-    """
-    Args:
-        env: The interactive environment instance.
-        asset_cfg: Configuration for the robot/object (use to get data).
-        command_name: The name of the target command (e.g., 'ee_pose').
-    Returns:
-        A tensor of shape (num_envs,) containing the reward values.
-    """
-    # 1. Access Robot Data
-    robot = env.scene[asset_cfg.name]
-    ee_pos = robot.data.body_pos_w[:, asset_cfg.body_ids[0]] # World-space end-effector position
-    
-    # 2. Access Command Data
-    target_pos = env.command_manager.get_command(command_name)[:, :3] # Target position (x, y, z)
-    
-    # 3. Compute Logic
-    distance = torch.norm(target_pos - ee_pos, dim=-1)
-    
-    # 4. Return Tensor
-    return -distance 
+    import torch
+    from isaaclab.envs import ManagerBasedRLEnv
+    from isaaclab.managers import RewardTermCfg as RewTerm
+    from isaaclab.managers import SceneEntityCfg
+    import isaaclab_tasks.manager_based.manipulation.reach.mdp as mdp
 
-# Available Data References:
-# - env.num_envs: Total number of parallel environments
-# - robot.data.joint_pos: Current joint positions
-# - robot.data.joint_vel: Current joint velocities
-# - robot.data.body_lin_vel_w: World-space linear velocity of bodies
+Write one function per reward term, then a single module-level dictionary called
+`reward_dict`. A complete, correct example of the expected output:
+
+```python
+def reaching_position(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg,
+                      command_name: str, temperature: float) -> torch.Tensor:
+    """Exponential kernel on end-effector position error."""
+    distance = mdp.position_command_error(
+        env, command_name=command_name, asset_cfg=asset_cfg
+    )
+    return torch.exp(-distance / temperature)
+
+
+def joint_velocity_penalty(env: ManagerBasedRLEnv,
+                           asset_cfg: SceneEntityCfg) -> torch.Tensor:
+    """Magnitude of joint velocity; apply with a NEGATIVE weight."""
+    joint_vel = env.scene[asset_cfg.name].data.joint_vel
+    return torch.sum(torch.square(joint_vel), dim=-1)
+
+
+reward_dict = {
+    "reaching_position": RewTerm(
+        func=reaching_position,
+        weight=2.0,
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names=["panda_hand"]),
+            "command_name": "ee_pose",
+            "temperature": 0.1,
+        },
+    ),
+    "joint_velocity": RewTerm(
+        func=joint_velocity_penalty,
+        weight=-0.0001,
+        params={"asset_cfg": SceneEntityCfg("robot")},
+    ),
+}
+```
+
+Note carefully, from that example:
+
+  - `reward_dict` is a module-level dictionary literal. It is NOT returned from
+    a factory function, and no function is named `reward_dict`.
+  - Every key is a unique, descriptive term name.
+  - Every RewTerm sets `func`, `weight` and `params`. Nothing else.
+  - Each function declares ONE NAMED PARAMETER PER KEY in its `params` dict.
+    Isaac Lab calls `func(env, **params)`, so a function that takes a single
+    `params` dict will fail.
+  - The first argument to SceneEntityCfg is the SCENE ENTITY name -- the asset as
+    registered in the scene (`"robot"`), not the robot model, task or config
+    name. The keyword is `name`, never `asset_name`.
+  - Tunable constants (temperatures, thresholds) are passed through `params`, so
+    they are visible and can be tuned between iterations.
+
+# Available data
+
+Helpers from `mdp` that already handle frame transforms correctly -- prefer them
+over recomputing, since the command is expressed in the ROBOT BASE frame:
+
+    mdp.position_command_error(env, command_name, asset_cfg)     -> (num_envs,) metres
+    mdp.orientation_command_error(env, command_name, asset_cfg)  -> (num_envs,) radians
+    mdp.action_rate_l2(env)                                      -> (num_envs,)
+    mdp.joint_vel_l2(env, asset_cfg)                             -> (num_envs,)
+
+Robot state, via `robot = env.scene[asset_cfg.name]`:
+
+    robot.data.joint_pos, robot.data.joint_vel
+    robot.data.body_pos_w[:, asset_cfg.body_ids[0]]    # world-frame EE position
+    robot.data.body_quat_w[:, asset_cfg.body_ids[0]]   # world-frame EE quaternion (w, x, y, z)
+    robot.data.root_pos_w, robot.data.root_quat_w
+
+Commands: `env.command_manager.get_command("ee_pose")` -> (num_envs, 7), the
+first 3 columns position and the last 4 a quaternion, both in the robot base
+frame. Converting to world frame requires combine_frame_transforms, which is NOT
+imported -- use the `mdp` helpers above instead.
+
+Quaternion utilities (quat_mul, quat_conjugate, quat_inverse,
+quat_error_magnitude) are NOT available. Use
+`mdp.orientation_command_error` for orientation error.
+
+Every function must return a tensor of shape (num_envs,) on the same device as
+the environment tensors.

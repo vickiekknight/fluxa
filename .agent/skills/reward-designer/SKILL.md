@@ -125,7 +125,14 @@ Outputs are consumed by the `manipulation-tasks` skill at env creation time.
   (`cd /isaac-sim/IsaacLab && ./isaaclab.sh -i rsl_rl`).
 - **Skill Dependencies:** This skill shadows and requires the `manipulation-tasks` skill.
 - **LLM API Key:** `GEMINI_API_KEY` must be set in the environment.
-- **Python (host):** Python 3.10+ with `google-genai`, `pyyaml`, and `wandb` installed.
+- **Python:** Stages 1 and 3 call Gemini and therefore run **inside the container**,
+  where `requirements.txt` installs `google-genai` (the host is not set up for it).
+  `run_pipeline.py` itself runs on the host, because stopping and restarting the
+  streaming Isaac Sim needs the `docker` CLI.
+  - Inside the container: `/isaac-sim/python.sh scripts/1_eureka.py`
+  - On the host: `python3 scripts/1_eureka.py` (needs `google-genai`, `pyyaml`,
+    `wandb` installed host-side; `1_eureka.py` detects which side it is on and
+    switches between `docker exec` and a direct call automatically).
 
 ## Directory Structure
 
@@ -399,9 +406,17 @@ python3 ~/fluxa-agent-pack/.agent/skills/reward-designer/scripts/run_pipeline.py
 - `3_dr_eureka.py` detects collapse (reward drops >50%) and re-prompts
 
 ### Inference mode tensor errors during evaluation
-- `env.step()` and `env.reset()` must stay OUTSIDE `torch.no_grad()` context
-- Only the policy forward pass should be wrapped in `torch.no_grad()`
-- RSL-RL's `get_inference_policy()` handles this correctly
+`RuntimeError: Inplace update to inference tensor outside InferenceMode is not allowed.`
+
+- Wrap the ENTIRE post-training rollout — `env.reset()`, the policy call, and
+  `env.step()` — in a single `torch.inference_mode()` block.
+- Why: RSL-RL collects its training rollouts inside `torch.inference_mode()`
+  (`on_policy_runner.py`), which permanently marks the env's internal buffers as
+  inference tensors. Mutating them later outside that context fails — e.g.
+  `env.reset()` zeroing `joint_acc` in `write_joint_velocity_to_sim`.
+- `torch.no_grad()` is NOT sufficient; it does not re-enter inference mode.
+- Isaac Lab's own `scripts/reinforcement_learning/rsl_rl/play.py` wraps policy
+  and `env.step()` together for this reason — follow that pattern.
 
 ## Notes
 

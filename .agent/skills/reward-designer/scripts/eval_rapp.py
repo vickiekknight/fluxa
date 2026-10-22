@@ -191,6 +191,9 @@ def run_rapp_eval(args):
             self.scene.env_spacing = 2.0
 
     env_cfg = RAPPFrankaReachEnvCfg()
+    # Same reasoning as eval_headless.py: rsl_rl ignores the runner's seed, so
+    # the environment has to be seeded for a physics sweep to be reproducible.
+    env_cfg.seed = args.seed
     env_cfg.commands.ee_pose.debug_vis = False
     env_cfg.scene.ground.spawn.usd_path = ISAAC_DIR + "/Environments/Grid/default_environment.usd"
     if hasattr(env_cfg.scene, "table"):
@@ -321,6 +324,8 @@ if __name__ == "__main__":
     parser.add_argument("--param-value", type=float, default=0.0,
                         help="Value to set the parameter to")
     parser.add_argument("--num-envs", type=int, default=16)
+    parser.add_argument("--seed", type=int, default=42,
+                        help="Seed for the environment and policy (default: 42).")
     parser.add_argument("--eval-steps", type=int, default=300,
                         help="Number of inference steps")
     parser.add_argument("--success-threshold", type=float, default=0.10,

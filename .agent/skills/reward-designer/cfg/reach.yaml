@@ -1,10 +1,10 @@
 # --- Docker / Subprocess Config ---
 # These paths are as seen from INSIDE the Docker container
 docker:
-  container: "fluxa-isaacsim"
+  container: "fluxa-isaacsim-container"
   python: "/isaac-sim/python.sh"
-  shared_dir: "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer"
-  eval_script: "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/scripts/eval_headless.py"
+  shared_dir: "/isaac-sim/fluxa/.agent/skills/reward-designer"
+  eval_script: "/isaac-sim/fluxa/.agent/skills/reward-designer/scripts/eval_headless.py"
 
 # --- Isaac Sim (only used for streaming mode, not optimization) ---
 isaac_sim:
@@ -15,12 +15,80 @@ isaac_sim:
 
 # --- Stage 1 Configuration ---
 eureka:
-  iterations: 5 # "searches for 5 iterations"
-  num_samples: 4 # "K = 16 samples per iteration"
-  model: "gemini-2.5-flash-lite"
-  eval_num_envs: 256
+  # Paper settings (3.2): 5 independent runs per environment, each searching
+  # 5 iterations with K = 16 samples. num_runs x iterations x num_samples is the
+  # number of candidate evaluations, and each one is a fresh Isaac Sim process --
+  # at the full setting that is 400 boots, so measure one eval before committing.
+  num_runs: 5
+  iterations: 5
+  num_samples: 16
+  model: "gemini-3.8-flash"
+  # Measured on this machine at train_iterations=300, one candidate eval:
+  #    256 envs ->  79.9s wall (71.2s train),  success 0.896, pos_err 0.0368
+  #   1024 envs ->  89.0s wall (79.4s train),  success 0.940, pos_err 0.0246
+  #   4096 envs -> 106.7s wall (92.7s train),  success 0.940, pos_err 0.0231
+  # 1024 is the knee: 4x the experience of 256 for +11% wall and a real quality
+  # gain, while 4096 costs another 20% for nothing. Isaac Lab's own reference
+  # config for this task is 4096 envs x 1000 iterations.
+  eval_num_envs: 1024
   train_iterations: 300
   final_train_iterations: 1000
+  # Measured seconds per candidate evaluation, used only to print an estimated
+  # run time at startup. Update if the machine or the env count changes.
+  eval_seconds_estimate: 90
+  # Seed for the environment and policy. Shared by every candidate within a run
+  # so that differences in success_rate reflect the reward rather than training
+  # noise. NOTE: rsl_rl's OnPolicyRunner ignores the seed in its own config, so
+  # this is applied via env_cfg.seed, which Isaac Lab uses to seed torch, numpy
+  # and random at env init. Before this was wired up nothing was seeded at all.
+  seed: 42
+  # Vary the seed per restart (seed + run_index). Off by default: it makes the
+  # cross-restart comparison noisier. Turn on to check that a winning reward is
+  # not merely suited to one seed.
+  seed_per_run: false
+  # Automated failure-mode notes appended to the reward reflection (SATURATED,
+  # DEAD, NOT FIRING, FLIPPED SIGN, DOMINATING, PENALTIES OUTWEIGH REWARDS).
+  # The original Eureka has no such diagnosis -- 3.3 supplies raw per-component
+  # trajectories and lets the model reason. OFF by default: in a 5x16 run
+  # SATURATED fired on a coarse distance term that had simply finished working,
+  # advised increasing its weight, and the model tightened the shaping
+  # temperature until the position gradient vanished. Turn on to A/B it.
+  reflection_diagnostics: false
+  # Wall-clock budget per headless eval: startup + per_iteration * train_iterations.
+  # startup must cover Isaac Sim boot (40-90s) + env creation + the eval rollout.
+  eval_timeout_startup_s: 300
+  eval_timeout_per_iteration_s: 2.0
+  # Eureka samples K i.i.d. candidates per iteration; diversity across those
+  # samples is the point, so do not leave this at the API default.
+  temperature: 1.0
+  # Retry transient LLM failures (503 "high demand", 429 rate limit, dropped
+  # connections). Without this a single 503 permanently shrinks K, and at small
+  # K it ends the run outright. Delay is backoff * attempt (linear).
+  llm_max_attempts: 4
+  llm_backoff_seconds: 5
+  # When every candidate in an iteration fails, record the error exchange so the
+  # next iteration can see what went wrong. The original only does this at K==1;
+  # with K>1 it repeats from the unchanged message checkpoint, so the model
+  # learns nothing. Set false for the original's exact K>1 semantics.
+  feedback_on_all_failed: true
+
+# --- Environment as context (Eureka 3.1) ---
+# The raw environment source, minus the reward code, is fed to the LLM so it can
+# see which state and action variables actually exist. Path is as seen from
+# inside the container; a host-side run degrades to no env context.
+env_context:
+  source_file: "/isaac-sim/IsaacLab/source/isaaclab_tasks/isaaclab_tasks/manager_based/manipulation/reach/reach_env_cfg.py"
+  strip_classes:
+    - RewardsCfg
+    - CurriculumCfg
+  # Scene entities a generated reward may reference, beyond the robot asset.
+  # Checked at injection time so a bad SceneEntityCfg name fails instantly
+  # instead of after a full Isaac Sim boot.
+  scene_entities:
+    - table
+    - ground
+    - terrain
+    - light
 
 # --- Task Description ---
 task_description: >
@@ -37,6 +105,8 @@ reward_signature_file: "./prompts/reward_signature_reach.txt"
 reward_template_file: "./templates/reward_template.py"
 reward_output_file: "./outputs/reward_fn.py"
 rapp_bounds_file: "./outputs/rapp_bounds.json"
+policy_output_file: "./outputs/eureka_policy.pt"
+final_metrics_file: "./outputs/final_metrics.json"
 
 # --- Stage 2: RAPP ---
 rapp:
@@ -53,7 +123,7 @@ rapp:
 # ── Stage 3: DR Eureka ──
 dr_eureka:
   num_samples: 16
-  model: "gemini-2.5-flash-lite"
+  model: "gemini-3.8-flash"
   dr_template_file: "./templates/dr_template.py"
   dr_output_file: "./outputs/dr_config.py"
 

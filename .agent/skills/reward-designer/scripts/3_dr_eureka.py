@@ -18,6 +18,7 @@ Usage:
 """
 
 import os
+import sys
 import json
 import yaml
 import re
@@ -26,6 +27,12 @@ from pathlib import Path
 
 from google import genai
 import wandb
+
+_SKILLS_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path.insert(0, _SKILLS_DIR)
+from common.env import load_env_file
 
 
 # --- Inject DR into template ---
@@ -208,7 +215,14 @@ def main():
         print(f"  {name}: [{info['min']}, {info['max']}]")
 
     # --- Query LLM for DR configurations ---
-    client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+    load_env_file()
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "GEMINI_API_KEY is not set and no .env above this script provided "
+            "one. Add it to the repo-root .env (see README) or export it."
+        )
+    client = genai.Client(api_key=api_key)
     task_description = cfg['task_description']
     user_prompt = build_user_prompt(task_description, bounds_dict)
 

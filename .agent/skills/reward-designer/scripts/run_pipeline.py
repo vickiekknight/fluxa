@@ -38,7 +38,13 @@ import sys
 from pathlib import Path
 
 
-DOCKER_CONTAINER = "fluxa-isaacsim"
+DOCKER_CONTAINER = "fluxa-isaacsim-container"
+# Skill root as seen from INSIDE the container. Stages 1 and 3 run in there
+# because google-genai and wandb are installed into Isaac Sim's Python env by
+# requirements.txt, not the host's -- running them with the host interpreter
+# fails at `from google import genai`.
+SKILL_DIR = "/isaac-sim/fluxa/.agent/skills/reward-designer"
+CONTAINER_PYTHON = "/isaac-sim/python.sh"
 STREAM_SCRIPT = "/isaac-sim/fluxa-ws/start_isaacsim_stream.py"
 STREAM_STARTUP_WAIT = 20  # seconds to wait for Isaac Sim to boot
 
@@ -126,20 +132,27 @@ def start_streaming():
 # --- Stage runners ---------------------------------------------------------
 
 def run_eureka():
-    """Stage 1: Eureka reward generation + long training run to produce checkpoint."""
-    cmd = [sys.executable, "scripts/1_eureka.py"]
+    """Stage 1: Eureka reward generation + long training run to produce checkpoint.
+
+    Runs inside the container (see SKILL_DIR). 1_eureka.py detects that it is
+    already in there and calls python.sh directly instead of docker exec.
+    """
+    cmd = [
+        "docker", "exec", "-w", SKILL_DIR, DOCKER_CONTAINER,
+        CONTAINER_PYTHON, "scripts/1_eureka.py",
+    ]
     run_command(cmd, "Stage 1: Eureka reward generation", timeout=3600)
 
 
 def run_rapp():
     """Stage 2: RAPP physics prior sweep."""
-    checkpoint = "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/eureka_policy.pt"
-    output = "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/outputs/rapp_bounds.json"
+    checkpoint = "/isaac-sim/fluxa/.agent/skills/reward-designer/outputs/eureka_policy.pt"
+    output = "/isaac-sim/fluxa/.agent/skills/reward-designer/outputs/rapp_bounds.json"
 
     cmd = [
         "docker", "exec", DOCKER_CONTAINER,
         "/isaac-sim/python.sh",
-        "/isaac-sim/fluxa-agent-pack/.agent/skills/reward-designer/scripts/2_rapp.py",
+        "/isaac-sim/fluxa/.agent/skills/reward-designer/scripts/2_rapp.py",
         "--checkpoint", checkpoint,
         "--output", output,
     ]
@@ -147,8 +160,14 @@ def run_rapp():
 
 
 def run_dr_eureka(use_placeholders=False):
-    """Stage 3: LLM generates DR configurations from RAPP bounds."""
-    cmd = [sys.executable, "scripts/3_dr_eureka.py"]
+    """Stage 3: LLM generates DR configurations from RAPP bounds.
+
+    Also container-side: this stage calls Gemini too.
+    """
+    cmd = [
+        "docker", "exec", "-w", SKILL_DIR, DOCKER_CONTAINER,
+        CONTAINER_PYTHON, "scripts/3_dr_eureka.py",
+    ]
     if use_placeholders:
         cmd.append("--use-placeholders")
     run_command(cmd, "Stage 3: DR Eureka config generation", timeout=600)
